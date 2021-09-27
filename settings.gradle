@@ -10,3 +10,4 @@ rootProject.name = "Phototime"
 include ':app'
 include ':feat'
 include ':feat:home'
+include ':shared'
