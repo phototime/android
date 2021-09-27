@@ -1,4 +1,4 @@
-package dev.zotov.phototime.ui.theme
+package dev.zotov.phototime.shared.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

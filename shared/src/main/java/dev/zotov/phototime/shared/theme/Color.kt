@@ -1,0 +1,16 @@
+package dev.zotov.phototime.shared.theme
+
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+
+val Purple200 = Color(0xFFBB86FC)
+val Purple500 = Color(0xFF6200EE)
+val Purple700 = Color(0xFF3700B3)
+val Teal200 = Color(0xFF03DAC5)
+
+var backgroundGradient = Brush.verticalGradient(
+    colors = listOf(
+        Color(0xFF0D0F33),
+        Color(0xFF090620),
+    ),
+)

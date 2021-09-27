@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:fitsSystemWindows="true"
         android:theme="@style/Theme.Phototime">
         <activity
             android:name=".MainActivity"
