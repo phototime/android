@@ -87,7 +87,7 @@ private fun TileTitle(text: String) {
     Text(
         text = text,
         modifier = Modifier.padding(horizontal = 10.dp),
-        style = MaterialTheme.typography.tileH2,
+        style = MaterialTheme.typography.White16spNormal,
     )
 }
 

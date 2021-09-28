@@ -1,7 +1,9 @@
 package dev.zotov.phototime
 
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost

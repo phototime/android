@@ -72,7 +72,7 @@ val Typography.tileHeader: TextStyle
     )
 
 @get:Composable
-val Typography.tileH2: TextStyle
+val Typography.White16spNormal: TextStyle
     get() = TextStyle(
         fontSize = 16.sp,
         fontWeight = FontWeight.Normal,
@@ -102,7 +102,7 @@ val Typography.timer: TextStyle
     )
 
 @get:Composable
-val Typography.timeDuration: TextStyle
+val Typography.Grey16spNormal: TextStyle
     get() = TextStyle(
         fontSize = 16.sp,
         fontWeight = FontWeight.Normal,
@@ -140,3 +140,4 @@ val Typography.titleCompanion: TextStyle
         color = Primary,
         textAlign = TextAlign.Right,
     )
+

@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zotov.phototime.shared.theme.BackgroundPreviewColor
 import dev.zotov.phototime.shared.theme.PhototimeTheme
-import dev.zotov.phototime.shared.theme.timeDuration
+import dev.zotov.phototime.shared.theme.Grey16spNormal
 import dev.zotov.phototime.shared.theme.timeDurationAbbreviation
 
 @Composable
@@ -19,7 +19,7 @@ fun ActionTime(text: String) {
     Text(text = buildAnnotatedString {
         append(text)
         addStyle(
-            style = MaterialTheme.typography.timeDuration.toSpanStyle(),
+            style = MaterialTheme.typography.Grey16spNormal.toSpanStyle(),
             start = 0,
             end = 4
         )
@@ -30,7 +30,7 @@ fun ActionTime(text: String) {
         )
         if (text.length > 7) {
             addStyle(
-                style = MaterialTheme.typography.timeDuration.toSpanStyle(),
+                style = MaterialTheme.typography.Grey16spNormal.toSpanStyle(),
                 start = 7,
                 end = 14
             )
