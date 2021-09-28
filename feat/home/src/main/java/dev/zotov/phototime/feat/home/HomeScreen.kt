@@ -7,13 +7,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.zotov.phototime.feat.home.components.BigWeatherIcon
+import dev.zotov.phototime.feat.home.components.WeatherProperty
 import dev.zotov.phototime.shared.components.*
 import dev.zotov.phototime.shared.theme.PhototimeTheme
 
@@ -23,6 +23,15 @@ fun HomeScreen(navController: NavHostController) {
         Title(text = "San Fransisco")
         Subtitle(text = "September 26, 2021")
         BigWeatherIcon(icon = WeatherIcons.SunWithCloud)
+        Spacer(modifier = Modifier.padding(top = 55.dp))
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 25.dp)
+            ) {
+            WeatherProperty(title = "Temp", value = "32°")
+            WeatherProperty(title = "Wind", value = "10km/h")
+            WeatherProperty(title = "Humidity", value = "75%")
+        }
     }
 }
 

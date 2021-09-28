@@ -17,3 +17,4 @@ var backgroundGradient = Brush.verticalGradient(
 
 val White = Color(0xFFFEFDFF)
 val Grey = Color(0xFFB2B3D4)
+const val BackgroundPreviewColor = 0xFF0B0A29
