@@ -130,3 +130,13 @@ val Typography.title: TextStyle
         color = LightGrey,
         textAlign = TextAlign.Left,
     )
+
+@get:Composable
+val Typography.titleCompanion: TextStyle
+    get() = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        color = Primary,
+        textAlign = TextAlign.Right,
+    )

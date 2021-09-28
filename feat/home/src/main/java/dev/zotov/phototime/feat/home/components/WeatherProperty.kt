@@ -1,13 +1,11 @@
 package dev.zotov.phototime.feat.home.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zotov.phototime.shared.theme.BackgroundPreviewColor
@@ -17,7 +15,7 @@ import dev.zotov.phototime.shared.theme.propertyValue
 @Composable
 fun RowScope.WeatherProperty(title: String, value: String) {
     Container {
-        Title(text = title)
+        WeatherTitle(text = title)
         Spacer(modifier = Modifier.height(5.dp))
         Value(text = value)
     }
@@ -40,7 +38,7 @@ private fun RowScope.Container(content: @Composable ColumnScope.() -> Unit) {
 }
 
 @Composable
-private fun Title(text: String) {
+private fun WeatherTitle(text: String) {
     Text(text = text, style = MaterialTheme.typography.propertyName)
 }
 
