@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.zotov.phototime.feat.home.HomeScreen
+import dev.zotov.phototime.feat.search.SearchScreen
 import dev.zotov.phototime.shared.Routes
 import dev.zotov.phototime.shared.components.Frame
 
@@ -14,18 +15,20 @@ import dev.zotov.phototime.shared.components.Frame
 fun MainFeature(mainNavController: NavHostController) {
     val nestedNavController = rememberNavController()
     Frame(navController = nestedNavController) {
-        val scrollState = rememberScrollState()
-        NavHost(navController = nestedNavController, startDestination = Routes.Main.Home) {
+        val homeScreenScrollState = rememberScrollState()
+        val searchScreenScrollState = rememberScrollState()
+
+        NavHost(navController = nestedNavController, startDestination = Routes.Main.Search) {
             composable(Routes.Main.Home) {
                 HomeScreen(
                     navController = nestedNavController,
-                    scrollState = scrollState
+                    scrollState = homeScreenScrollState
                 )
             }
             composable(Routes.Main.Search) {
-                HomeScreen(
+                SearchScreen(
                     navController = nestedNavController,
-                    scrollState = rememberScrollState()
+                    scrollState = searchScreenScrollState
                 )
             }
             composable(Routes.Main.Settings) {
