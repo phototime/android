@@ -1,6 +1,5 @@
 package dev.zotov.phototime.shared.components
 
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -12,16 +11,16 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zotov.phototime.shared.theme.PhototimeTheme
-import dev.zotov.phototime.shared.theme.subtitle
+import dev.zotov.phototime.shared.theme.headline
 
 @Composable
-fun Subtitle(modifier: Modifier = Modifier, text: String) {
+fun Headline(modifier: Modifier = Modifier, text: String) {
     Text(
         text = text,
         modifier = Modifier
-            .padding(top = 10.dp)
+            .padding(top = 55.dp)
             .composed { modifier },
-        style = MaterialTheme.typography.subtitle
+        style = MaterialTheme.typography.headline
     )
 }
 
@@ -31,7 +30,7 @@ private fun Preview() {
     PhototimeTheme {
         Box(modifier = Modifier.width(390.dp)) {
             Headline(
-                text = "September 26, 2021",
+                text = "San Fransisco",
             )
         }
     }

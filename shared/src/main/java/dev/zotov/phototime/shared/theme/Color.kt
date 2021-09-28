@@ -1,7 +1,9 @@
 package dev.zotov.phototime.shared.theme
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 
 val Purple200 = Color(0xFFBB86FC)
 val Purple500 = Color(0xFF6200EE)
@@ -15,6 +17,20 @@ var backgroundGradient = Brush.verticalGradient(
     ),
 )
 
+var PrimaryGradient = Brush.linearGradient(
+    start = Offset(Float.POSITIVE_INFINITY, 0F),
+    end = Offset(0F, Float.POSITIVE_INFINITY),
+    tileMode = TileMode.Clamp,
+    colors = listOf(
+        Color(0xFF248AE8),
+        Color(0xFF1C6DD9),
+    ),
+)
+
 val White = Color(0xFFFEFDFF)
+val LightGrey = Color(0xFFF8F8FF)
 val Grey = Color(0xFFB2B3D4)
+val TileColor = Color(0x08FFFFFF)
+val Primary = Color(0xFF248AE8)
+val ProgressBarColor = Color(0x40A0C5F3)
 const val BackgroundPreviewColor = 0xFF0B0A29

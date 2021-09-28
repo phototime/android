@@ -22,7 +22,7 @@ val Typography = Typography(
 )
 
 @get:Composable
-val Typography.title: TextStyle
+val Typography.headline: TextStyle
     get() = TextStyle(
         fontSize = 18.sp,
         fontWeight = FontWeight.SemiBold,
@@ -59,4 +59,64 @@ val Typography.propertyValue: TextStyle
         fontFamily = fontFamily,
         color = White,
         textAlign = TextAlign.Center,
+    )
+
+@get:Composable
+val Typography.tileHeader: TextStyle
+    get() = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.SemiBold,
+        fontFamily = fontFamily,
+        color = White,
+        textAlign = TextAlign.Left,
+    )
+
+@get:Composable
+val Typography.primaryCaption: TextStyle
+    get() = TextStyle(
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        color = Primary,
+        textAlign = TextAlign.Right,
+    )
+
+@get:Composable
+val Typography.timer: TextStyle
+    get() = TextStyle(
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = fontFamily,
+        color = Color(0xFFFFFFFF),
+        textAlign = TextAlign.Left,
+    )
+
+@get:Composable
+val Typography.timeDuration: TextStyle
+    get() = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        color = Grey,
+        textAlign = TextAlign.Right,
+    )
+
+@get:Composable
+val Typography.timeDurationAbbreviation: TextStyle
+    get() = TextStyle(
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        color = Grey,
+        textAlign = TextAlign.Right,
+    )
+
+@get:Composable
+val Typography.title: TextStyle
+    get() = TextStyle(
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        color = LightGrey,
+        textAlign = TextAlign.Left,
     )
