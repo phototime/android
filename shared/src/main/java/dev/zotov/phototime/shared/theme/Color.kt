@@ -14,3 +14,6 @@ var backgroundGradient = Brush.verticalGradient(
         Color(0xFF090620),
     ),
 )
+
+val White = Color(0xFFFEFDFF)
+val Grey = Color(0xFFB2B3D4)

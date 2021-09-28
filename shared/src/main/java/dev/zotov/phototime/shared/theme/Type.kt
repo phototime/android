@@ -27,6 +27,16 @@ val Typography.title: TextStyle
         fontSize = 18.sp,
         fontWeight = FontWeight.SemiBold,
         fontFamily = fontFamily,
-        color = Color(0xFFFEFDFF),
+        color = White,
+        textAlign = TextAlign.Center,
+    )
+
+@get:Composable
+val Typography.subtitle: TextStyle
+    get() = TextStyle(
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        color = Grey,
         textAlign = TextAlign.Center,
     )

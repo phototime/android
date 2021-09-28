@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dev.zotov.phototime.shared.components.Frame
+import dev.zotov.phototime.shared.components.Subtitle
 import dev.zotov.phototime.shared.components.Title
 import dev.zotov.phototime.shared.theme.PhototimeTheme
 
@@ -22,6 +23,7 @@ import dev.zotov.phototime.shared.theme.PhototimeTheme
 fun HomeScreen(navController: NavHostController) {
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Title(text = "San Fransisco")
+        Subtitle(text = "September 26, 2021")
     }
 }
 
