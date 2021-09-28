@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun WeatherCardCarousel() {
-    val scrollState = rememberScrollState()
     val amountOfCards = 10
+    val selected = 5
+    val offset = with(LocalDensity.current) { (selected * 162).dp.toPx() }.toInt()
+    val scrollState = rememberScrollState(initial = offset)
 
     Row(modifier = Modifier.horizontalScroll(scrollState)) {
         for (page in 0 until amountOfCards) {
@@ -21,7 +24,7 @@ fun WeatherCardCarousel() {
             }
 
             WeatherCard(
-                selected = page == 5,
+                selected = page == selected,
                 modifier = Modifier.padding(start = 25.dp, end = endPadding, top = 10.dp)
             )
         }
