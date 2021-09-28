@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.zotov.phototime.shared.components.ActionTime
 import dev.zotov.phototime.shared.theme.*
 import dev.zotov.phototime.shared.utils.coloredShadow
 import dev.zotov.phototime.shared.utils.glassLight
@@ -76,29 +77,7 @@ private fun ProgressBarPart(
 private fun Footer(timer: String, time: String) {
     RowContainer {
         Text(text = timer, style = MaterialTheme.typography.timer)
-        Text(text = buildAnnotatedString {
-            append(time)
-            addStyle(
-                style = MaterialTheme.typography.timeDuration.toSpanStyle(),
-                start = 0,
-                end = 4
-            )
-            addStyle(
-                style = MaterialTheme.typography.timeDurationAbbreviation.toSpanStyle(),
-                start = 4,
-                end = 7
-            )
-            addStyle(
-                style = MaterialTheme.typography.timeDuration.toSpanStyle(),
-                start = 7,
-                end = 14
-            )
-            addStyle(
-                style = MaterialTheme.typography.timeDurationAbbreviation.toSpanStyle(),
-                start = 14,
-                end = 17
-            )
-        })
+        ActionTime(text = time)
     }
 }
 
