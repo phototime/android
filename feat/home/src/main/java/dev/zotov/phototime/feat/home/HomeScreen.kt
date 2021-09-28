@@ -1,6 +1,9 @@
 package dev.zotov.phototime.feat.home
 
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -9,15 +12,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import dev.zotov.phototime.feat.home.components.BigWeatherIcon
-import dev.zotov.phototime.feat.home.components.CurrentPhotoTime
-import dev.zotov.phototime.feat.home.components.WeatherProperty
+import dev.zotov.phototime.feat.home.components.*
 import dev.zotov.phototime.shared.components.*
 import dev.zotov.phototime.shared.theme.PhototimeTheme
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Headline(text = "San Fransisco")
         Subtitle(text = "September 26, 2021")
         BigWeatherIcon(icon = WeatherIcons.SunWithCloud)
@@ -33,6 +41,7 @@ fun HomeScreen(navController: NavHostController) {
         }
         CurrentPhotoTime(modifier = Modifier.padding(end = 25.dp, start = 25.dp, top = 50.dp))
         Title(text = "Photo Time")
+        PhotoTimeList()
     }
 }
 

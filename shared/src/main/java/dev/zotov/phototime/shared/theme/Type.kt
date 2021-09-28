@@ -72,6 +72,16 @@ val Typography.tileHeader: TextStyle
     )
 
 @get:Composable
+val Typography.tileH2: TextStyle
+    get() = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        color = White,
+        textAlign = TextAlign.Left,
+    )
+
+@get:Composable
 val Typography.primaryCaption: TextStyle
     get() = TextStyle(
         fontSize = 14.sp,

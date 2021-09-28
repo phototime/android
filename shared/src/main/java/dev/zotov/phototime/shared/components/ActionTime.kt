@@ -28,16 +28,18 @@ fun ActionTime(text: String) {
             start = 4,
             end = 7
         )
-        addStyle(
-            style = MaterialTheme.typography.timeDuration.toSpanStyle(),
-            start = 7,
-            end = 14
-        )
-        addStyle(
-            style = MaterialTheme.typography.timeDurationAbbreviation.toSpanStyle(),
-            start = 14,
-            end = 17
-        )
+        if (text.length > 7) {
+            addStyle(
+                style = MaterialTheme.typography.timeDuration.toSpanStyle(),
+                start = 7,
+                end = 14
+            )
+            addStyle(
+                style = MaterialTheme.typography.timeDurationAbbreviation.toSpanStyle(),
+                start = 14,
+                end = 17
+            )
+        }
     })
 }
 
