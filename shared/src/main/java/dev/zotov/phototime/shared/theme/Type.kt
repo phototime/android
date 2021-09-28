@@ -141,3 +141,34 @@ val Typography.titleCompanion: TextStyle
         textAlign = TextAlign.Right,
     )
 
+@get:Composable
+val Typography.White24spSemiBold: TextStyle
+    get() = TextStyle(
+        fontSize = 24.sp,
+        fontWeight = FontWeight.SemiBold,
+        fontFamily = fontFamily,
+        color = White,
+        textAlign = TextAlign.Left,
+    )
+
+@get:Composable
+val Typography.White13spNormal: TextStyle
+    get() = TextStyle(
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        color = White,
+        textAlign = TextAlign.Left,
+    )
+
+
+@get:Composable
+val Typography.White14SpNormal: TextStyle
+    get() = TextStyle(
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        color = White,
+        textAlign = TextAlign.Left,
+    )
+

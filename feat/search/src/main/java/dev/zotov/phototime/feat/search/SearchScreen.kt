@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import dev.zotov.phototime.feat.search.components.SearchTextField
+import dev.zotov.phototime.feat.search.components.WeatherCityCard
 import dev.zotov.phototime.shared.components.Headline
 import dev.zotov.phototime.shared.components.Subtitle
 
@@ -27,5 +28,26 @@ fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
         )
         Spacer(modifier = Modifier.height(40.dp))
         SearchTextField()
+
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 25.dp, end = 25.dp, top = 20.dp)
+        ) {
+            val columnModifier = Modifier.weight(1f)
+            Column(modifier = columnModifier) {
+                WeatherCityCard(active = true)
+                WeatherCityCard(active = false, modifier = Modifier.padding(top = 25.dp))
+                WeatherCityCard(active = false, modifier = Modifier.padding(top = 25.dp))
+            }
+            Spacer(modifier = Modifier.width(30.dp))
+            Column(modifier = columnModifier.padding(top = 30.dp)) {
+                WeatherCityCard(active = false)
+                WeatherCityCard(active = false, modifier = Modifier.padding(top = 25.dp))
+                WeatherCityCard(active = false, modifier = Modifier.padding(top = 25.dp))
+            }
+        }
+
+//        WeatherCityCard(active = true)
     }
 }
