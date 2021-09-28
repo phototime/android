@@ -4,4 +4,4 @@ Android app built with jetpack compose to help photographers choose the best tim
 
 More about [Golden hour](https://en.wikipedia.org/wiki/Golden_hour_(photography))
 
-![Phototime][git/preview.png]
+![Phototime](git/preview.png)
