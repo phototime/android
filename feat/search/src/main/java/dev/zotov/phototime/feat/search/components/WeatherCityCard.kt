@@ -9,11 +9,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +23,7 @@ import dev.zotov.phototime.shared.theme.*
 
 @Composable
 fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean) {
-    Container(modifier = modifier, active = active) {
+    WeatherCityCardContainer(modifier = modifier, active = active) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -66,7 +64,7 @@ private fun City(text: String) {
 }
 
 @Composable
-private fun Container(
+fun WeatherCityCardContainer(
     modifier: Modifier = Modifier,
     active: Boolean,
     content: @Composable ColumnScope.() -> Unit

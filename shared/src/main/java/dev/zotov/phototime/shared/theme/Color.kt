@@ -33,4 +33,5 @@ val Grey = Color(0xFFB2B3D4)
 val TileColor = Color(0x08FFFFFF)
 val Primary = Color(0xFF248AE8)
 val ProgressBarColor = Color(0x40A0C5F3)
+val LoadingElementColor = Color(0xFFFFFFFF).copy(alpha = 0.1f)
 const val BackgroundPreviewColor = 0xFF0B0A29
