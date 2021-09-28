@@ -1,5 +1,6 @@
 package dev.zotov.phototime.feat.home
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,8 +18,7 @@ import dev.zotov.phototime.shared.components.*
 import dev.zotov.phototime.shared.theme.PhototimeTheme
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
-    val scrollState = rememberScrollState()
+fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
 
     Column(
         modifier = Modifier
@@ -44,7 +44,6 @@ fun HomeScreen(navController: NavHostController) {
         PhotoTimeList()
         TitleWithMoreButton()
         WeatherCardCarousel()
-
     }
 }
 
@@ -52,9 +51,11 @@ fun HomeScreen(navController: NavHostController) {
 @Preview(device = Devices.PIXEL_3A)
 private fun Preview() {
     val navController = rememberNavController()
+    val scrollState = rememberScrollState()
+
     PhototimeTheme {
         Frame(navController = navController) {
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, scrollState = scrollState)
         }
     }
 }
