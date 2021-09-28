@@ -42,6 +42,7 @@ fun HomeScreen(navController: NavHostController) {
         CurrentPhotoTime(modifier = Modifier.padding(end = 25.dp, start = 25.dp, top = 50.dp))
         Title(text = "Photo Time")
         PhotoTimeList()
+        WeatherCardCarousel()
     }
 }
 
