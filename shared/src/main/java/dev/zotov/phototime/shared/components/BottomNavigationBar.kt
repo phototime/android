@@ -53,19 +53,19 @@ fun BottomNavigationBarPreview() {
 @Composable
 private fun HomeIcon(active: Boolean, navController: NavHostController) {
     val iconId = if (active) R.drawable.home_active else R.drawable.home
-    Icon(iconId) { navController.navigate(Routes.Main.Home) }
+    Icon(iconId) { navController.navigate(Routes.Main.Home) { popUpTo(0) } }
 }
 
 @Composable
 private fun SearchIcon(active: Boolean, navController: NavHostController) {
     val iconId = if (active) R.drawable.search_active else R.drawable.search
-    Icon(iconId) { navController.navigate(Routes.Main.Search) }
+    Icon(iconId) { navController.navigate(Routes.Main.Search) { popUpTo(0) } }
 }
 
 @Composable
 private fun SettingsIcon(active: Boolean, navController: NavHostController) {
     val iconId = if (active) R.drawable.settings_active else R.drawable.settings
-    Icon(iconId) { navController.navigate(Routes.Main.Settings) }
+    Icon(iconId) { navController.navigate(Routes.Main.Settings) { popUpTo(0) } }
 }
 
 @Composable
