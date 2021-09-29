@@ -2,9 +2,13 @@ package dev.zotov.phototime.shared.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.res.painterResource
@@ -28,15 +32,13 @@ fun BottomNavigationBar(modifier: Modifier = Modifier, navController: NavHostCon
             .height(64.dp)
             .composed { modifier }
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 48.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
             HomeIcon(active = currentRoute == Routes.Main.Home, navController = navController)
             SearchIcon(active = currentRoute == Routes.Main.Search, navController = navController)
-            SettingsIcon(active = currentRoute == Routes.Main.Settings, navController = navController)
+            SettingsIcon(
+                active = currentRoute == Routes.Main.Settings,
+                navController = navController
+            )
         }
     }
 }
@@ -51,31 +53,41 @@ fun BottomNavigationBarPreview() {
 }
 
 @Composable
-private fun HomeIcon(active: Boolean, navController: NavHostController) {
+private fun RowScope.HomeIcon(active: Boolean, navController: NavHostController) {
     val iconId = if (active) R.drawable.home_active else R.drawable.home
     Icon(iconId) { navController.navigate(Routes.Main.Home) { popUpTo(0) } }
 }
 
 @Composable
-private fun SearchIcon(active: Boolean, navController: NavHostController) {
+private fun RowScope.SearchIcon(active: Boolean, navController: NavHostController) {
     val iconId = if (active) R.drawable.search_active else R.drawable.search
     Icon(iconId) { navController.navigate(Routes.Main.Search) { popUpTo(0) } }
 }
 
 @Composable
-private fun SettingsIcon(active: Boolean, navController: NavHostController) {
+private fun RowScope.SettingsIcon(active: Boolean, navController: NavHostController) {
     val iconId = if (active) R.drawable.settings_active else R.drawable.settings
     Icon(iconId) { navController.navigate(Routes.Main.Settings) { popUpTo(0) } }
 }
 
 @Composable
-private fun Icon(iconId: Int, onTap: () -> Unit) {
-    Image(
-        painter = painterResource(id = iconId),
-        contentDescription = null,
+private fun RowScope.Icon(iconId: Int, onTap: () -> Unit) {
+    Box(
         modifier = Modifier
-            .size(32.dp)
-            .clickable { onTap() }
-    )
+            .height(65.dp)
+            .weight(1f)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) { onTap() }
+    ) {
+        Image(
+            painter = painterResource(id = iconId),
+            contentDescription = null,
+            modifier = Modifier
+                .size(32.dp)
+                .align(Alignment.Center)
+        )
+    }
 }
 
