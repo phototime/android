@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -15,6 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zotov.phototime.shared.R
@@ -34,6 +38,8 @@ fun SearchTextField() {
             .padding(horizontal = 25.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(13.dp),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        singleLine = true,
         leadingIcon = { SearchIcon() },
         placeholder = { Text(text = "Search", style = MaterialTheme.typography.Grey16spNormal) },
         textStyle = MaterialTheme.typography.White16spNormal,
