@@ -29,7 +29,7 @@ fun ColumnScope.FullScreenMessage(
 ) {
     Spacer(modifier = Modifier.weight(startWeight))
     Icon(iconId = iconId, contentDescription = contentDescription)
-    Spacer(modifier = Modifier.height(25.dp))
+    Spacer(modifier = Modifier.height(15.dp))
     Message(text = text, textSize = textSize)
     Spacer(modifier = Modifier.weight(endWeight))
 }
@@ -40,7 +40,7 @@ private fun Icon(@DrawableRes iconId: Int, contentDescription: String?) {
     Image(
         painter = painter,
         contentDescription = contentDescription,
-        modifier = Modifier.width(56.dp),
+        modifier = Modifier.width(64.dp),
         contentScale = ContentScale.Fit,
     )
 }
