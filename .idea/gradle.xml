@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/feat" />
             <option value="$PROJECT_DIR$/feat/home" />
             <option value="$PROJECT_DIR$/feat/search" />
+            <option value="$PROJECT_DIR$/feat/settings" />
             <option value="$PROJECT_DIR$/shared" />
           </set>
         </option>
