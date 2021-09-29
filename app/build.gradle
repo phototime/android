@@ -69,5 +69,6 @@ dependencies {
     // modules
     implementation project(":feat:home")
     implementation project(":feat:search")
+    implementation project(":feat:settings")
     implementation project(":shared")
 }
