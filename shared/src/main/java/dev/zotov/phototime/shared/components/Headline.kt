@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.zotov.phototime.shared.theme.BackgroundPreviewColor
 import dev.zotov.phototime.shared.theme.PhototimeTheme
 import dev.zotov.phototime.shared.theme.headline
 
@@ -33,5 +34,18 @@ private fun Preview() {
                 text = "San Fransisco",
             )
         }
+    }
+}
+
+@Composable
+fun HeadlineLoading() {
+    LoadingShape(width = 120.dp, height = 20.dp)
+}
+
+@Composable
+@Preview(showBackground = true, backgroundColor = BackgroundPreviewColor)
+private fun PreviewLoading() {
+    PhototimeTheme {
+        HeadlineLoading()
     }
 }

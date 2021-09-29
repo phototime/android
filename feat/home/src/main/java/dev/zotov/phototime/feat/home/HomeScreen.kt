@@ -20,12 +20,27 @@ import dev.zotov.phototime.shared.theme.PhototimeTheme
 @Composable
 fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
 
+    if (true) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 25.dp)
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HomeLoadingScreen()
+        }
+        return
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+
         Headline(text = "San Fransisco")
         Subtitle(text = "September 26, 2021")
         BigWeatherIcon(icon = WeatherIcons.SunWithCloud)

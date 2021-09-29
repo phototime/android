@@ -15,7 +15,9 @@ import dev.zotov.phototime.shared.theme.title
 @Composable
 fun Title(text: String, companion: @Composable RowScope.() -> Unit = {}) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 30.dp, start = 25.dp, end = 25.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 30.dp, start = 25.dp, end = 25.dp),
     ) {
         Text(
             text = text,
@@ -32,5 +34,20 @@ fun Title(text: String, companion: @Composable RowScope.() -> Unit = {}) {
 private fun Preview() {
     PhototimeTheme {
         Title(text = "Photo Time")
+    }
+}
+
+@Composable
+fun TitleLoading() {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        LoadingShape(width = 100.dp, height = 20.dp)
+    }
+}
+
+@Composable
+@Preview(showBackground = true, backgroundColor = BackgroundPreviewColor)
+private fun LoadingPreview() {
+    PhototimeTheme {
+        TitleLoading()
     }
 }
