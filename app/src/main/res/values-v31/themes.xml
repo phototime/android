@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Phototime.SplashScreenTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_splash</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@drawable/splash_light</item>
+        <item name="postSplashScreenTheme">@style/Theme.Phototime</item>
+    </style>
+</resources>

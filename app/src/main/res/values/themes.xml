@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Base application theme. -->
     <style name="Theme.Phototime" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
@@ -14,6 +15,13 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <!-- Customize your theme here. -->
+<!--        <item name="android:windowSplashScreenBrandingImage">@drawable/splash_gradient</item>-->
+    </style>
+
+    <style name="Theme.Phototime.SplashScreenTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.Phototime</item>
     </style>
 
     <style name="Theme.Phototime.NoActionBar">
@@ -21,7 +29,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+<!--    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">-->
+<!--        <item name="android:windowBackground">@drawable/splash_background</item>-->
+<!--    </style>-->
+
+
     <style name="Theme.Phototime.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Phototime.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

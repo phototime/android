@@ -49,8 +49,12 @@
         <entry key="../../../../layout/compose-model-1632856063694.xml" value="1.4744897959183674" />
         <entry key="../../../../layout/compose-model-1632902679137.xml" value="0.48942470389170895" />
         <entry key="../../../../layout/compose-model-1632903602146.xml" value="0.8083333333333333" />
+        <entry key="app/src/main/res/drawable/splash_background.xml" value="0.6036458333333333" />
+        <entry key="app/src/main/res/drawable/splash_gradient.xml" value="0.6036458333333333" />
         <entry key="shared/src/main/res/drawable/first_light_ball.xml" value="0.22" />
+        <entry key="shared/src/main/res/drawable/home.xml" value="0.6036458333333333" />
         <entry key="shared/src/main/res/drawable/home_active.xml" value="0.6036458333333333" />
+        <entry key="shared/src/main/res/drawable/logo.xml" value="0.6036458333333333" />
       </map>
     </option>
   </component>
