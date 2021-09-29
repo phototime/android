@@ -11,36 +11,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zotov.phototime.feat.search.R
+import dev.zotov.phototime.shared.components.FullScreenMessage
 import dev.zotov.phototime.shared.theme.BackgroundPreviewColor
 import dev.zotov.phototime.shared.theme.PhototimeTheme
 import dev.zotov.phototime.shared.theme.subtitle
 
 @Composable
 fun ColumnScope.NotFoundMessage() {
-    Spacer(modifier = Modifier.weight(2f))
-    SadIcon()
-    Spacer(modifier = Modifier.height(25.dp))
-    Message()
-    Spacer(modifier = Modifier.weight(5f))
-}
-
-@Composable
-private fun SadIcon() {
-    val painter = painterResource(id = R.drawable.sad)
-    Image(
-        painter = painter,
+    FullScreenMessage(
+        textSize = 168.dp,
+        iconId = R.drawable.sad,
         contentDescription = "sad icon",
-        modifier = Modifier.width(56.dp),
-        contentScale = ContentScale.Fit,
-    )
-}
-
-@Composable
-private fun Message() {
-    Text(
         text = "We searched everywhere but couldn't find this location",
-        modifier = Modifier.width(168.dp),
-        style = MaterialTheme.typography.subtitle,
     )
 }
 
