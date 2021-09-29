@@ -7,6 +7,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -29,7 +30,7 @@ fun Frame(navController: NavHostController, content: @Composable BoxScope.() -> 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(brush = backgroundGradient)
+                .background(Color(0xFF090620))
         ) {
             Image(
                 painter = painterResource(id = R.drawable.blur),
