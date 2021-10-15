@@ -4,6 +4,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "Phototime"
@@ -13,3 +14,4 @@ include ':feat:home'
 include ':shared'
 include ':feat:search'
 include ':feat:settings'
+include ':core'
