@@ -1,6 +1,8 @@
 package dev.zotov.phototime.core
 
 import android.annotation.SuppressLint
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,9 +13,9 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-internal fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+internal fun provideRetrofit(okHttpClient: OkHttpClient, url: HttpUrl = BuildConfig.WEATHER_API_URL.toHttpUrl()): Retrofit {
     return Retrofit.Builder()
-        .baseUrl(BuildConfig.WEATHER_API_URL)
+        .baseUrl(url)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
