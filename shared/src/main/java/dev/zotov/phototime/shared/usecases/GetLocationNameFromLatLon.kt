@@ -4,5 +4,5 @@ import dev.zotov.phototime.shared.models.LatLong
 
 interface GetLocationNameFromLatLon {
 
-    fun getLocationNameFromLatLong(latLon: LatLong): String
+    fun execute(latLon: LatLong): String
 }

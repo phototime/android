@@ -21,6 +21,15 @@ import android.os.Looper
 
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import dev.zotov.phototime.shared.models.LatLong
+import dev.zotov.phototime.shared.usecases.UseLastKnownLocationUseCase
+import dev.zotov.phototime.shared.usecases.GetLocationNameFromLatLon
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
@@ -29,6 +38,9 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
         const val PERMISSION_LOCATION_REQUEST_CODE = 10002
         const val REQUEST_CHECK_SETTINGS = 10001
     }
+
+    private val getLocationNameFromLatLong: GetLocationNameFromLatLon by inject()
+    private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +51,15 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val location = useLastKnownLocationUseCase.getLocationName().first()
+            val latLong = useLastKnownLocationUseCase.getLatLon().first()
+
+            Log.d("location.name", location.toString())
+            Log.d("location.latLon", latLong.toString())
+        }
+
 
         if (hasLocationPermission()) getAllPermissions()
         else requestLocationPermission()
@@ -138,7 +159,17 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             object : LocationCallback() {
                 override fun onLocationResult(p0: LocationResult) {
                     super.onLocationResult(p0)
-                    Log.d("location2", p0.toString())
+
+                    if (p0.locations.size > 0) {
+                        val location = p0.locations[0]
+                        val latLong = LatLong(location.latitude, location.longitude)
+                        val name = getLocationNameFromLatLong.execute(latLong)
+
+                        CoroutineScope(Dispatchers.IO).launch {
+                            useLastKnownLocationUseCase.save(name, latLong)
+                        }
+                    }
+
                     fusedLocationProviderClient.removeLocationUpdates(this)
                 }
             },

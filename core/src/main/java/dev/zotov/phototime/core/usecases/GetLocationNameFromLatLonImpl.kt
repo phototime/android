@@ -9,13 +9,13 @@ import java.util.*
 
 class GetLocationNameFromLatLonImpl(private val context: Context): GetLocationNameFromLatLon {
 
-    override fun getLocationNameFromLatLong(latLon: LatLong): String {
+    override fun execute(latLon: LatLong): String {
         val geocoder = Geocoder(context, Locale.getDefault())
 
         return try {
             val addresses = geocoder.getFromLocation(latLon.latitude, latLon.longitude, 1)
             if (addresses.size == 0) "Nowhere"
-            else addresses[0].subAdminArea
+            else addresses[0].locality
         } catch (e: IOException) {
             "Nowhere"
         }

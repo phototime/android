@@ -1,19 +1,22 @@
 package dev.zotov.phototime.core.usecases
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.doublePreferencesKey
+import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dev.zotov.phototime.shared.models.LatLong
-import dev.zotov.phototime.shared.usecases.GetLastKnownLocationUseCase
+import dev.zotov.phototime.shared.usecases.UseLastKnownLocationUseCase
 import dev.zotov.phototime.shared.utils.DataStores
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetLastKnownLocationUseCaseImpl(private val context: Context) : GetLastKnownLocationUseCase {
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DataStores.location)
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DataStores.location)
+
+class UseLastKnownLocationUseCaseImpl(private val context: Context) : UseLastKnownLocationUseCase {
 
     companion object {
         private val latKey = doublePreferencesKey("lastKnownLocation_lat")
@@ -36,5 +39,21 @@ class GetLastKnownLocationUseCaseImpl(private val context: Context) : GetLastKno
 
     override suspend fun getLocationName(): Flow<String?> = context.dataStore.data.map {
         it[locationKey]
+    }
+
+    override suspend fun save(location: String, latLong: LatLong) {
+        val latKey = doublePreferencesKey("lastKnownLocation_lat")
+        val lonKey = doublePreferencesKey("lastKnownLocation_lon")
+        val locationKey = stringPreferencesKey("lastKnownLocation_location")
+
+        try {
+            context.dataStore.edit {
+                it[latKey] = latLong.latitude
+                it[lonKey] = latLong.longitude
+                it[locationKey] = location
+            }
+        } catch (e: Throwable) {
+            Log.e("SaveLastKnownLocationUseCaseImpl", e.toString())
+        }
     }
 }
