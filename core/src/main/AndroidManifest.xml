@@ -2,4 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dev.zotov.phototime.core">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 </manifest>

@@ -64,4 +64,10 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttp_version"
     testImplementation "com.squareup.okhttp3:mockwebserver:$okHttp_version"
 
+    // Arrow
+    def arrow_version = "1.0.0"
+    implementation "io.arrow-kt:arrow-core:$arrow_version"
+
+    // Google play services
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 }
