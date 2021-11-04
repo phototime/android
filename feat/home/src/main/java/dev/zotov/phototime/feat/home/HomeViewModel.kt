@@ -14,7 +14,7 @@ class HomeViewModel(private val fetchForecastUseCase: FetchForecastUseCase): Vie
     val state: StateFlow<HomeState> get() = _state.asStateFlow()
 
 
-    init {
+    fun applyForecast() {
 
     }
 }

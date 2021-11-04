@@ -22,13 +22,12 @@ import android.os.Looper
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import dev.zotov.phototime.shared.models.LatLong
+import dev.zotov.phototime.shared.usecases.FetchForecastUseCase
 import dev.zotov.phototime.shared.usecases.UseLastKnownLocationUseCase
 import dev.zotov.phototime.shared.usecases.GetLocationNameFromLatLon
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 
@@ -41,6 +40,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
 
     private val getLocationNameFromLatLong: GetLocationNameFromLatLon by inject()
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
+    private val fetchForecastUseCase: FetchForecastUseCase by inject()
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,6 +148,17 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
         }
     }
 
+    private fun handleLocation(name: String, latLong: LatLong) = CoroutineScope(Dispatchers.IO).launch {
+        awaitAll(
+//            async {
+//                var forecast = fetchForecastUseCase.execute(name)
+//            },
+            async {
+                useLastKnownLocationUseCase.save(name, latLong)
+            }
+        )
+    }
+
 
     @SuppressLint("MissingPermission")
     private fun getAndSaveLocation(locationRequest: LocationRequest) {
@@ -165,9 +176,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
                         val latLong = LatLong(location.latitude, location.longitude)
                         val name = getLocationNameFromLatLong.execute(latLong)
 
-                        CoroutineScope(Dispatchers.IO).launch {
-                            useLastKnownLocationUseCase.save(name, latLong)
-                        }
+                        handleLocation(name, latLong)
                     }
 
                     fusedLocationProviderClient.removeLocationUpdates(this)

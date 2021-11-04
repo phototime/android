@@ -46,12 +46,14 @@ class UseLastKnownLocationUseCaseImpl(private val context: Context) : UseLastKno
         val lonKey = doublePreferencesKey("lastKnownLocation_lon")
         val locationKey = stringPreferencesKey("lastKnownLocation_location")
 
+
         try {
             context.dataStore.edit {
                 it[latKey] = latLong.latitude
                 it[lonKey] = latLong.longitude
                 it[locationKey] = location
             }
+            println("save () finished")
         } catch (e: Throwable) {
             Log.e("SaveLastKnownLocationUseCaseImpl", e.toString())
         }

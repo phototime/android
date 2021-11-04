@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/feat/search" />
             <option value="$PROJECT_DIR$/feat/settings" />
             <option value="$PROJECT_DIR$/shared" />
+            <option value="$PROJECT_DIR$/state" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
