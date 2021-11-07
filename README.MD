@@ -1,4 +1,4 @@
-# App closed because the author was disappointed in android
+# Currently in development
 
 Android app built with jetpack compose to help photographers choose the best time to shoot
 
