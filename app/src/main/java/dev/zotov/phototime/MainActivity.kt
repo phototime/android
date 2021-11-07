@@ -25,10 +25,12 @@ import dev.zotov.phototime.shared.models.LatLong
 import dev.zotov.phototime.shared.usecases.FetchForecastUseCase
 import dev.zotov.phototime.shared.usecases.UseLastKnownLocationUseCase
 import dev.zotov.phototime.shared.usecases.GetLocationNameFromLatLon
+import dev.zotov.phototime.shared.usecases.UseCachedForecastUseCase
 import dev.zotov.phototime.state.actions.ForecastActions
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import org.koin.android.ext.android.inject
 
 
@@ -40,6 +42,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     private val getLocationNameFromLatLong: GetLocationNameFromLatLon by inject()
+    private val useCachedForecastUseCase: UseCachedForecastUseCase by inject()
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
     private val fetchForecastUseCase: FetchForecastUseCase by inject()
     private val forecastActions: ForecastActions by inject()
@@ -55,11 +58,16 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
         )
 
         CoroutineScope(Dispatchers.IO).launch {
-            val location = useLastKnownLocationUseCase.getLocationName().first()
-            val latLong = useLastKnownLocationUseCase.getLatLon().first()
+            val forecastCoroutine = async { useCachedForecastUseCase.get().firstOrNull() }
+            val locationCoroutine = async { useLastKnownLocationUseCase.getLocationName().first() }
 
-            Log.d("location.name", location.toString())
-            Log.d("location.latLon", latLong.toString())
+            val forecast = forecastCoroutine.await()
+            val location = locationCoroutine.await()
+
+            if (forecast != null && location != null) forecastActions.handleCached(
+                forecast = forecast,
+                location = location,
+            )
         }
 
 
@@ -151,14 +159,22 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     private fun handleLocation(name: String, latLong: LatLong) = CoroutineScope(Dispatchers.IO).launch {
-        awaitAll(
-            async {
-                val forecast = fetchForecastUseCase.execute(name)
-                forecastActions.handleFetchResult(forecast = forecast, location = name)
-            },
-            async {
-                useLastKnownLocationUseCase.save(name, latLong)
+        val fetchForecastCoroutine = async {
+            val forecast = fetchForecastUseCase.execute(name)
+            forecastActions.handleFetchResult(forecast = forecast, location = name)
+
+            if (forecast.isSuccess) {
+                useCachedForecastUseCase.save(forecast = forecast.getOrThrow())
             }
+        }
+
+        val saveLocationCoroutine = async {
+            useLastKnownLocationUseCase.save(name, latLong)
+        }
+
+        awaitAll(
+            fetchForecastCoroutine,
+            saveLocationCoroutine,
         )
     }
 

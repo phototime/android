@@ -9,6 +9,21 @@ import java.time.LocalDateTime
 
 class ForecastActions(private val store: Store) {
 
+    fun handleCached(forecast: Forecast, location: String) {
+        if (store.forecastState.value is ForecastState.Loading) {
+            store.emitForecast(ForecastState.Idle(
+                location = location,
+                date = formatDateToUserFriendlyString(LocalDateTime.now()),
+                type = ForecastType.SunWithCloud,
+                temp = forecast.temp,
+                wind = forecast.wind.toInt(),
+                humidity = forecast.humidity,
+                hourly = forecast.hourly,
+                initialSelectedHourlyCard = LocalDateTime.now().hour
+            ))
+        }
+    }
+
     fun handleFetchResult(forecast: Result<Forecast>, location: String) {
         if (forecast.isFailure) {
             val message = "Failed to fetch forecast" // todo: check network access
