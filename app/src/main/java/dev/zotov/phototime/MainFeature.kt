@@ -20,7 +20,7 @@ fun MainFeature(mainNavController: NavHostController) {
         val searchScreenScrollState = rememberScrollState()
         val settingsScrollState = rememberScrollState()
 
-        NavHost(navController = nestedNavController, startDestination = Routes.Main.Settings) {
+        NavHost(navController = nestedNavController, startDestination = Routes.Main.Home) {
             composable(Routes.Main.Home) {
                 HomeScreen(
                     navController = nestedNavController,
