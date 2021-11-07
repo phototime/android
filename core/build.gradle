@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'com.google.protobuf'
 }
 
 android {
@@ -34,6 +35,32 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+}
+
+sourceSets {
+    main.java.srcDirs += "${protobuf.generatedFilesBaseDir}/main/javalite"
+}
+
+protobuf {
+    protoc { artifact = 'com.google.protobuf:protoc:3.10.0' }
+
+    plugins {
+        javalite { artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0" }
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
+        }
+    }
+
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                javalite {}
+                grpc { // Options added to --grpc_out
+                    option 'lite'
+                }
+            }
+        }
     }
 }
 
@@ -73,4 +100,7 @@ dependencies {
 
     // Google play services
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+    // Protobuf
+    implementation 'com.google.protobuf:protobuf-lite:3.0.0'
 }

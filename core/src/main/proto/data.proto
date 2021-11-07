@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_package = "dev.zotov.phototime.core.proto";
+option java_multiple_files = true;
+
+message ForecastProto {
+  string icon = 1; // todo: change to enum
+  int32 temp = 2;
+  float  wind = 3;
+  repeated HourlyForecastProto hourly = 4;
+  int32 humidity = 5;
+
+  message HourlyForecastProto {
+    string icon = 1; // todo: change to enum
+    string time = 2;
+    int32 temp = 3;
+  }
+}
+
