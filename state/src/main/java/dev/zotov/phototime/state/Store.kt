@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class Store {
-    private val _forecastState = MutableStateFlow(ForecastState(32))
+    private val _forecastState = MutableStateFlow<ForecastState>(ForecastState.Loading)
     val forecastState get() = _forecastState.asStateFlow()
 
     fun emitForecast(state: ForecastState) {

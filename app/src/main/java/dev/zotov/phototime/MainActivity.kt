@@ -25,6 +25,7 @@ import dev.zotov.phototime.shared.models.LatLong
 import dev.zotov.phototime.shared.usecases.FetchForecastUseCase
 import dev.zotov.phototime.shared.usecases.UseLastKnownLocationUseCase
 import dev.zotov.phototime.shared.usecases.GetLocationNameFromLatLon
+import dev.zotov.phototime.state.actions.ForecastActions
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
     private val getLocationNameFromLatLong: GetLocationNameFromLatLon by inject()
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
     private val fetchForecastUseCase: FetchForecastUseCase by inject()
+    private val forecastActions: ForecastActions by inject()
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,9 +152,10 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
 
     private fun handleLocation(name: String, latLong: LatLong) = CoroutineScope(Dispatchers.IO).launch {
         awaitAll(
-//            async {
-//                var forecast = fetchForecastUseCase.execute(name)
-//            },
+            async {
+                val forecast = fetchForecastUseCase.execute(name)
+                forecastActions.handleFetchResult(forecast = forecast, location = name)
+            },
             async {
                 useLastKnownLocationUseCase.save(name, latLong)
             }

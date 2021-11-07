@@ -22,16 +22,21 @@ import dev.zotov.phototime.shared.components.WeatherIcon
 import dev.zotov.phototime.shared.components.WeatherIcons
 import dev.zotov.phototime.shared.theme.*
 import dev.zotov.phototime.feat.home.R
+import dev.zotov.phototime.shared.models.Forecast
+import dev.zotov.phototime.shared.models.HourlyForecast
+import dev.zotov.phototime.shared.utils.formatTimeToUserFriendlyString
+import java.time.LocalDateTime
 
 @Composable
-fun WeatherCard(modifier: Modifier = Modifier, selected: Boolean) {
+fun WeatherCard(modifier: Modifier = Modifier, forecast: HourlyForecast, selected: Boolean) {
     Container(modifier = modifier, selected = selected) {
+        // todo: icon
         WeatherIcon(icon = WeatherIcons.SunWithCloud, modifier = Modifier.width(50.dp))
         Spacer(modifier = Modifier.width(16.dp))
         Column {
-            Time(text = "14:00")
+            Time(text = formatTimeToUserFriendlyString(forecast.time))
             Spacer(modifier = Modifier.height(3.dp))
-            Temperature(text = "32°")
+            Temperature(text = "${forecast.temp}°")
         }
     }
 }
@@ -99,11 +104,17 @@ private fun Container(modifier: Modifier = Modifier, selected: Boolean, content:
 
 }
 
+private val previewForecast = HourlyForecast(
+    icon = "",
+    temp = 32,
+    time = LocalDateTime.now()
+)
+
 @Composable
 @Preview(backgroundColor = BackgroundPreviewColor, showBackground = true)
 private fun PreviewSelected() {
     PhototimeTheme {
-        WeatherCard(selected = true)
+        WeatherCard(selected = true, forecast = previewForecast)
     }
 }
 
@@ -111,6 +122,6 @@ private fun PreviewSelected() {
 @Preview(backgroundColor = BackgroundPreviewColor, showBackground = true)
 private fun PreviewNotSelected() {
     PhototimeTheme {
-        WeatherCard(selected = false)
+        WeatherCard(selected = false, forecast = previewForecast)
     }
 }
