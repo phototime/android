@@ -14,7 +14,7 @@ class ForecastActions(private val store: Store) {
             store.emitForecast(ForecastState.Idle(
                 location = location,
                 date = formatDateToUserFriendlyString(LocalDateTime.now()),
-                type = ForecastType.SunWithCloud,
+                type = ForecastType.Blizzard,
                 temp = forecast.temp,
                 wind = forecast.wind.toInt(),
                 humidity = forecast.humidity,
@@ -33,7 +33,7 @@ class ForecastActions(private val store: Store) {
             store.emitForecast(ForecastState.Idle(
                 location = location,
                 date = formatDateToUserFriendlyString(LocalDateTime.now()),
-                type = ForecastType.SunWithCloud,
+                type = ForecastType.Blizzard,
                 temp = successForecast.temp,
                 wind = successForecast.wind.toInt(),
                 humidity = successForecast.humidity,
