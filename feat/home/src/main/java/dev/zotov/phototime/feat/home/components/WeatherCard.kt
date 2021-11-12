@@ -5,13 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -20,10 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.shared.components.WeatherIcon
-import dev.zotov.phototime.shared.components.WeatherIcons
 import dev.zotov.phototime.shared.theme.*
 import dev.zotov.phototime.feat.home.R
-import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.models.HourlyForecast
 import dev.zotov.phototime.shared.utils.formatTimeToUserFriendlyString
 import java.time.LocalDateTime
@@ -31,8 +27,7 @@ import java.time.LocalDateTime
 @Composable
 fun WeatherCard(modifier: Modifier = Modifier, forecast: HourlyForecast, selected: Boolean) {
     Container(modifier = modifier, selected = selected) {
-        // todo: icon
-        WeatherIcon(icon = WeatherIcons.SunWithCloud, modifier = Modifier.width(50.dp))
+        WeatherIcon(type = forecast.type, modifier = Modifier.width(50.dp))
         Spacer(modifier = Modifier.width(16.dp))
         Column {
             Time(text = formatTimeToUserFriendlyString(forecast.time))

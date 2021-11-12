@@ -1,6 +1,7 @@
 package dev.zotov.phototime.core.usecases
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
 import androidx.datastore.dataStore
@@ -27,15 +28,17 @@ class UseCachedForecastUseCaseImpl(private val context: Context): UseCachedForec
     override suspend fun save(forecast: Forecast) {
         val hourly = forecast.hourly.map {
             ForecastProto.HourlyForecastProto.newBuilder()
-                .setType(ForecastProto.ForecastType.values()[it.type.ordinal])
+                .setType(ForecastProto.ForecastType.valueOf(it.type.ordinal))
                 .setTime(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(it.time))
                 .setTemp(it.temp)
                 .build()
         }
 
+        Log.d("save", ForecastProto.ForecastType.values()[forecast.type.ordinal].toString())
+
         context.dataStore.updateData {
             it.toBuilder()
-                .setType(it.type)
+                .setType(ForecastProto.ForecastType.values()[forecast.type.ordinal])
                 .setTemp(forecast.temp)
                 .setWind(forecast.wind)
                 .setHumidity(forecast.humidity)
@@ -46,14 +49,17 @@ class UseCachedForecastUseCaseImpl(private val context: Context): UseCachedForec
     }
 
     override suspend fun get(): Flow<Forecast?> = context.dataStore.data.map {
+
+        Log.d("get", ForecastType.valueOf(it.type.toString()).toString())
+
         Forecast(
-            type = ForecastType.values()[it.type.number],
+            type = ForecastType.valueOf(it.type.toString()),
             temp = it.temp,
             wind = it.wind,
             humidity = it.humidity,
             hourly = it.hourlyList.map { hourly ->
                 HourlyForecast(
-                    type = ForecastType.values()[hourly.type.number],
+                    type = ForecastType.valueOf(hourly.type.toString()),
                     time = LocalDateTime.parse(hourly.time),
                     temp = hourly.temp
                 )

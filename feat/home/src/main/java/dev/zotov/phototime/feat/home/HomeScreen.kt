@@ -26,7 +26,6 @@ import org.koin.androidx.compose.get
 @Composable
 fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
     val store = get<Store>()
-    val forecastActions = get<ForecastActions>()
     val forecastState = store.forecastState.collectAsState().value
 
     val loading = forecastState is ForecastState.Loading
@@ -55,7 +54,7 @@ fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
         if (forecastState is ForecastState.Idle) {
             Headline(text = forecastState.location)
             Subtitle(text = forecastState.date)
-            BigWeatherIcon(icon = WeatherIcons.SunWithCloud) // todo
+            BigWeatherIcon(type = forecastState.type)
         }
 
         Spacer(modifier = Modifier.padding(top = 55.dp))

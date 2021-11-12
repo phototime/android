@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.shared.components.WeatherIcon
-import dev.zotov.phototime.shared.components.WeatherIcons
 
 @Composable
-fun BigWeatherIcon(icon: WeatherIcons) {
+fun BigWeatherIcon(type: ForecastType) {
     WeatherIcon(
-        icon = icon,
+        type = type,
         modifier = Modifier
             .padding(top = 65.dp)
             .width(235.dp)

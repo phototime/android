@@ -9,6 +9,7 @@ import dev.zotov.phototime.shared.failures.FailedToSerializeForecast
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.usecases.FetchForecastUseCase
 import dev.zotov.phototime.shared.failures.FetchForecastFailure
+import dev.zotov.phototime.shared.functions.ForecastTypeFunctions
 import dev.zotov.phototime.shared.models.HourlyForecast
 import retrofit2.Response
 import java.time.Instant
@@ -39,7 +40,7 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
         for (day in body.forecast.forecastday) {
             for (hour in day.hour) {
                 val model = HourlyForecast(
-                    type = ForecastType.Cloudy, // todo
+                    type = ForecastTypeFunctions.getTypeFromCode(hour.condition.code),
                     time = Instant.ofEpochSecond(hour.time_epoch).atZone(ZoneId.systemDefault())
                         .toLocalDateTime(),
                     temp = hour.temp_c.toInt(),
@@ -49,7 +50,7 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
         }
 
         return Forecast(
-            type = ForecastType.Cloudy, // todo
+            type = ForecastTypeFunctions.getTypeFromCode(body.current.condition.code),
             temp = body.current.temp_c.toInt(),
             wind = body.current.wind_mph,
             humidity = body.current.humidity,

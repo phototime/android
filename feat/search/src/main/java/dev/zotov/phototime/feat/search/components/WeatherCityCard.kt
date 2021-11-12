@@ -16,9 +16,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.feat.search.R
 import dev.zotov.phototime.shared.components.WeatherIcon
-import dev.zotov.phototime.shared.components.WeatherIcons
 import dev.zotov.phototime.shared.theme.*
 
 @Composable
@@ -34,7 +34,7 @@ fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean) {
             }
 
             WeatherIcon(
-                icon = WeatherIcons.SunWithCloud,
+                type = ForecastType.Clear,
                 modifier = Modifier
                     .width(60.dp)
                     .padding(top = 3.dp)
