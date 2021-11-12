@@ -4,16 +4,33 @@ option java_package = "dev.zotov.phototime.core.proto";
 option java_multiple_files = true;
 
 message ForecastProto {
-  string icon = 1; // todo: change to enum
+  ForecastType type = 1;
   int32 temp = 2;
   float  wind = 3;
   repeated HourlyForecastProto hourly = 4;
   int32 humidity = 5;
 
   message HourlyForecastProto {
-    string icon = 1; // todo: change to enum
+    ForecastType type = 1;
     string time = 2;
     int32 temp = 3;
+  }
+
+  enum ForecastType {
+    Clear = 0;
+    Cloudy = 1;
+    Overcast = 2;
+    Mist = 3;
+    PatchyRainPossible = 4;
+    PatchySnowPossible = 5;
+    PatchySleetPossible = 6;
+    PatchyFreezingPossible = 7;
+    ThunderyOutbreaksPossible = 8;
+    BlowingSnow = 9;
+    Blizzard = 10;
+    HeavyRain = 11;
+    ModerateRain = 12;
+    SnowWithThunder = 13;
   }
 }
 

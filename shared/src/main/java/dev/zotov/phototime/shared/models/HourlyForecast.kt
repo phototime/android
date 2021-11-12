@@ -1,5 +1,6 @@
 package dev.zotov.phototime.shared.models
 
+import dev.zotov.phototime.domain.ForecastType
 import java.time.LocalDateTime
 
 /**
@@ -7,9 +8,9 @@ import java.time.LocalDateTime
  */
 data class HourlyForecast(
     /**
-     * Icon which corresponds to this weather
+     * Type of current weather (sunny, cloudy, rainy etc)
      */
-    val icon: String, // todo: change to enum
+    val type: ForecastType,
 
     /**
      * The time that this hourly forecast corresponds to. Contains date and hour, minutes are always 0

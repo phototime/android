@@ -3,6 +3,7 @@ package dev.zotov.phototime.core.usecases
 import android.util.Log
 import dev.zotov.phototime.core.WeatherApi
 import dev.zotov.phototime.core.responces.WeatherForecastResponse
+import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.shared.failures.FailedToFetchForecast
 import dev.zotov.phototime.shared.failures.FailedToSerializeForecast
 import dev.zotov.phototime.shared.models.Forecast
@@ -38,7 +39,7 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
         for (day in body.forecast.forecastday) {
             for (hour in day.hour) {
                 val model = HourlyForecast(
-                    icon = hour.condition.text, // todo
+                    type = ForecastType.Cloudy, // todo
                     time = Instant.ofEpochSecond(hour.time_epoch).atZone(ZoneId.systemDefault())
                         .toLocalDateTime(),
                     temp = hour.temp_c.toInt(),
@@ -48,7 +49,7 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
         }
 
         return Forecast(
-            icon = body.current.condition.text, // todo
+            type = ForecastType.Cloudy, // todo
             temp = body.current.temp_c.toInt(),
             wind = body.current.wind_mph,
             humidity = body.current.humidity,

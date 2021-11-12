@@ -4,9 +4,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
 import androidx.datastore.dataStore
-import androidx.datastore.preferences.core.*
-import androidx.datastore.preferences.preferencesDataStore
 import dev.zotov.phototime.core.proto.ForecastProto
+import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.models.HourlyForecast
 import dev.zotov.phototime.shared.usecases.UseCachedForecastUseCase
@@ -28,7 +27,7 @@ class UseCachedForecastUseCaseImpl(private val context: Context): UseCachedForec
     override suspend fun save(forecast: Forecast) {
         val hourly = forecast.hourly.map {
             ForecastProto.HourlyForecastProto.newBuilder()
-                .setIcon(it.icon)
+                .setType(ForecastProto.ForecastType.values()[it.type.ordinal])
                 .setTime(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(it.time))
                 .setTemp(it.temp)
                 .build()
@@ -36,7 +35,7 @@ class UseCachedForecastUseCaseImpl(private val context: Context): UseCachedForec
 
         context.dataStore.updateData {
             it.toBuilder()
-                .setIcon(forecast.icon)
+                .setType(it.type)
                 .setTemp(forecast.temp)
                 .setWind(forecast.wind)
                 .setHumidity(forecast.humidity)
@@ -48,13 +47,13 @@ class UseCachedForecastUseCaseImpl(private val context: Context): UseCachedForec
 
     override suspend fun get(): Flow<Forecast?> = context.dataStore.data.map {
         Forecast(
-            icon = it.icon,
+            type = ForecastType.values()[it.type.number],
             temp = it.temp,
             wind = it.wind,
             humidity = it.humidity,
             hourly = it.hourlyList.map { hourly ->
                 HourlyForecast(
-                    icon = hourly.icon,
+                    type = ForecastType.values()[hourly.type.number],
                     time = LocalDateTime.parse(hourly.time),
                     temp = hourly.temp
                 )

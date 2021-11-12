@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.shared.components.WeatherIcon
 import dev.zotov.phototime.shared.components.WeatherIcons
 import dev.zotov.phototime.shared.theme.*
@@ -105,7 +106,7 @@ private fun Container(modifier: Modifier = Modifier, selected: Boolean, content:
 }
 
 private val previewForecast = HourlyForecast(
-    icon = "",
+    type = ForecastType.Cloudy,
     temp = 32,
     time = LocalDateTime.now()
 )

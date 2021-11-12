@@ -1,6 +1,7 @@
 package dev.zotov.phototime.shared.models
 
 import androidx.annotation.IntRange
+import dev.zotov.phototime.domain.ForecastType
 
 /**
  * Represent current forecast.
@@ -8,9 +9,9 @@ import androidx.annotation.IntRange
  */
 data class Forecast(
     /**
-     * Icon which corresponds to this weather
+     * Type of current weather (sunny, cloudy, rainy etc)
      */
-    val icon: String, // todo: change to enum
+    val type: ForecastType,
 
     /**
      * Temperature in degrees celsius
