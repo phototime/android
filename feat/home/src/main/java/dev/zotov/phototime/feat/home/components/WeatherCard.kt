@@ -20,6 +20,7 @@ import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.shared.components.WeatherIcon
 import dev.zotov.phototime.shared.theme.*
 import dev.zotov.phototime.feat.home.R
+import dev.zotov.phototime.shared.functions.ForecastTypeFunctions
 import dev.zotov.phototime.shared.models.HourlyForecast
 import dev.zotov.phototime.shared.utils.formatTimeToUserFriendlyString
 import java.time.LocalDateTime
@@ -27,7 +28,8 @@ import java.time.LocalDateTime
 @Composable
 fun WeatherCard(modifier: Modifier = Modifier, forecast: HourlyForecast, selected: Boolean) {
     Container(modifier = modifier, selected = selected) {
-        WeatherIcon(type = forecast.type, modifier = Modifier.width(50.dp))
+        val id = ForecastTypeFunctions.getResourceId(type = forecast.type, time = forecast.time)
+        WeatherIcon(id = id, modifier = Modifier.width(50.dp))
         Spacer(modifier = Modifier.width(16.dp))
         Column {
             Time(text = formatTimeToUserFriendlyString(forecast.time))

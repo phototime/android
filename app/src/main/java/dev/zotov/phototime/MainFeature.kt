@@ -1,5 +1,6 @@
 package dev.zotov.phototime
 
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

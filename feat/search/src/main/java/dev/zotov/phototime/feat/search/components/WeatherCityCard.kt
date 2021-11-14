@@ -34,7 +34,7 @@ fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean) {
             }
 
             WeatherIcon(
-                type = ForecastType.Clear,
+                id = R.drawable.cloud,
                 modifier = Modifier
                     .width(60.dp)
                     .padding(top = 3.dp)

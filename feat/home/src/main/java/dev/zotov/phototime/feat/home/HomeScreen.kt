@@ -1,7 +1,11 @@
 package dev.zotov.phototime.feat.home
 
+import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -49,8 +53,6 @@ fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-
         if (forecastState is ForecastState.Idle) {
             Headline(text = forecastState.location)
             Subtitle(text = forecastState.date)

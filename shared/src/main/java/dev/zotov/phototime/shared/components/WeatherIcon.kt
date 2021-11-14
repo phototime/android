@@ -1,5 +1,6 @@
 package dev.zotov.phototime.shared.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -9,12 +10,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.zotov.phototime.domain.ForecastType
-import dev.zotov.phototime.shared.functions.ForecastTypeFunctions
+import dev.zotov.phototime.shared.R
 
 @Composable
-fun WeatherIcon(modifier: Modifier = Modifier, type: ForecastType) {
-    val painter = painterResource(id = ForecastTypeFunctions.getResourceId(type))
+fun WeatherIcon(modifier: Modifier = Modifier, @DrawableRes id: Int) {
+    val painter = painterResource(id = id)
 
     Image(
         modifier = modifier,
@@ -27,7 +27,7 @@ fun WeatherIcon(modifier: Modifier = Modifier, type: ForecastType) {
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFF090620)
 private fun Preview() {
-    WeatherIcon(type = ForecastType.HeavyRain, modifier = Modifier
+    WeatherIcon(id = R.drawable.sun_cloud_rain_light, modifier = Modifier
         .width(235.dp)
         .padding(20.dp))
 }

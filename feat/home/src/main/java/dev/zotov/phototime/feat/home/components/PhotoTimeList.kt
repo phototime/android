@@ -1,10 +1,11 @@
 package dev.zotov.phototime.feat.home.components
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 
 @Composable
-fun ColumnScope.PhotoTimeList() {
+fun PhotoTimeList() {
     PhotoTimeTile(
         time = PhotoTime.FirstLight,
         actionTime = "6:27 AM",

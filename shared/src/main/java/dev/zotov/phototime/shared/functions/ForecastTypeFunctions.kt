@@ -9,8 +9,11 @@ import java.time.LocalDateTime
 object ForecastTypeFunctions {
 
     @DrawableRes
-    fun getResourceId(type: ForecastType): Int {
-        val isDay = LocalDateTime.now().hour in 6..19
+    fun getCurrentForecastResourceId(type: ForecastType) = getResourceId(type, LocalDateTime.now())
+
+    @DrawableRes
+    fun getResourceId(type: ForecastType, time: LocalDateTime): Int {
+        val isDay = time.hour in 6..19
         return if (isDay) getDayResourceId(type)
         else getNightResourceId(type)
     }
@@ -59,7 +62,7 @@ object ForecastTypeFunctions {
         1066 -> ForecastType.PatchySnowPossible
         1072 -> ForecastType.PatchyFreezingPossible
         1087 -> ForecastType.ThunderyOutbreaksPossible
-        1114, 1147, 1216, 1219 -> ForecastType.BlowingSnow
+        1114, 1147, 1213, 1216, 1219 -> ForecastType.BlowingSnow
         1117, 1113, 1222, 1225, 1237 -> ForecastType.Blizzard
         1135 -> ForecastType.Mist
         1189, 1192, 1195 -> ForecastType.HeavyRain
