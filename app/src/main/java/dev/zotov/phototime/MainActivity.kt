@@ -200,7 +200,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
                         val latLong = LatLong(location.latitude, location.longitude)
                         val name = getLocationNameFromLatLong.execute(latLong)
 
-                        handleLocation(name, latLong)
+//                        handleLocation(name, latLong) TODO: uncomment
                     }
 
                     fusedLocationProviderClient.removeLocationUpdates(this)

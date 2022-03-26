@@ -1,5 +1,7 @@
 package dev.zotov.phototime.state.actions
 
+import dev.zotov.phototime.core.ProjectLogger
+import dev.zotov.phototime.core.createLogger
 import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.utils.formatDateToUserFriendlyString
@@ -8,10 +10,11 @@ import dev.zotov.phototime.state.state.ForecastState
 import java.time.LocalDateTime
 
 class ForecastActions(private val store: Store) {
+    private val logger: ProjectLogger = createLogger("ForecastActions")
 
     fun handleCached(forecast: Forecast, location: String) {
         if (store.forecastState.value is ForecastState.Loading) {
-            store.emitForecast(ForecastState.Idle(
+            val newState = ForecastState.Idle(
                 location = location,
                 date = formatDateToUserFriendlyString(LocalDateTime.now()),
                 type = forecast.type,
@@ -20,7 +23,12 @@ class ForecastActions(private val store: Store) {
                 humidity = forecast.humidity,
                 hourly = forecast.hourly,
                 initialSelectedHourlyCard = LocalDateTime.now().hour
-            ))
+            )
+            logger.info { "emitting new forecast state $newState" }
+
+            store.emitForecast(newState)
+        } else {
+            logger.info { "Can't cache forecast because forecast is not loading " }
         }
     }
 

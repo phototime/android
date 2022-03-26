@@ -48,6 +48,8 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation project(path: ':shared')
 
+    implementation 'com.github.phototime:solarized-android:1.0.3'
+
     // koin
     def koin_version = "3.1.0"
     implementation "io.insert-koin:koin-android:$koin_version"
@@ -55,4 +57,5 @@ dependencies {
     testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
 
     implementation project(":domain")
+    implementation project(path: ':core')
 }
