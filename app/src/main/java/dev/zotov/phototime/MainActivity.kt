@@ -27,6 +27,7 @@ import dev.zotov.phototime.shared.usecases.UseLastKnownLocationUseCase
 import dev.zotov.phototime.shared.usecases.GetLocationNameFromLatLon
 import dev.zotov.phototime.shared.usecases.UseCachedForecastUseCase
 import dev.zotov.phototime.state.actions.ForecastActions
+import io.sentry.Sentry
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -51,6 +52,10 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+
+        if (BuildConfig.DEBUG) {
+            Sentry.close()
+        }
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,

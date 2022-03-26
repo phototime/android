@@ -106,4 +106,6 @@ dependencies {
 
     // Protobuf
     implementation 'com.google.protobuf:protobuf-lite:3.0.0'
+
+    implementation 'io.github.microutils:kotlin-logging:1.12.5'
 }

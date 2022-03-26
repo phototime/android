@@ -18,6 +18,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        resValue("string", "SENTRY_DNS", SENTRY_DNS)
     }
 
     buildTypes {
@@ -77,6 +79,10 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
     implementation 'com.vmadalin:easypermissions-ktx:1.0.0'
+
+    implementation 'io.sentry:sentry-android:5.7.0'
+
+    implementation 'io.github.microutils:kotlin-logging:1.12.5'
 
     // modules
     implementation project(":feat:home")
