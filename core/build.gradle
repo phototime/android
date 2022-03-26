@@ -43,12 +43,14 @@ sourceSets {
 }
 
 protobuf {
-    protoc { artifact = 'com.google.protobuf:protoc:3.10.0' }
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.18.0"
+    }
 
     plugins {
-        javalite { artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0" }
+        javalite { artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0:osx-x86_64" }
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.43.0'
         }
     }
 
