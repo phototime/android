@@ -27,6 +27,7 @@ import dev.zotov.phototime.state.actions.ForecastActions
 import dev.zotov.phototime.state.state.ForecastState
 import dev.zotov.phototime.state.state.SunPhaseState
 import org.koin.androidx.compose.get
+import java.time.LocalTime
 
 @Composable
 fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
@@ -75,9 +76,16 @@ fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
                 WeatherProperty(title = "Humidity", value = "${forecastState.humidity}%")
             }
         }
-        CurrentPhotoTime(modifier = Modifier.padding(end = 25.dp, start = 25.dp, top = 50.dp))
-
         if (sunPhaseState is SunPhaseState.Idle) {
+            val current = sunPhaseState.get(LocalTime.now())
+
+            if (current != null) {
+                CurrentPhotoTime(
+                    sunPhase = current,
+                    modifier = Modifier.padding(end = 25.dp, start = 25.dp, top = 50.dp),
+                )
+            }
+
             Title(text = "Photo Time")
             PhotoTimeList(sunPhaseList = sunPhaseState.list)
         }

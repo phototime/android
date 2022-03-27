@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import dev.zotov.phototime.shared.R
 import dev.zotov.phototime.shared.components.ActionTime
 import dev.zotov.phototime.shared.theme.*
+import dev.zotov.phototime.solarized.SunPhase
 
 // TODO: move somewhere
 interface IPhotoTime {
@@ -56,6 +57,20 @@ sealed class PhotoTime : IPhotoTime {
     object LastLight : PhotoTime() {
         override val title = "Last Light"
         override val ballId = R.drawable.first_and_last_ball
+    }
+
+    companion object {
+        fun fromSunPhase(sunPhase: SunPhase): PhotoTime {
+            return when (sunPhase) {
+                is SunPhase.FirstLight -> FirstLight
+                is SunPhase.BlueHour -> BlueHour
+                is SunPhase.GoldenHour -> GoldenHour
+                is SunPhase.Sunrise -> Sunrise
+                is SunPhase.Day -> Day
+                is SunPhase.Sunset -> Sunset
+                is SunPhase.LastLight -> LastLight
+            }
+        }
     }
 }
 

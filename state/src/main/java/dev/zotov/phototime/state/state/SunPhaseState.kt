@@ -32,6 +32,11 @@ sealed class SunPhaseState {
             ) return list.morningGoldenHour
 
             if (
+                list.day.start.toLocalTime().isBefore(time)
+                && list.day.end.toLocalTime().isAfter(time)
+            ) return list.day
+
+            if (
                 list.eveningGoldenHour.start.toLocalTime().isBefore(time)
                 && list.eveningGoldenHour.end.toLocalTime().isAfter(time)
             ) return list.eveningGoldenHour

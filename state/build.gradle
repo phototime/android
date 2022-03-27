@@ -48,7 +48,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation project(path: ':shared')
 
-    implementation 'com.github.phototime:solarized-android:1.0.3'
+    implementation 'com.github.phototime:solarized-android:1.0.4'
 
     // koin
     def koin_version = "3.1.0"
