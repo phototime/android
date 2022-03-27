@@ -21,7 +21,7 @@ class ForecastActions(private val store: Store) {
                 wind = forecast.wind.toInt(),
                 humidity = forecast.humidity,
                 hourly = forecast.hourly,
-                initialSelectedHourlyCard = LocalDateTime.now().hour
+                initialSelectedHourlyCard = LocalDateTime.now().hour + 12
             )
             logger.info { "emitting new forecast state $newState" }
 
@@ -45,7 +45,7 @@ class ForecastActions(private val store: Store) {
                 wind = successForecast.wind.toInt(),
                 humidity = successForecast.humidity,
                 hourly = successForecast.hourly,
-                initialSelectedHourlyCard = LocalDateTime.now().hour
+                initialSelectedHourlyCard = LocalDateTime.now().hour + 12
             ))
         }
     }

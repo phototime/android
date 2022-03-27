@@ -162,14 +162,14 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     private fun handleLocation(name: String, latLong: LatLong) = CoroutineScope(Dispatchers.IO).launch {
-//        val fetchForecastCoroutine = async {
-//            val forecast = fetchForecastUseCase.execute(name)
-//            forecastActions.handleFetchResult(forecast = forecast, location = name)
-//
-//            if (forecast.isSuccess) {
-//                useCachedForecastUseCase.save(forecast = forecast.getOrThrow())
-//            }
-//        }
+        val fetchForecastCoroutine = async {
+            val forecast = fetchForecastUseCase.execute(name)
+            forecastActions.handleFetchResult(forecast = forecast, location = name)
+
+            if (forecast.isSuccess) {
+                useCachedForecastUseCase.save(forecast = forecast.getOrThrow())
+            }
+        }
 
         val saveLocationCoroutine = async {
             useLastKnownLocationUseCase.save(name, latLong)
@@ -179,7 +179,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
         sunPhaseActions.handleGenerated(sunPhase)
 
         awaitAll(
-//            fetchForecastCoroutine,
+            fetchForecastCoroutine,
             saveLocationCoroutine,
         )
     }
