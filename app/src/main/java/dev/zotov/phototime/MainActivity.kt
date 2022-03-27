@@ -22,18 +22,14 @@ import android.os.Looper
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import dev.zotov.phototime.shared.models.LatLong
-import dev.zotov.phototime.shared.usecases.FetchForecastUseCase
-import dev.zotov.phototime.shared.usecases.UseLastKnownLocationUseCase
-import dev.zotov.phototime.shared.usecases.GetLocationNameFromLatLon
-import dev.zotov.phototime.shared.usecases.UseCachedForecastUseCase
+import dev.zotov.phototime.shared.usecases.*
 import dev.zotov.phototime.state.actions.ForecastActions
+import dev.zotov.phototime.state.actions.SunPhaseActions
 import io.sentry.Sentry
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import org.koin.android.ext.android.inject
-
 
 class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
 
@@ -46,7 +42,9 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
     private val useCachedForecastUseCase: UseCachedForecastUseCase by inject()
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
     private val fetchForecastUseCase: FetchForecastUseCase by inject()
+    private val loadSunPhaseUseCase: LoadSunPhaseUseCase by inject()
     private val forecastActions: ForecastActions by inject()
+    private val sunPhaseActions: SunPhaseActions by inject()
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -177,6 +175,9 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             useLastKnownLocationUseCase.save(name, latLong)
         }
 
+        val sunPhase = loadSunPhaseUseCase.loadToday(latLong)
+        sunPhaseActions.handleGenerated(sunPhase)
+
         awaitAll(
             fetchForecastCoroutine,
             saveLocationCoroutine,
@@ -200,7 +201,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
                         val latLong = LatLong(location.latitude, location.longitude)
                         val name = getLocationNameFromLatLong.execute(latLong)
 
-//                        handleLocation(name, latLong) TODO: uncomment
+                        handleLocation(name, latLong)
                     }
 
                     fusedLocationProviderClient.removeLocationUpdates(this)

@@ -9,7 +9,7 @@ import dev.zotov.phototime.state.state.SunPhaseState
 class SunPhaseActions(private val store: Store) {
     private val logger: ProjectLogger = createLogger("SubPhaseActions")
 
-    fun handleCached(sunPhaseList: SunPhaseList) {
+    fun handleGenerated(sunPhaseList: SunPhaseList) {
         val newState = SunPhaseState.Idle(sunPhaseList)
         logger.info { "emit new state $newState" }
         store.emitSunPhase(newState)
