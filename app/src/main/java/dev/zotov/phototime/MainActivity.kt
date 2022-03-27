@@ -21,8 +21,11 @@ import android.os.Looper
 
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import dev.zotov.phototime.shared.logger
+import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.models.LatLong
 import dev.zotov.phototime.shared.usecases.*
+import dev.zotov.phototime.solarized.SunPhaseList
 import dev.zotov.phototime.state.actions.ForecastActions
 import dev.zotov.phototime.state.actions.SunPhaseActions
 import io.sentry.Sentry
@@ -40,6 +43,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
 
     private val getLocationNameFromLatLong: GetLocationNameFromLatLon by inject()
     private val useCachedForecastUseCase: UseCachedForecastUseCase by inject()
+    private val useCachedSunPhasesUseCase: UseCachedSunPhasesUseCase by inject()
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
     private val fetchForecastUseCase: FetchForecastUseCase by inject()
     private val loadSunPhaseUseCase: LoadSunPhaseUseCase by inject()
@@ -61,16 +65,22 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
         )
 
         CoroutineScope(Dispatchers.IO).launch {
-            val forecastCoroutine = async { useCachedForecastUseCase.get().firstOrNull() }
-            val locationCoroutine = async { useLastKnownLocationUseCase.getLocationName().first() }
+            val deferreds = awaitAll(
+                async { useCachedForecastUseCase.get().firstOrNull() },
+                async { useLastKnownLocationUseCase.getLocationName().first() },
+                async { useCachedSunPhasesUseCase.get().firstOrNull() }
+            )
 
-            val forecast = forecastCoroutine.await()
-            val location = locationCoroutine.await()
+            val forecast = deferreds[0] as Forecast?
+            val location = deferreds[1] as String?
+            val sunPhasesList = deferreds[2] as SunPhaseList?
 
             if (forecast != null && location != null) forecastActions.handleCached(
                 forecast = forecast,
                 location = location,
             )
+
+            if (sunPhasesList != null) sunPhaseActions.handleCached(sunPhasesList)
         }
 
 
@@ -138,6 +148,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             .checkLocationSettings(builder.build())
 
         result.addOnCompleteListener { task ->
+
             try {
                 task.getResult(ApiException::class.java)
                 getAndSaveLocation(locationRequest)
@@ -196,10 +207,14 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
                 override fun onLocationResult(p0: LocationResult) {
                     super.onLocationResult(p0)
 
+                    logger.info { "LocationResult is $p0" }
+
                     if (p0.locations.size > 0) {
                         val location = p0.locations[0]
                         val latLong = LatLong(location.latitude, location.longitude)
                         val name = getLocationNameFromLatLong.execute(latLong)
+
+                        logger.info { "Location is $latLong" }
 
                         handleLocation(name, latLong)
                     }

@@ -12,5 +12,5 @@ interface LoadSunPhaseUseCase {
      * @throws GenerateSunPhaseFailure if [Solarized.list] return null
      * @return sun phases list
      */
-    fun loadToday(latLong: LatLong): SunPhaseList
+    suspend fun loadToday(latLong: LatLong): SunPhaseList
 }

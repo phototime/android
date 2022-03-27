@@ -87,6 +87,8 @@ class UseCachedSunPhasesUseCaseImpl(private val context: Context): UseCachedSunP
     }
 
     override suspend fun get(): Flow<SunPhaseList?> = context.dataStore.data.map {
+        if (it.listList.size < 9) return@map null
+
         SunPhaseList(
             firstLight = SunPhase.FirstLight(
                 date = LocalDateTime.parse(it.listList[0].from)
