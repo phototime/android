@@ -25,14 +25,18 @@ import dev.zotov.phototime.shared.theme.PhototimeTheme
 import dev.zotov.phototime.state.Store
 import dev.zotov.phototime.state.actions.ForecastActions
 import dev.zotov.phototime.state.state.ForecastState
+import dev.zotov.phototime.state.state.SunPhaseState
 import org.koin.androidx.compose.get
 
 @Composable
 fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
     val store = get<Store>()
-    val forecastState = store.forecastState.collectAsState().value
 
-    val loading = forecastState is ForecastState.Loading
+    // state
+    val forecastState = store.forecastState.collectAsState().value
+    val sunPhaseState = store.sunPhaseState.collectAsState().value
+
+    val loading = forecastState is ForecastState.Loading || sunPhaseState is SunPhaseState.Loading
 
     if (loading) {
         Column(
@@ -72,8 +76,12 @@ fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
             }
         }
         CurrentPhotoTime(modifier = Modifier.padding(end = 25.dp, start = 25.dp, top = 50.dp))
-        Title(text = "Photo Time")
-        PhotoTimeList()
+
+        if (sunPhaseState is SunPhaseState.Idle) {
+            Title(text = "Photo Time")
+            PhotoTimeList(sunPhaseList = sunPhaseState.list)
+        }
+
         TitleWithMoreButton()
         WeatherCardCarousel()
     }

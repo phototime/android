@@ -1,6 +1,6 @@
 package dev.zotov.phototime.core.usecases
 
-import dev.zotov.phototime.core.createLogger
+import dev.zotov.phototime.shared.createLogger
 import dev.zotov.phototime.shared.failures.GenerateSunPhaseFailure
 import dev.zotov.phototime.shared.models.LatLong
 import dev.zotov.phototime.shared.usecases.LoadSunPhaseUseCase

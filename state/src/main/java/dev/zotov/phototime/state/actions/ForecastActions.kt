@@ -1,8 +1,7 @@
 package dev.zotov.phototime.state.actions
 
-import dev.zotov.phototime.core.ProjectLogger
-import dev.zotov.phototime.core.createLogger
-import dev.zotov.phototime.domain.ForecastType
+import dev.zotov.phototime.shared.ProjectLogger
+import dev.zotov.phototime.shared.createLogger
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.utils.formatDateToUserFriendlyString
 import dev.zotov.phototime.state.Store

@@ -1,4 +1,4 @@
-package dev.zotov.phototime.core
+package dev.zotov.phototime.shared
 
 import io.sentry.Breadcrumb
 import io.sentry.Sentry
@@ -83,6 +83,8 @@ class ProjectLogger(private val kLogger: KLogger) {
         else if (t != null) Sentry.captureException(t)
     }
 }
+
+val logger = ProjectLogger(KotlinLogging.logger("G"))
 
 fun createLogger(name: String = ""): ProjectLogger{
     val kLogger = KotlinLogging.logger(name)

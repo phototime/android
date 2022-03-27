@@ -16,28 +16,31 @@ import dev.zotov.phototime.shared.theme.timeDurationAbbreviation
 
 @Composable
 fun ActionTime(text: String) {
+
+    val intervalIndexes = mutableListOf<Pair<Int, Int>>()
+    var i = 0
+    while (i < text.length) {
+        if (text[i] == 'P' || text[i] == 'A') {
+            intervalIndexes.add(Pair(i, i + 2))
+            i++
+        }
+        i++
+    }
+
+
     Text(text = buildAnnotatedString {
         append(text)
         addStyle(
             style = MaterialTheme.typography.Grey16spNormal.toSpanStyle(),
             start = 0,
-            end = 4
+            end = text.length
         )
-        addStyle(
-            style = MaterialTheme.typography.timeDurationAbbreviation.toSpanStyle(),
-            start = 4,
-            end = 7
-        )
-        if (text.length > 7) {
-            addStyle(
-                style = MaterialTheme.typography.Grey16spNormal.toSpanStyle(),
-                start = 7,
-                end = 14
-            )
+
+        intervalIndexes.forEach {
             addStyle(
                 style = MaterialTheme.typography.timeDurationAbbreviation.toSpanStyle(),
-                start = 14,
-                end = 17
+                start = it.first,
+                end = it.second
             )
         }
     })

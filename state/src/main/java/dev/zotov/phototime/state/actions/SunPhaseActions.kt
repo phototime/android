@@ -1,7 +1,7 @@
 package dev.zotov.phototime.state.actions
 
-import dev.zotov.phototime.core.ProjectLogger
-import dev.zotov.phototime.core.createLogger
+import dev.zotov.phototime.shared.ProjectLogger
+import dev.zotov.phototime.shared.createLogger
 import dev.zotov.phototime.solarized.SunPhaseList
 import dev.zotov.phototime.state.Store
 import dev.zotov.phototime.state.state.SunPhaseState
