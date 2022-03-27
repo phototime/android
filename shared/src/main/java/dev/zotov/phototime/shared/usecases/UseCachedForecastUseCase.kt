@@ -7,8 +7,6 @@ interface UseCachedForecastUseCase {
     /**
      * Save forecast in cache on storage to use it on startup before fetching or when there is no
      * network access now
-     *
-     * @return Forecast if any saved value,
      */
     suspend fun save(forecast: Forecast)
 

@@ -49,9 +49,6 @@ class UseCachedForecastUseCaseImpl(private val context: Context): UseCachedForec
     }
 
     override suspend fun get(): Flow<Forecast?> = context.dataStore.data.map {
-
-        Log.d("get", ForecastType.valueOf(it.type.toString()).toString())
-
         Forecast(
             type = ForecastType.valueOf(it.type.toString()),
             temp = it.temp,

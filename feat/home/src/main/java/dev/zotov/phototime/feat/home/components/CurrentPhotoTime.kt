@@ -49,9 +49,8 @@ fun CurrentPhotoTime(sunPhase: SunPhase, modifier: Modifier = Modifier) {
         while (timer.seconds > 0) {
             delay(1000)
 
-            timer = timer.minusSeconds(1)
+            timer = Duration.between(LocalDateTime.now(), getTimeEnd(sunPhase))
         }
-
     }
 
     val presentation = PhotoTime.fromSunPhase(sunPhase)
