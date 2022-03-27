@@ -65,7 +65,7 @@ fun PhotoTimeList(sunPhaseList: SunPhaseList) {
 
 private fun formatTime(dateTime: LocalDateTime): String {
     val date = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant())
-    return SimpleDateFormat("HH:mm aa", Locale.US).format(date)
+    return SimpleDateFormat("hh:mm aa", Locale.US).format(date)
 }
 
 fun formatTimeRange(start: LocalDateTime, end: LocalDateTime): String {
