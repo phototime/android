@@ -1,6 +1,7 @@
 package dev.zotov.phototime.core
 
 import dev.zotov.phototime.core.responces.CitySearchResponse
+import dev.zotov.phototime.core.responces.CurrentWeatherForecastResponse
 import dev.zotov.phototime.core.responces.WeatherForecastResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -19,7 +20,7 @@ internal interface WeatherApi {
     /**
      * Fetch matching cities and towns.
      *
-     * Visit [Endpoint docs](https://www.weatherapi.com/docs/#intro-location) for more information
+     * Visit [Endpoint docs](https://www.weatherapi.com/docs/#apis-search) for more information
      * @param location US Zipcode, UK Postcode, Canada Postalcode, IP address, Latitude/Longitude
      * (decimal degree) or city name.
      */
@@ -28,4 +29,17 @@ internal interface WeatherApi {
         @Query("q") location: String,
         @Query("key") key: String = BuildConfig.WEATHER_API_KEY
     ): Response<List<CitySearchResponse>>
+
+    /**
+     * Fetch current forecast
+     *
+     * Visit [Endpoint docs](https://www.weatherapi.com/docs/#apis-realtime) for more information
+     * @param location US Zipcode, UK Postcode, Canada Postalcode, IP address, Latitude/Longitude
+     * (decimal degree) or city name.
+     */
+    @GET("current.json?aqi=no")
+    suspend fun getCurrentForecast(
+        @Query("q") location: String,
+        @Query("key") key: String = BuildConfig.WEATHER_API_KEY
+    ): Response<CurrentWeatherForecastResponse>
 }

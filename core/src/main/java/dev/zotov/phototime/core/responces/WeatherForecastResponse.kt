@@ -5,6 +5,15 @@ data class WeatherForecastResponse(
     val forecast: WeatherForecast,
 )
 
+data class CurrentWeatherForecastResponse(
+    val location: ForecastLocation,
+    val current: CurrentWeatherForecast,
+)
+
+data class ForecastLocation(
+    val name: String,
+)
+
 data class CurrentWeatherForecast(
     val temp_c: Float,
     val wind_mph: Float,
