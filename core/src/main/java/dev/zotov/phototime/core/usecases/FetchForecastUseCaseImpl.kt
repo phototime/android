@@ -2,15 +2,18 @@ package dev.zotov.phototime.core.usecases
 
 import android.util.Log
 import dev.zotov.phototime.core.WeatherApi
+import dev.zotov.phototime.core.responces.CitySearchResponse
+import dev.zotov.phototime.core.responces.CurrentWeatherForecastResponse
 import dev.zotov.phototime.core.responces.WeatherForecastResponse
-import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.shared.failures.FailedToFetchForecast
 import dev.zotov.phototime.shared.failures.FailedToSerializeForecast
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.usecases.FetchForecastUseCase
 import dev.zotov.phototime.shared.failures.FetchForecastFailure
 import dev.zotov.phototime.shared.functions.ForecastTypeFunctions
+import dev.zotov.phototime.shared.models.CityForecast
 import dev.zotov.phototime.shared.models.HourlyForecast
+import kotlinx.coroutines.*
 import retrofit2.Response
 import java.time.Instant
 import java.time.ZoneId
@@ -29,7 +32,38 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
             return Result.success(mapForecastToDomain(model))
         }
 
-        return Result.failure(handleErrorRequest(response))
+        return Result.failure(handleErrorForecastRequest(response))
+    }
+
+    override suspend fun search(q: String): Result<List<CityForecast>> {
+        val response = weatherApi.searchCity(q)
+
+        // Success
+        if (response.isSuccessful) {
+            val cities = response.body() ?: return Result.failure(FailedToSerializeForecast())
+
+            return withContext(Dispatchers.IO) {
+                val forecast = mutableListOf<CityForecast>()
+                cities
+                    .map {
+                        async { weatherApi.getCurrentForecast(it.url) }
+                    }
+                    .awaitAll()
+                    .forEach {
+                        if (it.isSuccessful) {
+                            val model = it.body()
+                            if (model != null) {
+                                forecast.add(mapCurrentForecastToDomain( model))
+                                println(forecast.last())
+                            }
+                        }
+                    }
+
+                return@withContext Result.success(forecast)
+            }
+        }
+
+        return Result.failure(handleErrorCityRequest(response))
     }
 
     private fun mapForecastToDomain(body: WeatherForecastResponse): Forecast {
@@ -58,7 +92,22 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
         )
     }
 
-    private fun handleErrorRequest(response: Response<WeatherForecastResponse>): FetchForecastFailure {
+    private fun mapCurrentForecastToDomain(body: CurrentWeatherForecastResponse): CityForecast {
+        return CityForecast(
+            city = body.location.name,
+            type = ForecastTypeFunctions.getTypeFromCode(body.current.condition.code),
+            temp = body.current.temp_c.toInt(),
+            wind = body.current.wind_mph,
+        )
+    }
+
+    private fun handleErrorForecastRequest(response: Response<WeatherForecastResponse>): FetchForecastFailure {
+        Log.d("FetchForecastUseCase.error", response.errorBody().toString())
+        // todo: improve error handling
+        return FailedToFetchForecast()
+    }
+
+    private fun handleErrorCityRequest(response: Response<List<CitySearchResponse>>): FetchForecastFailure {
         Log.d("FetchForecastUseCase.error", response.errorBody().toString())
         // todo: improve error handling
         return FailedToFetchForecast()
