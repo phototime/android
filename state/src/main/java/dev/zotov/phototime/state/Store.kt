@@ -1,5 +1,6 @@
 package dev.zotov.phototime.state
 
+import dev.zotov.phototime.state.state.CitiesForecastState
 import dev.zotov.phototime.state.state.ForecastState
 import dev.zotov.phototime.state.state.SunPhaseState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +22,14 @@ class Store {
 
     fun emitSunPhase(state: SunPhaseState) {
         _sunPhaseState.value = state
+    }
+
+    // cities forecast state
+    private val _citiesForecastState = MutableStateFlow<CitiesForecastState>(CitiesForecastState.Loading)
+    val citiesForecastState get() = _citiesForecastState.asStateFlow()
+
+    fun emitCitiesForecast(state: CitiesForecastState) {
+        _citiesForecastState.value = state
     }
 }
 

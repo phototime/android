@@ -22,10 +22,12 @@ import android.os.Looper
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import dev.zotov.phototime.shared.logger
+import dev.zotov.phototime.shared.models.CityForecast
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.models.LatLong
 import dev.zotov.phototime.shared.usecases.*
 import dev.zotov.phototime.solarized.SunPhaseList
+import dev.zotov.phototime.state.actions.CitiesForecastActions
 import dev.zotov.phototime.state.actions.ForecastActions
 import dev.zotov.phototime.state.actions.SunPhaseActions
 import io.sentry.Sentry
@@ -49,6 +51,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
     private val loadSunPhaseUseCase: LoadSunPhaseUseCase by inject()
     private val forecastActions: ForecastActions by inject()
     private val sunPhaseActions: SunPhaseActions by inject()
+    private val citiesForecastActions: CitiesForecastActions by inject()
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,12 +71,16 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             val deferreds = awaitAll(
                 async { useCachedForecastUseCase.get().firstOrNull() },
                 async { useLastKnownLocationUseCase.getLocationName().first() },
-                async { useCachedSunPhasesUseCase.get().firstOrNull() }
+                async { useCachedSunPhasesUseCase.get().firstOrNull() },
+                async { fetchForecastUseCase.ofPopularCities() }
             )
 
             val forecast = deferreds[0] as Forecast?
             val location = deferreds[1] as String?
             val sunPhasesList = deferreds[2] as SunPhaseList?
+
+            @Suppress("UNCHECKED_CAST")
+            val popularCitiesForecast = deferreds[3] as Result<List<CityForecast>>?
 
             if (forecast != null && location != null) forecastActions.handleCached(
                 forecast = forecast,
@@ -81,6 +88,10 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             )
 
             if (sunPhasesList != null) sunPhaseActions.handleCached(sunPhasesList)
+
+            if (popularCitiesForecast != null) citiesForecastActions.handleFetchResult(
+                popularCitiesForecast
+            )
         }
 
 
@@ -172,28 +183,29 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
         }
     }
 
-    private fun handleLocation(name: String, latLong: LatLong) = CoroutineScope(Dispatchers.IO).launch {
-        val fetchForecastCoroutine = async {
-            val forecast = fetchForecastUseCase.execute(name)
-            forecastActions.handleFetchResult(forecast = forecast, location = name)
+    private fun handleLocation(name: String, latLong: LatLong) =
+        CoroutineScope(Dispatchers.IO).launch {
+            val fetchForecastCoroutine = async {
+                val forecast = fetchForecastUseCase.execute(name)
+                forecastActions.handleFetchResult(forecast = forecast, location = name)
 
-            if (forecast.isSuccess) {
-                useCachedForecastUseCase.save(forecast = forecast.getOrThrow())
+                if (forecast.isSuccess) {
+                    useCachedForecastUseCase.save(forecast = forecast.getOrThrow())
+                }
             }
+
+            val saveLocationCoroutine = async {
+                useLastKnownLocationUseCase.save(name, latLong)
+            }
+
+            val sunPhase = loadSunPhaseUseCase.loadToday(latLong)
+            sunPhaseActions.handleGenerated(sunPhase)
+
+            awaitAll(
+                fetchForecastCoroutine,
+                saveLocationCoroutine,
+            )
         }
-
-        val saveLocationCoroutine = async {
-            useLastKnownLocationUseCase.save(name, latLong)
-        }
-
-        val sunPhase = loadSunPhaseUseCase.loadToday(latLong)
-        sunPhaseActions.handleGenerated(sunPhase)
-
-        awaitAll(
-            fetchForecastCoroutine,
-            saveLocationCoroutine,
-        )
-    }
 
 
     @SuppressLint("MissingPermission")

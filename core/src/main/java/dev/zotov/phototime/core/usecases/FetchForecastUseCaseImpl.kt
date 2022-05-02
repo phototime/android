@@ -23,6 +23,18 @@ import java.time.ZoneId
  * @see Forecast
  */
 internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : FetchForecastUseCase {
+    private val popularCities = listOf(
+        "Bangkok",
+        "Paris",
+        "London",
+        "Dubai",
+        "Singapore",
+        "New York",
+        "Istanbul",
+        "Tokyo",
+        "Moscow"
+    )
+
     override suspend fun execute(q: String): Result<Forecast> {
         val response = weatherApi.getForecast(q)
 
@@ -45,16 +57,13 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
             return withContext(Dispatchers.IO) {
                 val forecast = mutableListOf<CityForecast>()
                 cities
-                    .map {
-                        async { weatherApi.getCurrentForecast(it.url) }
-                    }
+                    .map { async { weatherApi.getCurrentForecast(it.url) } }
                     .awaitAll()
                     .forEach {
                         if (it.isSuccessful) {
                             val model = it.body()
                             if (model != null) {
-                                forecast.add(mapCurrentForecastToDomain( model))
-                                println(forecast.last())
+                                forecast.add(mapCurrentForecastToDomain(model))
                             }
                         }
                     }
@@ -64,6 +73,30 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
         }
 
         return Result.failure(handleErrorCityRequest(response))
+    }
+
+    override suspend fun ofPopularCities(): Result<List<CityForecast>> {
+        try {
+            return withContext(Dispatchers.IO) {
+                val forecast = mutableListOf<CityForecast>()
+                popularCities
+                    .map { async { weatherApi.getCurrentForecast(it) } }
+                    .awaitAll()
+                    .forEach {
+                        if (it.isSuccessful) {
+                            val model = it.body()
+                            if (model != null) {
+                                forecast.add(mapCurrentForecastToDomain(model))
+                                println(forecast.last())
+                            }
+                        }
+                    }
+
+                return@withContext Result.success(forecast)
+            }
+        } catch (e: Throwable) {
+            return Result.failure(FailedToFetchForecast())
+        }
     }
 
     private fun mapForecastToDomain(body: WeatherForecastResponse): Forecast {
