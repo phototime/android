@@ -1,6 +1,7 @@
 package dev.zotov.phototime.core.usecases
 
 import android.util.Log
+import dev.zotov.phototime.core.TravelPayoutsApi
 import dev.zotov.phototime.core.WeatherApi
 import dev.zotov.phototime.core.responces.CitySearchResponse
 import dev.zotov.phototime.core.responces.CurrentWeatherForecastResponse
@@ -22,7 +23,10 @@ import java.time.ZoneId
  * Fetch forecast
  * @see Forecast
  */
-internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : FetchForecastUseCase {
+internal class FetchForecastUseCaseImpl(
+    private val weatherApi: WeatherApi,
+    private val travelPayoutsApi: TravelPayoutsApi
+) : FetchForecastUseCase {
     private val popularCities = listOf(
         "Bangkok",
         "Paris",
@@ -48,7 +52,7 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
     }
 
     override suspend fun search(q: String): Result<List<CityForecast>> {
-        val response = weatherApi.searchCity(q)
+        val response = travelPayoutsApi.autocomplete(q)
 
         // Success
         if (response.isSuccessful) {
@@ -57,7 +61,7 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
             return withContext(Dispatchers.IO) {
                 val forecast = mutableListOf<CityForecast>()
                 cities
-                    .map { async { weatherApi.getCurrentForecast(it.url) } }
+                    .map { async { weatherApi.getCurrentForecast(it.name) } }
                     .awaitAll()
                     .forEach {
                         if (it.isSuccessful) {

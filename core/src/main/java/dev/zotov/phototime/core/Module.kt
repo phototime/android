@@ -9,8 +9,8 @@ import org.koin.dsl.module
 val coreModule = module {
     single { provideOkHttpClient() }
     single { provideWeatherApi(get()) }
-    single { provideRetrofit(get()) }
-    single<FetchForecastUseCase> { FetchForecastUseCaseImpl(get()) }
+    single { provideTravelPayoutsApi(get()) }
+    single<FetchForecastUseCase> { FetchForecastUseCaseImpl(get(), get()) }
     single<UseLastKnownLocationUseCase> { UseLastKnownLocationUseCaseImpl(androidContext()) }
     single<GetLocationNameFromLatLon> { GetLocationNameFromLatLonImpl(androidContext()) }
     single<UseCachedForecastUseCase> { UseCachedForecastUseCaseImpl(androidContext()) }

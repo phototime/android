@@ -28,7 +28,6 @@ class FetchForecastUseCaseTest: KoinTest {
     private val testModule = module {
         single { provideOkHttpClient() }
         single { provideWeatherApi(get()) }
-        single { provideRetrofit(get(), mockWebServer.url("/")) }
         single<FetchForecastUseCase> { FetchForecastUseCaseImpl(get()) }
     }
 

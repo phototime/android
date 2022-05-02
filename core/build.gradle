@@ -18,6 +18,7 @@ android {
 
         buildConfigField("String", "WEATHER_API_KEY", WEATHER_API_KEY)
         buildConfigField("String", "WEATHER_API_URL", WEATHER_API_URL)
+        buildConfigField("String", "TRAVEL_PAYOUTS_API_URL", TRAVEL_PAYOUTS_API_URL)
     }
 
     buildTypes {

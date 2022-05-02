@@ -13,9 +13,17 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-internal fun provideRetrofit(okHttpClient: OkHttpClient, url: HttpUrl = BuildConfig.WEATHER_API_URL.toHttpUrl()): Retrofit {
+internal fun provideWeatherRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
-        .baseUrl(url)
+        .baseUrl(BuildConfig.WEATHER_API_URL.toHttpUrl())
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+}
+
+internal fun provideTravelPayoutsRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    return Retrofit.Builder()
+        .baseUrl(BuildConfig.TRAVEL_PAYOUTS_API_URL.toHttpUrl())
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -55,5 +63,12 @@ fun OkHttpClient.Builder.ignoreAllSSLErrors(): OkHttpClient.Builder {
     return this
 }
 
-internal fun provideWeatherApi(retrofit: Retrofit): WeatherApi =
-    retrofit.create(WeatherApi::class.java)
+internal fun provideWeatherApi(okHttpClient: OkHttpClient): WeatherApi {
+    val retrofit = provideWeatherRetrofit(okHttpClient)
+    return retrofit.create(WeatherApi::class.java)
+}
+
+internal fun provideTravelPayoutsApi(okHttpClient: OkHttpClient): TravelPayoutsApi {
+    val retrofit = provideTravelPayoutsRetrofit(okHttpClient)
+    return retrofit.create(TravelPayoutsApi::class.java)
+}
