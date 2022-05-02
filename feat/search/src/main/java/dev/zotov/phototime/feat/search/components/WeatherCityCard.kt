@@ -19,29 +19,31 @@ import androidx.compose.ui.unit.dp
 import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.feat.search.R
 import dev.zotov.phototime.shared.components.WeatherIcon
+import dev.zotov.phototime.shared.functions.ForecastTypeFunctions
+import dev.zotov.phototime.shared.models.CityForecast
 import dev.zotov.phototime.shared.theme.*
 
 @Composable
-fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean) {
+fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean, forecast: CityForecast) {
     WeatherCityCardContainer(modifier = modifier, active = active) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
-                Temperature(text = "32°")
-                WeatherType(text = "Cloudy")
+                Temperature(text = "${forecast.temp}°")
+                WeatherType(text = ForecastTypeFunctions.getForecastName(forecast.type))
             }
 
             WeatherIcon(
-                id = R.drawable.cloud,
+                id = ForecastTypeFunctions.getCurrentForecastResourceId(forecast.type),
                 modifier = Modifier
                     .width(60.dp)
                     .padding(top = 3.dp)
             )
         }
 
-        City(text = "San Fransisco")
+        City(text = forecast.city)
     }
 }
 
@@ -71,7 +73,7 @@ fun WeatherCityCardContainer(
 ) {
 
     @Composable
-    fun BoxScope.InsideFrame() {
+    fun InsideFrame() {
         val backgroundModifier = if (active) Modifier else Modifier.background(TileColor)
 
         CompositionLocalProvider(LocalRippleTheme provides RippleCustomTheme) {
@@ -115,8 +117,14 @@ fun WeatherCityCardContainer(
 private fun PreviewActive() {
     PhototimeTheme {
         Box(modifier = Modifier.width(155.dp)) {
-            WeatherCityCard(active = true)
-
+            WeatherCityCard(
+                active = true,
+                forecast = CityForecast(
+                    city = "London",
+                    type = ForecastType.Cloudy,
+                    temp = 10,
+                )
+            )
         }
     }
 }
@@ -126,7 +134,13 @@ private fun PreviewActive() {
 private fun PreviewNotActive() {
     PhototimeTheme {
         Box(modifier = Modifier.width(155.dp)) {
-            WeatherCityCard(active = false)
+            WeatherCityCard(
+                active = false, forecast = CityForecast(
+                    city = "Moscow",
+                    type = ForecastType.Clear,
+                    temp = 10,
+                )
+            )
         }
     }
 }

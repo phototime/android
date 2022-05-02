@@ -11,6 +11,19 @@ object ForecastTypeFunctions {
     @DrawableRes
     fun getCurrentForecastResourceId(type: ForecastType) = getResourceId(type, LocalDateTime.now())
 
+    fun getForecastName(type: ForecastType): String = when (type) {
+        ForecastType.PatchyRainPossible -> "Rain possible"
+        ForecastType.PatchySnowPossible -> "Snow possible"
+        ForecastType.PatchySleetPossible -> "Sleet possible"
+        ForecastType.PatchyFreezingPossible -> "Freezing possible"
+        ForecastType.ThunderyOutbreaksPossible -> "Thunder possible"
+        ForecastType.BlowingSnow -> "Blowing show"
+        ForecastType.HeavyRain -> "Heavy rain"
+        ForecastType.ModerateRain -> "Rain"
+        ForecastType.SnowWithThunder -> "Snow and thunder"
+        else -> type.name
+    }
+
     @DrawableRes
     fun getResourceId(type: ForecastType, time: LocalDateTime): Int {
         val isDay = time.hour in 6..19

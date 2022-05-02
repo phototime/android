@@ -21,11 +21,5 @@ data class CityForecast(
      * @sample 25
      */
     val temp: Int,
-
-    /**
-     * Wind speed in km/h
-     * @sample 10.5
-     */
-    val wind: Float,
 )
 

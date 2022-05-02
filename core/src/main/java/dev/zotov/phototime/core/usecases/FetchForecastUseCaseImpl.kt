@@ -130,7 +130,6 @@ internal class FetchForecastUseCaseImpl(private val weatherApi: WeatherApi) : Fe
             city = body.location.name,
             type = ForecastTypeFunctions.getTypeFromCode(body.current.condition.code),
             temp = body.current.temp_c.toInt(),
-            wind = body.current.wind_mph,
         )
     }
 
