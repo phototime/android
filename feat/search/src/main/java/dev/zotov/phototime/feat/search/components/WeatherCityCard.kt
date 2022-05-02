@@ -1,5 +1,6 @@
 package dev.zotov.phototime.feat.search.components
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,8 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.LocalRippleTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
@@ -22,6 +22,26 @@ import dev.zotov.phototime.shared.components.WeatherIcon
 import dev.zotov.phototime.shared.functions.ForecastTypeFunctions
 import dev.zotov.phototime.shared.models.CityForecast
 import dev.zotov.phototime.shared.theme.*
+import kotlinx.coroutines.delay
+
+@Composable
+@OptIn(ExperimentalAnimationApi::class)
+fun AnimatedWeatherCityCard(
+    modifier: Modifier = Modifier,
+    active: Boolean,
+    forecast: CityForecast
+) {
+    var state by remember { mutableStateOf<CityForecast?>(null) }
+
+    LaunchedEffect(forecast) {
+        state = forecast
+    }
+
+    AnimatedContent(targetState = state) {
+        if (it != null) WeatherCityCard(modifier = modifier, active = active, it)
+    }
+}
+
 
 @Composable
 fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean, forecast: CityForecast) {

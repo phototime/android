@@ -1,10 +1,13 @@
 package dev.zotov.phototime.feat.search
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -13,6 +16,7 @@ import dev.zotov.phototime.feat.search.components.*
 import dev.zotov.phototime.shared.components.Headline
 import dev.zotov.phototime.shared.components.Subtitle
 import dev.zotov.phototime.shared.models.CityForecast
+import dev.zotov.phototime.shared.utils.disabledVerticalPointerInputScroll
 import dev.zotov.phototime.state.Store
 import dev.zotov.phototime.state.state.CitiesForecastState
 import org.koin.androidx.compose.get
@@ -66,19 +70,18 @@ fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
                         CurrentCityForecast()
 
                         firstColumn.forEach {
-                            WeatherCityCard(
+                            AnimatedWeatherCityCard(
                                 active = false,
                                 modifier = Modifier.padding(top = 25.dp),
                                 forecast = it
                             )
                         }
                     }
-
                     Spacer(modifier = Modifier.width(30.dp))
 
                     Column(modifier = columnModifier.padding(top = 30.dp)) {
                         secondColumn.forEach {
-                            WeatherCityCard(
+                            AnimatedWeatherCityCard(
                                 active = false,
                                 modifier = Modifier.padding(top = 25.dp),
                                 forecast = it
