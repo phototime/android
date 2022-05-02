@@ -1,5 +1,6 @@
 package dev.zotov.phototime.state
 
+import androidx.compose.runtime.mutableStateOf
 import dev.zotov.phototime.state.state.CitiesForecastState
 import dev.zotov.phototime.state.state.ForecastState
 import dev.zotov.phototime.state.state.SunPhaseState
@@ -31,5 +32,7 @@ class Store {
     fun emitCitiesForecast(state: CitiesForecastState) {
         _citiesForecastState.value = state
     }
+
+    val citiesSearchText = mutableStateOf("")
 }
 

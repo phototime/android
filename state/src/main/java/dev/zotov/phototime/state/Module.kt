@@ -9,5 +9,5 @@ val stateModule = module {
     single { Store() }
     single { ForecastActions(get()) }
     single { SunPhaseActions(get()) }
-    single { CitiesForecastActions(get()) }
+    single { CitiesForecastActions(get(), get()) }
 }
