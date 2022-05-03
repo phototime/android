@@ -28,15 +28,15 @@ internal class FetchForecastUseCaseImpl(
     private val travelPayoutsApi: TravelPayoutsApi
 ) : FetchForecastUseCase {
     private val popularCities = listOf(
-        "Bangkok",
-        "Paris",
-        "London",
-        "Dubai",
-        "Singapore",
-        "New York",
-        "Istanbul",
-        "Tokyo",
-        "Moscow"
+        CitySearchResponse("Bangkok", "TH"),
+        CitySearchResponse("Paris", "FR"),
+        CitySearchResponse("London", "GB"),
+        CitySearchResponse("Dubai", "AE"),
+        CitySearchResponse("Singapore", "SG"),
+        CitySearchResponse("New York", "US"),
+        CitySearchResponse("Istanbul", "TR"),
+        CitySearchResponse("Tokyo", "JP"),
+        CitySearchResponse("Moscow", "RU"),
     )
 
     override suspend fun execute(q: String): Result<Forecast> {
@@ -61,16 +61,18 @@ internal class FetchForecastUseCaseImpl(
             return withContext(Dispatchers.IO) {
                 val forecast = mutableListOf<CityForecast>()
                 cities
-                    .map { async { weatherApi.getCurrentForecast(it.name) } }
-                    .awaitAll()
-                    .forEach {
-                        if (it.isSuccessful) {
-                            val model = it.body()
-                            if (model != null) {
-                                forecast.add(mapCurrentForecastToDomain(model))
+                    .map {
+                        async {
+                            val res = weatherApi.getCurrentForecast(it.name)
+                            if (res.isSuccessful) {
+                                val model = res.body()
+                                if (model != null) {
+                                    forecast.add(mapCurrentForecastToDomain(model, it.country_code))
+                                }
                             }
                         }
                     }
+                    .awaitAll()
 
                 return@withContext Result.success(forecast)
             }
@@ -84,17 +86,18 @@ internal class FetchForecastUseCaseImpl(
             return withContext(Dispatchers.IO) {
                 val forecast = mutableListOf<CityForecast>()
                 popularCities
-                    .map { async { weatherApi.getCurrentForecast(it) } }
-                    .awaitAll()
-                    .forEach {
-                        if (it.isSuccessful) {
-                            val model = it.body()
-                            if (model != null) {
-                                forecast.add(mapCurrentForecastToDomain(model))
-                                println(forecast.last())
+                    .map {
+                        async {
+                            val response = weatherApi.getCurrentForecast(it.name)
+                            if (response.isSuccessful) {
+                                val model = response.body()
+                                if (model != null) {
+                                    forecast.add(mapCurrentForecastToDomain(model, it.country_code))
+                                }
                             }
                         }
                     }
+                    .awaitAll()
 
                 return@withContext Result.success(forecast)
             }
@@ -129,11 +132,15 @@ internal class FetchForecastUseCaseImpl(
         )
     }
 
-    private fun mapCurrentForecastToDomain(body: CurrentWeatherForecastResponse): CityForecast {
+    private fun mapCurrentForecastToDomain(
+        body: CurrentWeatherForecastResponse,
+        countryCode: String,
+    ): CityForecast {
         return CityForecast(
             city = body.location.name,
             type = ForecastTypeFunctions.getTypeFromCode(body.current.condition.code),
             temp = body.current.temp_c.toInt(),
+            countryCode = countryCode
         )
     }
 

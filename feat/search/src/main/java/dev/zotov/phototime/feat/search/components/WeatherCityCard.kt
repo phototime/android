@@ -1,5 +1,6 @@
 package dev.zotov.phototime.feat.search.components
 
+import android.widget.Space
 import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,6 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
@@ -63,7 +65,11 @@ fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean, forecast: Ci
             )
         }
 
-        City(text = forecast.city)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            City(text = forecast.city)
+            Spacer(modifier = Modifier.weight(1f))
+            Country(forecast.countryCode)
+        }
     }
 }
 
@@ -86,6 +92,11 @@ private fun City(text: String) {
 }
 
 @Composable
+private fun Country(text: String) {
+    Text(text = text, style = MaterialTheme.typography.Grey12spNormal)
+}
+
+@Composable
 fun WeatherCityCardContainer(
     modifier: Modifier = Modifier,
     active: Boolean,
@@ -103,7 +114,7 @@ fun WeatherCityCardContainer(
                     .aspectRatio(1.24f)
                     .clip(MaterialTheme.shapes.large)
                     .composed { backgroundModifier }
-                    .clickable() { }
+                    .clickable { }
                     .padding(start = 20.dp, end = 15.dp, top = 20.dp, bottom = 20.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
@@ -143,6 +154,7 @@ private fun PreviewActive() {
                     city = "London",
                     type = ForecastType.Cloudy,
                     temp = 10,
+                    countryCode = "GB",
                 )
             )
         }
@@ -159,6 +171,7 @@ private fun PreviewNotActive() {
                     city = "Moscow",
                     type = ForecastType.Clear,
                     temp = 10,
+                    countryCode = "RU",
                 )
             )
         }

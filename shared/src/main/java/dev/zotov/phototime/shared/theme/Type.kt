@@ -161,6 +161,16 @@ val Typography.White13spNormal: TextStyle
         textAlign = TextAlign.Left,
     )
 
+@get:Composable
+val Typography.Grey12spNormal: TextStyle
+    get() = TextStyle(
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        color = White.copy(0.7f),
+        textAlign = TextAlign.Left,
+    )
+
 
 @get:Composable
 val Typography.White14SpNormal: TextStyle
