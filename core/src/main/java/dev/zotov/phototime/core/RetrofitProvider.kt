@@ -1,7 +1,6 @@
 package dev.zotov.phototime.core
 
 import android.annotation.SuppressLint
-import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,9 +20,9 @@ internal fun provideWeatherRetrofit(okHttpClient: OkHttpClient): Retrofit {
         .build()
 }
 
-internal fun provideTravelPayoutsRetrofit(okHttpClient: OkHttpClient): Retrofit {
+internal fun provideAlgoliaRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
-        .baseUrl(BuildConfig.TRAVEL_PAYOUTS_API_URL.toHttpUrl())
+        .baseUrl(BuildConfig.ALGOLIA_API_URL.toHttpUrl())
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -68,7 +67,7 @@ internal fun provideWeatherApi(okHttpClient: OkHttpClient): WeatherApi {
     return retrofit.create(WeatherApi::class.java)
 }
 
-internal fun provideTravelPayoutsApi(okHttpClient: OkHttpClient): TravelPayoutsApi {
-    val retrofit = provideTravelPayoutsRetrofit(okHttpClient)
-    return retrofit.create(TravelPayoutsApi::class.java)
+internal fun provideAlgoliaApi(okHttpClient: OkHttpClient): AlgoliaApi {
+    val retrofit = provideAlgoliaRetrofit(okHttpClient)
+    return retrofit.create(AlgoliaApi::class.java)
 }

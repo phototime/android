@@ -1,11 +1,14 @@
 package dev.zotov.phototime.core.usecases
 
 import android.util.Log
-import dev.zotov.phototime.core.TravelPayoutsApi
+import dev.zotov.phototime.core.AlgoliaApi
 import dev.zotov.phototime.core.WeatherApi
+import dev.zotov.phototime.core.requests.CityAutoCompleteRequest
 import dev.zotov.phototime.core.responces.CitySearchResponse
 import dev.zotov.phototime.core.responces.CurrentWeatherForecastResponse
 import dev.zotov.phototime.core.responces.WeatherForecastResponse
+import dev.zotov.phototime.core.responces.toCitiesList
+import dev.zotov.phototime.domain.City
 import dev.zotov.phototime.shared.failures.FailedToFetchForecast
 import dev.zotov.phototime.shared.failures.FailedToSerializeForecast
 import dev.zotov.phototime.shared.models.Forecast
@@ -25,18 +28,18 @@ import java.time.ZoneId
  */
 internal class FetchForecastUseCaseImpl(
     private val weatherApi: WeatherApi,
-    private val travelPayoutsApi: TravelPayoutsApi
+    private val algoliaApi: AlgoliaApi
 ) : FetchForecastUseCase {
     private val popularCities = listOf(
-        CitySearchResponse("Bangkok", "TH"),
-        CitySearchResponse("Paris", "FR"),
-        CitySearchResponse("London", "GB"),
-        CitySearchResponse("Dubai", "AE"),
-        CitySearchResponse("Singapore", "SG"),
-        CitySearchResponse("New York", "US"),
-        CitySearchResponse("Istanbul", "TR"),
-        CitySearchResponse("Tokyo", "JP"),
-        CitySearchResponse("Moscow", "RU"),
+        City("Bangkok", "TH"),
+        City("Paris", "FR"),
+        City("London", "GB"),
+        City("Dubai", "AE"),
+        City("Singapore", "SG"),
+        City("New York", "US"),
+        City("Istanbul", "TR"),
+        City("Tokyo", "JP"),
+        City("Moscow", "RU"),
     )
 
     override suspend fun execute(q: String): Result<Forecast> {
@@ -52,22 +55,24 @@ internal class FetchForecastUseCaseImpl(
     }
 
     override suspend fun search(q: String): Result<List<CityForecast>> {
-        val response = travelPayoutsApi.autocomplete(q)
+        val response = algoliaApi.autocomplete(CityAutoCompleteRequest(q))
 
         // Success
         if (response.isSuccessful) {
-            val cities = response.body() ?: return Result.failure(FailedToSerializeForecast())
+            val cities = response.body()?.hits?.toCitiesList()
+                ?: return Result.failure(FailedToSerializeForecast())
 
             return withContext(Dispatchers.IO) {
                 val forecast = mutableListOf<CityForecast>()
                 cities
                     .map {
                         async {
-                            val res = weatherApi.getCurrentForecast(it.name)
+                            val res =
+                                weatherApi.getCurrentForecast(it.name)
                             if (res.isSuccessful) {
                                 val model = res.body()
                                 if (model != null) {
-                                    forecast.add(mapCurrentForecastToDomain(model, it.country_code))
+                                    forecast.add(mapCurrentForecastToDomain(model, it.countryCode))
                                 }
                             }
                         }
@@ -92,7 +97,7 @@ internal class FetchForecastUseCaseImpl(
                             if (response.isSuccessful) {
                                 val model = response.body()
                                 if (model != null) {
-                                    forecast.add(mapCurrentForecastToDomain(model, it.country_code))
+                                    forecast.add(mapCurrentForecastToDomain(model, it.countryCode))
                                 }
                             }
                         }
@@ -150,7 +155,7 @@ internal class FetchForecastUseCaseImpl(
         return FailedToFetchForecast()
     }
 
-    private fun handleErrorCityRequest(response: Response<List<CitySearchResponse>>): FetchForecastFailure {
+    private fun handleErrorCityRequest(response: Response<CitySearchResponse>): FetchForecastFailure {
         Log.d("FetchForecastUseCase.error", response.errorBody().toString())
         // todo: improve error handling
         return FailedToFetchForecast()
