@@ -1,10 +1,7 @@
 package dev.zotov.phototime.feat.search.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,7 +15,7 @@ import dev.zotov.phototime.shared.theme.PhototimeTheme
 
 @Composable
 fun LoadingWeatherCityCard() {
-    WeatherCityCardContainer(active = false) {
+    WeatherCityCardContainer(active = false, modifier = Modifier.padding(top = 25.dp)) {
         BaseLoadingRect(height = 30.dp, width = 48.dp)
         Spacer(modifier = Modifier.height(10.dp))
         BaseLoadingRect(height = 10.dp, width = 67.dp)
