@@ -1,6 +1,7 @@
 package dev.zotov.phototime.state
 
 import androidx.compose.runtime.mutableStateOf
+import dev.zotov.phototime.shared.models.CityForecast
 import dev.zotov.phototime.state.state.CitiesForecastState
 import dev.zotov.phototime.state.state.ForecastState
 import dev.zotov.phototime.state.state.SunPhaseState
@@ -24,6 +25,8 @@ class Store {
     fun emitSunPhase(state: SunPhaseState) {
         _sunPhaseState.value = state
     }
+
+    var popularCitiesForecast: List<CityForecast> = mutableListOf()
 
     // cities forecast state
     private val _citiesForecastState = MutableStateFlow<CitiesForecastState>(CitiesForecastState.Loading)

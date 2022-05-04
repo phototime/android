@@ -14,14 +14,20 @@ class CitiesForecastActions(
 ) {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-    fun handleFetchResult(forecast: Result<List<CityForecast>>) {
+    fun handleFetchResult(forecast: Result<List<CityForecast>>, isPopularCities: Boolean = false) {
         if (forecast.isFailure) {
             val message = "Failed to fetch cities forecast" // todo: check network access
             store.emitCitiesForecast(CitiesForecastState.Error(message))
         } else {
             val citiesForecast = forecast.getOrThrow()
+            if (isPopularCities) store.popularCitiesForecast = citiesForecast
             store.emitCitiesForecast(CitiesForecastState.Idle(citiesForecast))
         }
+    }
+
+    fun restorePopularCitiesForecast() {
+        val forecast = store.popularCitiesForecast
+        store.emitCitiesForecast(CitiesForecastState.Idle(forecast))
     }
 
     fun search(q: String) = coroutineScope.launch {

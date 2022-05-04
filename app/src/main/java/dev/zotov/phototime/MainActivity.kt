@@ -90,7 +90,8 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             if (sunPhasesList != null) sunPhaseActions.handleCached(sunPhasesList)
 
             if (popularCitiesForecast != null) citiesForecastActions.handleFetchResult(
-                popularCitiesForecast
+                popularCitiesForecast,
+                isPopularCities = true,
             )
         }
 
