@@ -6,6 +6,6 @@ package dev.zotov.phototime.core.requests
 data class CityAutoCompleteRequest(
     val query: String,
 ) {
-    val type = listOf("city", "townhall")
-    val hitsPerPage = 10
+    val type = listOf("city")
+    val hitsPerPage = 15
 }

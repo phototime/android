@@ -73,8 +73,8 @@ fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
                         .padding(start = 25.dp, end = 25.dp)
                 ) {
 
-                    val firstColumn = state.cities.filterIndexed { index, _ -> index % 2 == 1 }
-                    val secondColumn = state.cities.filterIndexed { index, _ -> index % 2 == 0 }
+                    val firstColumn = state.cities.filterIndexed { index, _ -> index % 2 == 0 }
+                    val secondColumn = state.cities.filterIndexed { index, _ -> index % 2 == 1 }
 
                     fun onTap(cityForecast: CityForecast) = CoroutineScope(Dispatchers.IO).launch {
                         handleLocationChangeUseCase(cityForecast.city, cityForecast.toForecast())

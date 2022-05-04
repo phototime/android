@@ -40,7 +40,6 @@ internal class FetchForecastUseCaseImpl(
         City("New York", "US", LatLong(40.730610, -73.935242)),
         City("Istanbul", "TR", LatLong(41.015137, 28.979530)),
         City("Tokyo", "JP", LatLong(35.658581, 139.745438)),
-        City("Moscow", "RU", LatLong(55.751244, 37.618423)),
     )
 
     override suspend fun execute(q: String): Result<Forecast> {
@@ -64,27 +63,26 @@ internal class FetchForecastUseCaseImpl(
                 ?: return Result.failure(FailedToSerializeForecast())
 
             return withContext(Dispatchers.IO) {
-                val forecast = mutableListOf<CityForecast>()
-                cities
+                val forecast = cities
                     .map {
                         async {
-                            val res =
-                                weatherApi.getCurrentForecast(it.name)
+                            val res = weatherApi.getCurrentForecast(it.name)
                             if (res.isSuccessful) {
                                 val model = res.body()
                                 if (model != null) {
-                                    forecast.add(
-                                        mapCurrentForecastToDomain(
-                                            model,
-                                            it.countryCode,
-                                            it.latLong
-                                        )
+                                    return@async mapCurrentForecastToDomain(
+                                        model,
+                                        it.countryCode,
+                                        it.latLong
                                     )
                                 }
                             }
+
+                            return@async null
                         }
                     }
                     .awaitAll()
+                    .filterNotNull()
 
                 return@withContext Result.success(forecast)
             }

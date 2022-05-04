@@ -14,7 +14,8 @@ data class CitySearchObject(
     val _geoloc: CityGeoLocation
 ) {
     fun toCity(): City = City(
-        name = locale_names.default!!.first(),
+        name = if (locale_names.en?.isNotEmpty() == true) locale_names.en.first()
+        else locale_names.default!!.first(),
         countryCode = country_code.uppercase(Locale.getDefault()),
         latLong = LatLong(
             latitude = _geoloc.lat,
@@ -25,11 +26,13 @@ data class CitySearchObject(
 
 fun List<CitySearchObject>.toCitiesList(): List<City> = this.mapNotNull {
     if (it.locale_names.default != null && it.locale_names.default.isNotEmpty()) it.toCity()
+    else if (it.locale_names.en != null && it.locale_names.en.isEmpty()) it.toCity()
     else null
 }
 
 data class CitySearchNames(
     val default: List<String>?,
+    val en: List<String>?,
 )
 
 data class CityGeoLocation(
