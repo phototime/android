@@ -24,5 +24,10 @@ data class CityForecast(
      * Example: 25
      */
     val temp: Int,
-)
+) {
+    companion object {
+        /** Used to represent city that's not exits or should not be showed */
+        val Nothing = CityForecast(City.Unknown, type = ForecastType.Clear, temp = -512)
+    }
+}
 

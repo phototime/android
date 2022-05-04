@@ -1,6 +1,5 @@
 package dev.zotov.phototime.feat.search.components
 
-import android.widget.Space
 import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,7 +24,6 @@ import dev.zotov.phototime.shared.components.WeatherIcon
 import dev.zotov.phototime.shared.functions.ForecastTypeFunctions
 import dev.zotov.phototime.shared.models.CityForecast
 import dev.zotov.phototime.shared.theme.*
-import kotlinx.coroutines.delay
 
 @Composable
 @OptIn(ExperimentalAnimationApi::class)
@@ -37,7 +35,8 @@ fun AnimatedWeatherCityCard(
     var state by remember { mutableStateOf<CityForecast?>(null) }
 
     LaunchedEffect(forecast) {
-        state = forecast
+        state = if (forecast == CityForecast.Nothing) null
+        else forecast
     }
 
     AnimatedContent(targetState = state) {
