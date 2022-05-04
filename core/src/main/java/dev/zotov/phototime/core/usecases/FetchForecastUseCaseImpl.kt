@@ -59,7 +59,7 @@ internal class FetchForecastUseCaseImpl(
 
         // Success
         if (response.isSuccessful) {
-            val cities = response.body()?.hits?.toCitiesList()
+            val cities = response.body()?.hits?.toCitiesList()?.distinct()
                 ?: return Result.failure(FailedToSerializeForecast())
 
             return withContext(Dispatchers.IO) {

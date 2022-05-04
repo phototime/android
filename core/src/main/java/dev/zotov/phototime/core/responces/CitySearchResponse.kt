@@ -18,7 +18,6 @@ data class CitySearchObject(
 }
 
 fun List<CitySearchObject>.toCitiesList(): List<City> = this.mapNotNull {
-    println(it)
     if (it.locale_names.default != null && it.locale_names.default.isNotEmpty()) it.toCity()
     else null
 }
