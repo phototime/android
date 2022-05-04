@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zotov.phototime.domain.City
 import dev.zotov.phototime.domain.ForecastType
+import dev.zotov.phototime.domain.LatLong
 import dev.zotov.phototime.feat.search.R
 import dev.zotov.phototime.shared.components.WeatherIcon
 import dev.zotov.phototime.shared.functions.ForecastTypeFunctions
@@ -31,7 +32,8 @@ import dev.zotov.phototime.shared.theme.*
 fun AnimatedWeatherCityCard(
     modifier: Modifier = Modifier,
     active: Boolean,
-    forecast: CityForecast
+    forecast: CityForecast,
+    onTap: () -> Unit,
 ) {
     var state by remember { mutableStateOf<CityForecast?>(null) }
 
@@ -41,14 +43,19 @@ fun AnimatedWeatherCityCard(
     }
 
     AnimatedContent(targetState = state) {
-        if (it != null) WeatherCityCard(modifier = modifier, active = active, it)
+        if (it != null) WeatherCityCard(modifier = modifier, active = active, it, onTap = onTap)
     }
 }
 
 
 @Composable
-fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean, forecast: CityForecast) {
-    WeatherCityCardContainer(modifier = modifier, active = active) {
+fun WeatherCityCard(
+    modifier: Modifier = Modifier,
+    active: Boolean,
+    forecast: CityForecast,
+    onTap: () -> Unit
+) {
+    WeatherCityCardContainer(modifier = modifier, active = active, onTap = onTap) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -62,7 +69,7 @@ fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean, forecast: Ci
                 id = ForecastTypeFunctions.getCurrentForecastResourceId(forecast.type),
                 modifier = Modifier
                     .width(60.dp)
-                    .padding(top = 3.dp)
+                    .padding(top = 3.dp),
             )
         }
 
@@ -107,7 +114,8 @@ private fun Country(text: String) {
 fun WeatherCityCardContainer(
     modifier: Modifier = Modifier,
     active: Boolean,
-    content: @Composable ColumnScope.() -> Unit
+    onTap: () -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
 
     @Composable
@@ -121,7 +129,7 @@ fun WeatherCityCardContainer(
                     .aspectRatio(1.24f)
                     .clip(MaterialTheme.shapes.large)
                     .composed { backgroundModifier }
-                    .clickable { }
+                    .clickable { onTap() }
                     .padding(start = 20.dp, end = 15.dp, top = 20.dp, bottom = 20.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
@@ -158,10 +166,17 @@ private fun PreviewActive() {
             WeatherCityCard(
                 active = true,
                 forecast = CityForecast(
-                    city = City("London", "GB"),
+                    city = City(
+                        "London",
+                        "GB",
+                        LatLong(51.507359, -0.136439)
+                    ),
                     type = ForecastType.Cloudy,
                     temp = 10,
-                )
+                    wind = 10f,
+                    humidity = 52,
+                ),
+                onTap = {}
             )
         }
     }
@@ -173,11 +188,19 @@ private fun PreviewNotActive() {
     PhototimeTheme {
         Box(modifier = Modifier.width(155.dp)) {
             WeatherCityCard(
-                active = false, forecast = CityForecast(
-                    city = City("Moscow", "RU"),
+                active = false,
+                forecast = CityForecast(
+                    city = City(
+                        "Moscow",
+                        "RU",
+                        LatLong(55.751244, 37.618423)
+                    ),
                     type = ForecastType.Clear,
                     temp = 10,
-                )
+                    wind = 10f,
+                    humidity = 52,
+                ),
+                onTap = {},
             )
         }
     }
@@ -189,11 +212,19 @@ private fun Preview2Lines() {
     PhototimeTheme {
         Box(modifier = Modifier.width(155.dp)) {
             WeatherCityCard(
-                active = false, forecast = CityForecast(
-                    city = City("Freixo de Espada à Cinta Airport", "PT"),
+                active = false,
+                forecast = CityForecast(
+                    city = City(
+                        "Freixo de Espada à Cinta Airport",
+                        "PT",
+                        LatLong(0.0, 0.0)
+                    ),
                     type = ForecastType.Clear,
                     temp = 10,
-                )
+                    wind = 10f,
+                    humidity = 52,
+                ),
+                onTap = {},
             )
         }
     }

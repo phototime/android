@@ -12,13 +12,20 @@ import androidx.navigation.NavHostController
 import dev.zotov.phototime.feat.search.components.*
 import dev.zotov.phototime.shared.components.Headline
 import dev.zotov.phototime.shared.components.Subtitle
+import dev.zotov.phototime.shared.models.CityForecast
+import dev.zotov.phototime.shared.models.Forecast
+import dev.zotov.phototime.shared.usecases.HandleLocationChangeUseCase
 import dev.zotov.phototime.state.Store
 import dev.zotov.phototime.state.state.CitiesForecastState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 
 @Composable
 fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
     val store = get<Store>()
+    val handleLocationChangeUseCase = get<HandleLocationChangeUseCase>()
 
     val state = store.citiesForecastState.collectAsState().value
 
@@ -67,6 +74,10 @@ fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
                     val firstColumn = state.cities.filterIndexed { index, _ -> index % 2 == 1 }
                     val secondColumn = state.cities.filterIndexed { index, _ -> index % 2 == 0 }
 
+                    fun onTap(cityForecast: CityForecast) = CoroutineScope(Dispatchers.IO).launch {
+                        handleLocationChangeUseCase(cityForecast.city, cityForecast.toForecast())
+                    }
+
                     Column(modifier = columnModifier) {
                         CurrentCityForecast()
 
@@ -74,7 +85,8 @@ fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
                             AnimatedWeatherCityCard(
                                 active = false,
                                 modifier = Modifier.padding(top = 25.dp),
-                                forecast = it
+                                forecast = it,
+                                onTap = { onTap(it) },
                             )
                         }
                     }
@@ -85,7 +97,8 @@ fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
                             AnimatedWeatherCityCard(
                                 active = false,
                                 modifier = Modifier.padding(top = 25.dp),
-                                forecast = it
+                                forecast = it,
+                                onTap = { onTap(it) },
                             )
                         }
                     }

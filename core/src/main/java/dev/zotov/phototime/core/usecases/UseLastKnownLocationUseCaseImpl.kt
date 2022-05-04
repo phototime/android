@@ -9,10 +9,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dev.zotov.phototime.domain.City
-import dev.zotov.phototime.shared.models.LatLong
+import dev.zotov.phototime.domain.LatLong
 import dev.zotov.phototime.shared.usecases.UseLastKnownLocationUseCase
 import dev.zotov.phototime.shared.utils.DataStores
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
@@ -27,30 +26,20 @@ class UseLastKnownLocationUseCaseImpl(private val context: Context) : UseLastKno
         private val countryCodeKey = stringPreferencesKey("lastKnownLocation_country_code")
     }
 
-    override suspend fun getLatLon(): LatLong? = context.dataStore.data.map {
-        val lat = it[latKey]
-        val lon = it[lonKey]
-
-        if (lat == null || lon == null) null
-        else {
-            LatLong(
-                latitude = lat,
-                longitude = lon,
-            )
-        }
-    }.firstOrNull()
-
     override suspend fun getLocation(): City? = context.dataStore.data.map {
         val name = it[locationKey] ?: return@map null
         val countryCode = it[countryCodeKey] ?: return@map null
-        City(name, countryCode)
+        val lat = it[latKey] ?: return@map null
+        val lon = it[latKey] ?: return@map null
+
+        City(name, countryCode, LatLong(lat, lon))
     }.firstOrNull()
 
-    override suspend fun save(city: City, latLong: LatLong) {
+    override suspend fun save(city: City) {
         try {
             context.dataStore.edit {
-                it[latKey] = latLong.latitude
-                it[lonKey] = latLong.longitude
+                it[latKey] = city.latLong.latitude
+                it[lonKey] = city.latLong.longitude
                 it[locationKey] = city.name
                 it[countryCodeKey] = city.countryCode
             }

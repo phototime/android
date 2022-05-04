@@ -21,11 +21,15 @@ data class Forecast(
 
     /**
      * Wind speed in km/h
-     * @sample 10.5
      */
     val wind: Float,
 
-    @IntRange(from = 0, to = 100) val humidity: Int,
+    /**
+     * concentration of water in the air as a percentage (0% – 100%)
+     */
+    @IntRange(from = 0, to = 100)
+    val humidity: Int,
+
     /**
      * Hourly weather forecast (usually 2 days)
      * @see HourlyForecast

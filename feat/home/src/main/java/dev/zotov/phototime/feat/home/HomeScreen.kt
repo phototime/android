@@ -90,6 +90,7 @@ fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
             PhotoTimeList(sunPhaseList = sunPhaseState.list)
         }
 
+        // Hourly forecast
         TitleWithMoreButton()
         WeatherCardCarousel()
     }

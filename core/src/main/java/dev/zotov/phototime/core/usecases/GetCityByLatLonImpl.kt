@@ -3,7 +3,7 @@ package dev.zotov.phototime.core.usecases
 import android.content.Context
 import android.location.Geocoder
 import dev.zotov.phototime.domain.City
-import dev.zotov.phototime.shared.models.LatLong
+import dev.zotov.phototime.domain.LatLong
 import dev.zotov.phototime.shared.usecases.GetCityByLatLon
 import java.io.IOException
 import java.util.*
@@ -19,6 +19,7 @@ class GetCityByLatLonImpl(private val context: Context) : GetCityByLatLon {
             else City(
                 name = addresses[0].locality,
                 countryCode = addresses[0].countryCode,
+                latLong = latLon
             )
         } catch (e: IOException) {
             City.Unknown

@@ -24,7 +24,10 @@ fun CurrentCityForecast() {
             city = forecast.location,
             type = forecast.type,
             temp = forecast.temp,
+            wind = forecast.wind.toFloat(),
+            humidity = forecast.humidity,
         )
-        else CityForecast.Nothing
+        else CityForecast.Nothing,
+        onTap = {},
     )
 }

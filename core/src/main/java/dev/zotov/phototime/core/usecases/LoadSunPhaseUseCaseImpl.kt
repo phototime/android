@@ -2,9 +2,8 @@ package dev.zotov.phototime.core.usecases
 
 import dev.zotov.phototime.shared.createLogger
 import dev.zotov.phototime.shared.failures.GenerateSunPhaseFailure
-import dev.zotov.phototime.shared.models.LatLong
+import dev.zotov.phototime.domain.LatLong
 import dev.zotov.phototime.shared.usecases.LoadSunPhaseUseCase
-import dev.zotov.phototime.shared.usecases.UseCachedForecastUseCase
 import dev.zotov.phototime.shared.usecases.UseCachedSunPhasesUseCase
 import dev.zotov.phototime.solarized.Solarized
 import dev.zotov.phototime.solarized.SunPhaseList

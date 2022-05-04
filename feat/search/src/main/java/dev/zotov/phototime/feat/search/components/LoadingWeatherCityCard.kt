@@ -15,7 +15,7 @@ import dev.zotov.phototime.shared.theme.PhototimeTheme
 
 @Composable
 fun LoadingWeatherCityCard() {
-    WeatherCityCardContainer(active = false, modifier = Modifier.padding(top = 25.dp)) {
+    WeatherCityCardContainer(active = false, modifier = Modifier.padding(top = 25.dp), onTap = {}) {
         BaseLoadingRect(height = 30.dp, width = 48.dp)
         Spacer(modifier = Modifier.height(10.dp))
         BaseLoadingRect(height = 10.dp, width = 67.dp)

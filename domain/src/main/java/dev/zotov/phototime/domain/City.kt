@@ -15,8 +15,14 @@ data class City(
      */
     @Size(2)
     val countryCode: String,
+
+
+    /**
+     *  Geographical coordinates of the [City]
+     */
+    val latLong: LatLong
 ) {
     companion object {
-        val Unknown = City("Unknown", "--")
+        val Unknown = City("Unknown", "--", LatLong(0.0, 0.0))
     }
 }

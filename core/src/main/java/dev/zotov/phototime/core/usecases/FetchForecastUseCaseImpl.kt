@@ -9,6 +9,7 @@ import dev.zotov.phototime.core.responces.CurrentWeatherForecastResponse
 import dev.zotov.phototime.core.responces.WeatherForecastResponse
 import dev.zotov.phototime.core.responces.toCitiesList
 import dev.zotov.phototime.domain.City
+import dev.zotov.phototime.domain.LatLong
 import dev.zotov.phototime.shared.failures.FailedToFetchForecast
 import dev.zotov.phototime.shared.failures.FailedToSerializeForecast
 import dev.zotov.phototime.shared.models.Forecast
@@ -31,15 +32,15 @@ internal class FetchForecastUseCaseImpl(
     private val algoliaApi: AlgoliaApi
 ) : FetchForecastUseCase {
     private val popularCities = listOf(
-        City("Bangkok", "TH"),
-        City("Paris", "FR"),
-        City("London", "GB"),
-        City("Dubai", "AE"),
-        City("Singapore", "SG"),
-        City("New York", "US"),
-        City("Istanbul", "TR"),
-        City("Tokyo", "JP"),
-        City("Moscow", "RU"),
+        City("Bangkok", "TH", LatLong(13.736717, 100.523186)),
+        City("Paris", "FR", LatLong(48.864716, 2.349014)),
+        City("London", "GB", LatLong(51.507359, -0.136439)),
+        City("Dubai", "AE", LatLong(25.276987, 55.296249)),
+        City("Singapore", "SG", LatLong(1.290270, 103.851959)),
+        City("New York", "US", LatLong(40.730610, -73.935242)),
+        City("Istanbul", "TR", LatLong(41.015137, 28.979530)),
+        City("Tokyo", "JP", LatLong(35.658581, 139.745438)),
+        City("Moscow", "RU", LatLong(55.751244, 37.618423)),
     )
 
     override suspend fun execute(q: String): Result<Forecast> {
@@ -72,7 +73,13 @@ internal class FetchForecastUseCaseImpl(
                             if (res.isSuccessful) {
                                 val model = res.body()
                                 if (model != null) {
-                                    forecast.add(mapCurrentForecastToDomain(model, it.countryCode))
+                                    forecast.add(
+                                        mapCurrentForecastToDomain(
+                                            model,
+                                            it.countryCode,
+                                            it.latLong
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -97,7 +104,13 @@ internal class FetchForecastUseCaseImpl(
                             if (response.isSuccessful) {
                                 val model = response.body()
                                 if (model != null) {
-                                    forecast.add(mapCurrentForecastToDomain(model, it.countryCode))
+                                    forecast.add(
+                                        mapCurrentForecastToDomain(
+                                            model,
+                                            it.countryCode,
+                                            it.latLong
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -140,11 +153,14 @@ internal class FetchForecastUseCaseImpl(
     private fun mapCurrentForecastToDomain(
         body: CurrentWeatherForecastResponse,
         countryCode: String,
+        latLong: LatLong,
     ): CityForecast {
         return CityForecast(
-            city = City(name = body.location.name, countryCode),
+            city = City(name = body.location.name, countryCode, latLong),
             type = ForecastTypeFunctions.getTypeFromCode(body.current.condition.code),
             temp = body.current.temp_c.toInt(),
+            wind = body.current.wind_mph,
+            humidity = body.current.humidity
         )
     }
 
