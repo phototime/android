@@ -66,7 +66,7 @@ dependencies {
 
     implementation project(":domain")
 
-    implementation 'com.github.phototime:solarized-android:1.0.4'
+    implementation 'com.github.phototime:solarized-android:1.0.5'
     implementation 'io.sentry:sentry-android:5.7.0'
     implementation("org.slf4j:slf4j-android:1.7.36")
     implementation 'io.github.microutils:kotlin-logging:1.12.5'

@@ -10,6 +10,7 @@ import dev.zotov.phototime.solarized.SunPhaseList
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
+import kotlin.math.absoluteValue
 
 class LoadSunPhaseUseCaseImpl : LoadSunPhaseUseCase, KoinComponent {
     private val logger = createLogger("LoadSunPhaseUseCaseImpl")
@@ -21,12 +22,12 @@ class LoadSunPhaseUseCaseImpl : LoadSunPhaseUseCase, KoinComponent {
         val today = LocalDateTime.now()
 
         // generate sun phases list
-        val list = Solarized(latLong.latitude, latLong.longitude, today).list
+        val list = Solarized(latLong.latitude.absoluteValue, latLong.longitude.absoluteValue, today).list
 
         // handle error
         if (list == null) {
             logger.error {
-                "failed to generate sun phases for ($latLong.latitude, $latLong.longitude) at $today"
+                "failed to generate sun phases for (${latLong.latitude}, ${latLong.longitude}) at $today"
             }
             throw GenerateSunPhaseFailure()
         }
