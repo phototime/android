@@ -15,4 +15,8 @@ data class City(
      */
     @Size(2)
     val countryCode: String,
-)
+) {
+    companion object {
+        val Unknown = City("Unknown", "--")
+    }
+}

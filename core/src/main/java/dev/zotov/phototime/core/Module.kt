@@ -12,7 +12,7 @@ val coreModule = module {
     single { provideAlgoliaApi(get()) }
     single<FetchForecastUseCase> { FetchForecastUseCaseImpl(get(), get()) }
     single<UseLastKnownLocationUseCase> { UseLastKnownLocationUseCaseImpl(androidContext()) }
-    single<GetLocationNameFromLatLon> { GetLocationNameFromLatLonImpl(androidContext()) }
+    single<GetCityByLatLon> { GetCityByLatLonImpl(androidContext()) }
     single<UseCachedForecastUseCase> { UseCachedForecastUseCaseImpl(androidContext()) }
     single<LoadSunPhaseUseCase> { LoadSunPhaseUseCaseImpl() }
     single<UseCachedSunPhasesUseCase> { UseCachedSunPhasesUseCaseImpl(androidContext()) }

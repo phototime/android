@@ -1,9 +1,8 @@
 package dev.zotov.phototime.state.state
 
-import androidx.compose.runtime.Composable
+import dev.zotov.phototime.domain.City
 import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.shared.models.HourlyForecast
-import java.time.LocalDateTime
 
 sealed class ForecastState {
     /** Used when data is not ready to be presented */
@@ -12,7 +11,7 @@ sealed class ForecastState {
     /** Used when all data processed */
     data class Idle(
         /** User friendly formatted location of this forecast */
-        val location: String,
+        val location: City,
 
         /** On what user friendly formatted date is this forecast stored */
         val date: String,

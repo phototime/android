@@ -22,7 +22,6 @@ fun CurrentCityForecast() {
                 city = forecast.location,
                 type = forecast.type,
                 temp = forecast.temp,
-                countryCode = "RU", // todo
             )
         )
         else -> Unit

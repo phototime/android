@@ -1,5 +1,6 @@
 package dev.zotov.phototime.state.actions
 
+import dev.zotov.phototime.domain.City
 import dev.zotov.phototime.shared.ProjectLogger
 import dev.zotov.phototime.shared.createLogger
 import dev.zotov.phototime.shared.models.Forecast
@@ -11,7 +12,7 @@ import java.time.LocalDateTime
 class ForecastActions(private val store: Store) {
     private val logger: ProjectLogger = createLogger("ForecastActions")
 
-    fun handleCached(forecast: Forecast, location: String) {
+    fun handleCached(forecast: Forecast, location: City) {
         if (store.forecastState.value is ForecastState.Loading) {
             val newState = ForecastState.Idle(
                 location = location,
@@ -31,7 +32,7 @@ class ForecastActions(private val store: Store) {
         }
     }
 
-    fun handleFetchResult(forecast: Result<Forecast>, location: String) {
+    fun handleFetchResult(forecast: Result<Forecast>, location: City) {
         if (forecast.isFailure) {
             val message = "Failed to fetch forecast" // todo: check network access
             store.emitForecast(ForecastState.Error(message))

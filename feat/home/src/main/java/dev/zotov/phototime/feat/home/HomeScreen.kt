@@ -59,7 +59,7 @@ fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (forecastState is ForecastState.Idle) {
-            Headline(text = forecastState.location)
+            Headline(text = forecastState.location.name)
             Subtitle(text = forecastState.date)
             BigWeatherIcon(type = forecastState.type)
         }

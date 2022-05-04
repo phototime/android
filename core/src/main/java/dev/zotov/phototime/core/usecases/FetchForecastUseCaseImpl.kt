@@ -142,10 +142,9 @@ internal class FetchForecastUseCaseImpl(
         countryCode: String,
     ): CityForecast {
         return CityForecast(
-            city = body.location.name,
+            city = City(name = body.location.name, countryCode),
             type = ForecastTypeFunctions.getTypeFromCode(body.current.condition.code),
             temp = body.current.temp_c.toInt(),
-            countryCode = countryCode
         )
     }
 

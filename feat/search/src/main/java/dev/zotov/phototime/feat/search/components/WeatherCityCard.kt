@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.zotov.phototime.domain.City
 import dev.zotov.phototime.domain.ForecastType
 import dev.zotov.phototime.feat.search.R
 import dev.zotov.phototime.shared.components.WeatherIcon
@@ -66,9 +67,9 @@ fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean, forecast: Ci
         }
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            City(text = forecast.city)
+            CityView(text = forecast.city.name)
             Spacer(modifier = Modifier.weight(1f))
-            Country(forecast.countryCode)
+            Country(forecast.city.countryCode)
         }
     }
 }
@@ -87,7 +88,7 @@ private fun WeatherType(text: String) {
 }
 
 @Composable
-private fun City(text: String) {
+private fun CityView(text: String) {
     Text(text = text, style = MaterialTheme.typography.White14SpNormal)
 }
 
@@ -151,10 +152,9 @@ private fun PreviewActive() {
             WeatherCityCard(
                 active = true,
                 forecast = CityForecast(
-                    city = "London",
+                    city = City("London", "GB"),
                     type = ForecastType.Cloudy,
                     temp = 10,
-                    countryCode = "GB",
                 )
             )
         }
@@ -168,10 +168,9 @@ private fun PreviewNotActive() {
         Box(modifier = Modifier.width(155.dp)) {
             WeatherCityCard(
                 active = false, forecast = CityForecast(
-                    city = "Moscow",
+                    city = City("Moscow", "RU"),
                     type = ForecastType.Clear,
                     temp = 10,
-                    countryCode = "RU",
                 )
             )
         }

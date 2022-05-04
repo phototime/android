@@ -21,6 +21,7 @@ import android.os.Looper
 
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import dev.zotov.phototime.domain.City
 import dev.zotov.phototime.shared.logger
 import dev.zotov.phototime.shared.models.CityForecast
 import dev.zotov.phototime.shared.models.Forecast
@@ -43,7 +44,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
         const val REQUEST_CHECK_SETTINGS = 10001
     }
 
-    private val getLocationNameFromLatLong: GetLocationNameFromLatLon by inject()
+    private val getCityByLatLong: GetCityByLatLon by inject()
     private val useCachedForecastUseCase: UseCachedForecastUseCase by inject()
     private val useCachedSunPhasesUseCase: UseCachedSunPhasesUseCase by inject()
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
@@ -70,13 +71,13 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
         CoroutineScope(Dispatchers.IO).launch {
             val deferreds = awaitAll(
                 async { useCachedForecastUseCase.get().firstOrNull() },
-                async { useLastKnownLocationUseCase.getLocationName().first() },
+                async { useLastKnownLocationUseCase.getLocation() },
                 async { useCachedSunPhasesUseCase.get().firstOrNull() },
                 async { fetchForecastUseCase.ofPopularCities() }
             )
 
             val forecast = deferreds[0] as Forecast?
-            val location = deferreds[1] as String?
+            val location = deferreds[1] as City?
             val sunPhasesList = deferreds[2] as SunPhaseList?
 
             @Suppress("UNCHECKED_CAST")
@@ -183,11 +184,11 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
         }
     }
 
-    private fun handleLocation(name: String, latLong: LatLong) =
+    private fun handleLocation(city: City, latLong: LatLong) =
         CoroutineScope(Dispatchers.IO).launch {
             val fetchForecastCoroutine = async {
-                val forecast = fetchForecastUseCase.execute(name)
-                forecastActions.handleFetchResult(forecast = forecast, location = name)
+                val forecast = fetchForecastUseCase.execute(city.name)
+                forecastActions.handleFetchResult(forecast = forecast, location = city)
 
                 if (forecast.isSuccess) {
                     useCachedForecastUseCase.save(forecast = forecast.getOrThrow())
@@ -195,7 +196,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             }
 
             val saveLocationCoroutine = async {
-                useLastKnownLocationUseCase.save(name, latLong)
+                useLastKnownLocationUseCase.save(city, latLong)
             }
 
             val sunPhase = loadSunPhaseUseCase.loadToday(latLong)
@@ -224,11 +225,11 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
                     if (p0.locations.size > 0) {
                         val location = p0.locations[0]
                         val latLong = LatLong(location.latitude, location.longitude)
-                        val name = getLocationNameFromLatLong.execute(latLong)
+                        val city = getCityByLatLong(latLong)
 
                         logger.info { "Location is $latLong" }
 
-                        handleLocation(name, latLong)
+                        handleLocation(city, latLong)
                     }
 
                     fusedLocationProviderClient.removeLocationUpdates(this)

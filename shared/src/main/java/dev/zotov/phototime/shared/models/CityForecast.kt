@@ -1,6 +1,7 @@
 package dev.zotov.phototime.shared.models
 
 import androidx.annotation.Size
+import dev.zotov.phototime.domain.City
 import dev.zotov.phototime.domain.ForecastType
 
 /**
@@ -8,17 +9,9 @@ import dev.zotov.phototime.domain.ForecastType
  */
 data class CityForecast(
     /**
-     * the city that this [CityForecast] describes
+     * the [City] that this [CityForecast] describes
      */
-    val city: String,
-
-    /**
-     * Short two-character alphabetic geographical codes used to represent countries and dependent territories
-     *
-     * Example: RU for Russia, AU for Australia, GB for Great Britain
-     */
-    @Size(2)
-    val countryCode: String,
+    val city: City,
 
     /**
      * Type of current weather (sunny, cloudy, rainy etc)
