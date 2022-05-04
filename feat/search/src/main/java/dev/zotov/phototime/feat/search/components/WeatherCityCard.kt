@@ -15,6 +15,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zotov.phototime.domain.City
@@ -67,7 +68,7 @@ fun WeatherCityCard(modifier: Modifier = Modifier, active: Boolean, forecast: Ci
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             CityView(text = forecast.city.name)
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(10.dp))
             Country(forecast.city.countryCode)
         }
     }
@@ -87,8 +88,14 @@ private fun WeatherType(text: String) {
 }
 
 @Composable
-private fun CityView(text: String) {
-    Text(text = text, style = MaterialTheme.typography.White14SpNormal)
+private fun RowScope.CityView(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.White14SpNormal,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 2,
+        modifier = Modifier.weight(1f)
+    )
 }
 
 @Composable
@@ -168,6 +175,22 @@ private fun PreviewNotActive() {
             WeatherCityCard(
                 active = false, forecast = CityForecast(
                     city = City("Moscow", "RU"),
+                    type = ForecastType.Clear,
+                    temp = 10,
+                )
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true, backgroundColor = BackgroundPreviewColor)
+private fun Preview2Lines() {
+    PhototimeTheme {
+        Box(modifier = Modifier.width(155.dp)) {
+            WeatherCityCard(
+                active = false, forecast = CityForecast(
+                    city = City("Freixo de Espada à Cinta Airport", "PT"),
                     type = ForecastType.Clear,
                     temp = 10,
                 )
