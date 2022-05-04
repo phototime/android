@@ -76,6 +76,7 @@ fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
 
                     fun onTap(cityForecast: CityForecast) = CoroutineScope(Dispatchers.IO).launch {
                         handleLocationChangeUseCase(cityForecast.city, cityForecast.toForecast())
+                        store.citiesSearchText.value = ""
                     }
 
                     Column(modifier = columnModifier) {
