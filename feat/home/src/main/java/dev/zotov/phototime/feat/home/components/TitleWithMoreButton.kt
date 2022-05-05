@@ -12,10 +12,10 @@ import dev.zotov.phototime.shared.theme.titleCompanion
 @Composable
 fun TitleWithMoreButton() {
     Title(text = "Today") {
-        Text(
-            text = "More",
-            style = MaterialTheme.typography.titleCompanion,
-        )
+//        Text(
+//            text = "More",
+//            style = MaterialTheme.typography.titleCompanion,
+//        )
     }
 }
 
