@@ -22,7 +22,7 @@ class LoadSunPhaseUseCaseImpl : LoadSunPhaseUseCase, KoinComponent {
         val today = LocalDateTime.now()
 
         // generate sun phases list
-        val list = Solarized(latLong.latitude.absoluteValue, latLong.longitude.absoluteValue, today).list
+        val list = Solarized(latLong.latitude, latLong.longitude, today).list
 
         // handle error
         if (list == null) {

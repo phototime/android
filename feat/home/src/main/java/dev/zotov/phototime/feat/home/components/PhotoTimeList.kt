@@ -50,7 +50,7 @@ fun PhotoTimeList(sunPhaseList: SunPhaseList) {
         time = PhotoTime.GoldenHour,
         actionTime = formatTimeRange(
             sunPhaseList.eveningGoldenHour.start,
-            sunPhaseList.eveningBlueHour.end
+            sunPhaseList.eveningGoldenHour.end
         ),
     )
     PhotoTimeTile(
