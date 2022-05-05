@@ -28,6 +28,14 @@ internal fun provideAlgoliaRetrofit(okHttpClient: OkHttpClient): Retrofit {
         .build()
 }
 
+internal fun provideTimeRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    return Retrofit.Builder()
+        .baseUrl(BuildConfig.TIME_API_URL.toHttpUrl())
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+}
+
 internal fun provideOkHttpClient(): OkHttpClient {
     val httpLoggingInterceptor = HttpLoggingInterceptor()
     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -70,4 +78,9 @@ internal fun provideWeatherApi(okHttpClient: OkHttpClient): WeatherApi {
 internal fun provideAlgoliaApi(okHttpClient: OkHttpClient): AlgoliaApi {
     val retrofit = provideAlgoliaRetrofit(okHttpClient)
     return retrofit.create(AlgoliaApi::class.java)
+}
+
+internal fun provideTimeApi(okHttpClient: OkHttpClient): TimeApi {
+    val retrofit = provideTimeRetrofit(okHttpClient)
+    return retrofit.create(TimeApi::class.java)
 }

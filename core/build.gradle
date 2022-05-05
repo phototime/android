@@ -19,6 +19,7 @@ android {
         buildConfigField("String", "WEATHER_API_KEY", WEATHER_API_KEY)
         buildConfigField("String", "WEATHER_API_URL", WEATHER_API_URL)
         buildConfigField("String", "ALGOLIA_API_URL", ALGOLIA_API_URL)
+        buildConfigField("String", "TIME_API_URL", TIME_API_URL)
     }
 
     buildTypes {

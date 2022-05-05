@@ -10,6 +10,7 @@ val coreModule = module {
     single { provideOkHttpClient() }
     single { provideWeatherApi(get()) }
     single { provideAlgoliaApi(get()) }
+    single { provideTimeApi(get()) }
     single<FetchForecastUseCase> { FetchForecastUseCaseImpl(get(), get()) }
     single<UseLastKnownLocationUseCase> { UseLastKnownLocationUseCaseImpl(androidContext()) }
     single<GetCityByLatLon> { GetCityByLatLonImpl(androidContext()) }
