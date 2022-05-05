@@ -34,7 +34,7 @@ class LoadSunPhaseUseCaseImpl : LoadSunPhaseUseCase, KoinComponent {
 
         useCachedSunPhasesUseCase.save(list)
 
-        logger.info { "Load today sun phases:\n$list" }
+        logger.info { "Load today sun phases(${latLong.latitude}, ${latLong.longitude}) :\n$list" }
 
         return list
     }
