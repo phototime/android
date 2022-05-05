@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.sentry)
     implementation(libs.slf4j)
     implementation(libs.logger)
+    debugImplementation(libs.bundles.composeTools)
 
     implementation project(":domain")
 }

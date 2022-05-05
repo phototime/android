@@ -35,16 +35,16 @@ fun BottomNavigationBar(modifier: Modifier = Modifier, navController: NavHostCon
         Row(modifier = Modifier.fillMaxWidth()) {
             HomeIcon(active = currentRoute == Routes.Main.Home, navController = navController)
             SearchIcon(active = currentRoute == Routes.Main.Search, navController = navController)
-            SettingsIcon(
-                active = currentRoute == Routes.Main.Settings,
-                navController = navController
-            )
+//            SettingsIcon(
+//                active = currentRoute == Routes.Main.Settings,
+//                navController = navController
+//            )
         }
     }
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = 0xFF090620)
+@Preview()
 fun BottomNavigationBarPreview() {
     val navController = rememberNavController()
     Box(modifier = Modifier.width(390.dp)) {

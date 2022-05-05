@@ -2,7 +2,9 @@ package dev.zotov.phototime
 
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,4 +44,10 @@ fun MainFeature(mainNavController: NavHostController) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun Test() {
+    Text(text = "123")
 }
