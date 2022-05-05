@@ -71,6 +71,6 @@ dependencies {
     implementation project(":shared")
     implementation project(":state")
 
-    implementation 'com.github.phototime:solarized-android:1.0.5'
+    implementation 'com.github.phototime:solarized-android:1.0.6'
 
 }
