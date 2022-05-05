@@ -87,12 +87,17 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
                 location = location,
             )
 
+            Log.d("LastKnowLocation", location.toString())
+
             if (location == null) {
                 if (hasLocationPermission()) getAllPermissions()
                 else requestLocationPermission()
+
+                if (sunPhasesList != null) sunPhaseActions.handleCached(sunPhasesList)
+            } else {
+                handleLocationChangeUseCase(location)
             }
 
-            if (sunPhasesList != null) sunPhaseActions.handleCached(sunPhasesList)
 
             if (popularCitiesForecast != null) citiesForecastActions.handleFetchResult(
                 popularCitiesForecast,
