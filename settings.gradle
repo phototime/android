@@ -17,3 +17,5 @@ include ':feat:settings'
 include ':core'
 include ':state'
 include ':domain'
+
+enableFeaturePreview("VERSION_CATALOGS")
