@@ -13,44 +13,7 @@ sealed class SunPhaseState {
     data class Idle(
         /** all today sun phases */
         val list: SunPhaseList,
-    ) : SunPhaseState() {
-        /**
-         * finds the phase of the sun corresponding to the [time]
-         * @param time by which the phase is searched for
-         * @return sun phase if found else null (null also mean night)
-         */
-        fun get(time: LocalTime): SunPhase? {
-
-            if (
-                list.morningBlueHour.start.toLocalTime().isBefore(time)
-                && list.morningBlueHour.end.toLocalTime().isAfter(time)
-            ) return list.morningBlueHour
-
-            if (
-                list.morningGoldenHour.start.toLocalTime().isBefore(time)
-                && list.morningGoldenHour.end.toLocalTime().isAfter(time)
-            ) return list.morningGoldenHour
-
-            if (
-                list.day.start.toLocalTime().isBefore(time)
-                && list.day.end.toLocalTime().isAfter(time)
-            ) return list.day
-
-            if (
-                list.eveningGoldenHour.start.toLocalTime().isBefore(time)
-                && list.eveningGoldenHour.end.toLocalTime().isAfter(time)
-            ) return list.eveningGoldenHour
-
-            if (
-                list.eveningBlueHour.start.toLocalTime().isBefore(time)
-                && list.eveningBlueHour.end.toLocalTime().isAfter(time)
-            ) return list.eveningBlueHour
-
-            return null
-        }
-
-
-    }
+    ) : SunPhaseState()
 
     data class Error(
         /** User friendly formatted error */

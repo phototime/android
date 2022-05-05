@@ -3,6 +3,7 @@ package dev.zotov.phototime.state.usecases
 import dev.zotov.phototime.domain.City
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.usecases.*
+import dev.zotov.phototime.state.actions.CurrentSunPhaseActions
 import dev.zotov.phototime.state.actions.ForecastActions
 import dev.zotov.phototime.state.actions.SunPhaseActions
 import kotlinx.coroutines.*
@@ -16,6 +17,7 @@ class HandleLocationChangeUseCaseImpl : HandleLocationChangeUseCase, KoinCompone
     private val loadSunPhaseUseCase: LoadSunPhaseUseCase by inject()
     private val forecastActions: ForecastActions by inject()
     private val sunPhaseActions: SunPhaseActions by inject()
+    private val currentSunPhaseActions: CurrentSunPhaseActions by inject()
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
     private val useCachedForecastUseCase: UseCachedForecastUseCase by inject()
 
@@ -43,6 +45,7 @@ class HandleLocationChangeUseCaseImpl : HandleLocationChangeUseCase, KoinCompone
 
             val sunPhase = loadSunPhaseUseCase.loadToday(location.latLong)
             sunPhaseActions.handleGenerated(sunPhase)
+            currentSunPhaseActions.start(sunPhase)
 
             awaitAll(
                 fetchForecastCoroutine,

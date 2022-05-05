@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import dev.zotov.phototime.feat.home.components.*
 import dev.zotov.phototime.shared.components.*
 import dev.zotov.phototime.state.Store
+import dev.zotov.phototime.state.state.CurrentSunPhaseState
 import dev.zotov.phototime.state.state.ForecastState
 import dev.zotov.phototime.state.state.SunPhaseState
 import org.koin.androidx.compose.get
@@ -24,6 +25,7 @@ fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
     // state
     val forecastState = store.forecastState.collectAsState().value
     val sunPhaseState = store.sunPhaseState.collectAsState().value
+    val currentSunPhaseState = store.currentSunPhaseState.collectAsState().value
 
     val loading = forecastState is ForecastState.Loading || sunPhaseState is SunPhaseState.Loading
 
@@ -65,11 +67,9 @@ fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
             }
         }
         if (sunPhaseState is SunPhaseState.Idle) {
-            val current = sunPhaseState.get(LocalTime.now())
 
-            if (current != null) {
+            if (currentSunPhaseState is CurrentSunPhaseState.Idle) {
                 CurrentPhotoTime(
-                    sunPhase = current,
                     modifier = Modifier.padding(end = 25.dp, start = 25.dp, top = 50.dp),
                 )
             }

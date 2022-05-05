@@ -24,49 +24,38 @@ import dev.zotov.phototime.shared.utils.coloredShadow
 import dev.zotov.phototime.shared.utils.glassLight
 import dev.zotov.phototime.shared.utils.glassShadow
 import dev.zotov.phototime.solarized.SunPhase
+import dev.zotov.phototime.state.Store
+import dev.zotov.phototime.state.state.CurrentSunPhaseState
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
+import org.koin.androidx.compose.get
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 @OptIn(ObsoleteCoroutinesApi::class)
 @Composable
-fun CurrentPhotoTime(sunPhase: SunPhase, modifier: Modifier = Modifier) {
-    var timer by remember { mutableStateOf(Duration.ZERO) }
-    var timerStatesCounter by remember { mutableStateOf(0) }
+fun CurrentPhotoTime(modifier: Modifier = Modifier) {
+    val store = get<Store>()
 
-    LaunchedEffect(timerStatesCounter) {
-        logger.info { "launch timer" }
+    when (val state = store.currentSunPhaseState.collectAsState().value) {
+        is CurrentSunPhaseState.Idle -> {
+            val (sunPhase, duration) = state
+            val presentation = PhotoTime.fromSunPhase(sunPhase)
 
-        timer = Duration.between(LocalDateTime.now(), getTimeEnd(sunPhase))
-        logger.info { timer }
-        logger.info { getTimeEnd(sunPhase) }
-        logger.info { LocalDateTime.now() }
-
-        while (timer.seconds > 0) {
-            delay(1000)
-            timer = Duration.between(LocalDateTime.now(), getTimeEnd(sunPhase))
+            Container(modifier = modifier) {
+                Header(text = presentation.title)
+                Spacer(modifier = Modifier.height(10.dp))
+                ProgressBar(getPhasePercentage(sunPhase, duration))
+                Spacer(modifier = Modifier.height(12.dp))
+                Footer(timer = formatDuration(duration), time = getSunPhaseTimeRange(sunPhase))
+            }
         }
-
-        delay(1000)
-        timerStatesCounter++
+        else -> Unit
     }
-
-    val presentation = PhotoTime.fromSunPhase(sunPhase)
-
-
-    Container(modifier = modifier) {
-        Header(text = presentation.title)
-        Spacer(modifier = Modifier.height(10.dp))
-        ProgressBar(getPhasePercentage(sunPhase, timer))
-        Spacer(modifier = Modifier.height(12.dp))
-        Footer(timer = formatDuration(timer), time = getSunPhaseTimeRange(sunPhase))
-    }
-
 }
 
 private fun formatDuration(duration: Duration): String {
@@ -78,12 +67,7 @@ private fun getSunPhaseTimeRange(sunPhase: SunPhase): String {
     return formatTimeRange(range.first, range.second)
 }
 
-private fun getTimeEnd(sunPhase: SunPhase): LocalDateTime {
-    if (sunPhase is SunPhase.GoldenHour) return sunPhase.end
-    if (sunPhase is SunPhase.BlueHour) return sunPhase.end
-    if (sunPhase is SunPhase.Day) return sunPhase.end
-    throw IllegalArgumentException()
-}
+
 
 private fun getTimeRange(sunPhase: SunPhase): Pair<LocalDateTime, LocalDateTime> {
     if (sunPhase is SunPhase.GoldenHour) return Pair(sunPhase.start, sunPhase.end)
@@ -171,25 +155,6 @@ private fun Container(modifier: Modifier = Modifier, content: @Composable Column
     ) {
         Column {
             content()
-        }
-    }
-}
-
-@Composable
-@Preview(backgroundColor = BackgroundPreviewColor, showBackground = true)
-private fun Preview() {
-    PhototimeTheme {
-        Box(
-            modifier = Modifier
-                .padding(20.dp)
-                .width(390.dp)
-        ) {
-            CurrentPhotoTime(
-                SunPhase.GoldenHour(
-                    start = LocalDateTime.now().minusMinutes(38),
-                    end = LocalDateTime.now().minusMinutes(143),
-                )
-            )
         }
     }
 }
