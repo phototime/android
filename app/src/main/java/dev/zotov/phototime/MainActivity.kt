@@ -87,6 +87,11 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
                 location = location,
             )
 
+            if (location == null) {
+                if (hasLocationPermission()) getAllPermissions()
+                else requestLocationPermission()
+            }
+
             if (sunPhasesList != null) sunPhaseActions.handleCached(sunPhasesList)
 
             if (popularCitiesForecast != null) citiesForecastActions.handleFetchResult(
@@ -94,10 +99,6 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
                 isPopularCities = true,
             )
         }
-
-
-        if (hasLocationPermission()) getAllPermissions()
-        else requestLocationPermission()
 
         setContent {
             PhototimeTheme {
