@@ -37,8 +37,9 @@ import java.time.temporal.ChronoUnit
 @Composable
 fun CurrentPhotoTime(sunPhase: SunPhase, modifier: Modifier = Modifier) {
     var timer by remember { mutableStateOf(Duration.ZERO) }
+    var timerStatesCounter by remember { mutableStateOf(0) }
 
-    LaunchedEffect(key1 = "Timer") {
+    LaunchedEffect(timerStatesCounter) {
         logger.info { "launch timer" }
 
         timer = Duration.between(LocalDateTime.now(), getTimeEnd(sunPhase))
@@ -48,9 +49,11 @@ fun CurrentPhotoTime(sunPhase: SunPhase, modifier: Modifier = Modifier) {
 
         while (timer.seconds > 0) {
             delay(1000)
-
             timer = Duration.between(LocalDateTime.now(), getTimeEnd(sunPhase))
         }
+
+        delay(1000)
+        timerStatesCounter++
     }
 
     val presentation = PhotoTime.fromSunPhase(sunPhase)
