@@ -115,6 +115,7 @@ fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
                     }
                 }
             }
+            is CitiesForecastState.Error -> TODO()
         }
     }
 }

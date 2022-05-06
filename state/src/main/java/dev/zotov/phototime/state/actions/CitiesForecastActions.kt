@@ -21,7 +21,9 @@ class CitiesForecastActions(
         } else {
             val citiesForecast = forecast.getOrThrow()
             if (isPopularCities) store.popularCitiesForecast = citiesForecast
-            store.emitCitiesForecast(CitiesForecastState.Idle(citiesForecast))
+
+            if (citiesForecast.isEmpty()) store.emitCitiesForecast(CitiesForecastState.NotFound)
+            else store.emitCitiesForecast(CitiesForecastState.Idle(citiesForecast))
         }
     }
 
