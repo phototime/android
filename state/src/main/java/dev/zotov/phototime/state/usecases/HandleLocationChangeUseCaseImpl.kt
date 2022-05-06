@@ -46,7 +46,7 @@ class HandleLocationChangeUseCaseImpl : HandleLocationChangeUseCase, KoinCompone
 
             val sunPhase = loadSunPhaseUseCase.loadToday(location.latLong, location.timeZone)
             sunPhaseActions.handleGenerated(sunPhase)
-            currentSunPhaseActions.start(sunPhase)
+            currentSunPhaseActions.start(sunPhase, location.timeZone)
 
             awaitAll(
                 fetchForecastCoroutine,

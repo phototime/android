@@ -9,6 +9,8 @@ import kotlinx.coroutines.*
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZonedDateTime
+import java.util.*
 
 class CurrentSunPhaseActions(private val store: Store) {
 
@@ -17,12 +19,12 @@ class CurrentSunPhaseActions(private val store: Store) {
 
     private var job: Job? = null
 
-    fun start(list: SunPhaseList) {
-        if (job != null && job?.isActive == true) job?.cancel()
+    fun start(list: SunPhaseList, timeZone: TimeZone) {
+        if (job?.isActive == true) job?.cancel()
 
         job = coroutineScope.launch {
 
-            val current = list.get(LocalTime.now())
+            val current = list.get(ZonedDateTime.now(timeZone.toZoneId()))
             if (current == null) {
                 logger.info { "No sun phase found" }
                 store.emitCurrentSunPhase(CurrentSunPhaseState.NoPhase)
@@ -31,18 +33,18 @@ class CurrentSunPhaseActions(private val store: Store) {
 
             logger.info { "launch timer" }
 
-            var duration = Duration.between(LocalDateTime.now(), getTimeEnd(current))
+            var duration = Duration.between(ZonedDateTime.now(timeZone.toZoneId()).toLocalDateTime(), getTimeEnd(current))
             val state = CurrentSunPhaseState.Idle(current, duration)
             store.emitCurrentSunPhase(state)
 
             while (duration.seconds > 0) {
                 delay(1000)
-                duration = Duration.between(LocalDateTime.now(), getTimeEnd(current))
+                duration = Duration.between(ZonedDateTime.now(timeZone.toZoneId()).toLocalDateTime(), getTimeEnd(current))
                 store.emitCurrentSunPhase(state.copy(duration = duration))
             }
 
             delay(1000)
-            start(list)
+            start(list, timeZone)
         }
     }
 
@@ -54,7 +56,8 @@ class CurrentSunPhaseActions(private val store: Store) {
     }
 }
 
-fun SunPhaseList.get(time: LocalTime): SunPhase? {
+fun SunPhaseList.get(date: ZonedDateTime): SunPhase? {
+    val time = date.toOffsetDateTime().toLocalTime()
     if (
         this.morningBlueHour.start.toLocalTime().isBefore(time)
         && this.morningBlueHour.end.toLocalTime().isAfter(time)
