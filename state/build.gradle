@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.solarized)
     implementation(libs.koin.android)
+    implementation(libs.bloc)
 
     debugImplementation(libs.compose.tooling)
 

@@ -50,6 +50,7 @@ okhttp-mock = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "ok
 #Other
 playServices-location = "com.google.android.gms:play-services-location:18.0.0"
 solarized = "com.github.phototime:solarized-android:1.0.7"
+bloc = "com.github.zotovy:bloc:0.0.2"
 easyPermission = "com.vmadalin:easypermissions-ktx:1.0.0"
 sentry = "io.sentry:sentry-android:5.7.0"
 logger = "io.github.microutils:kotlin-logging:1.12.5"
