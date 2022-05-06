@@ -41,6 +41,7 @@ internal class FetchForecastUseCaseImpl(
         City("New York", "US", LatLong(40.730610, -73.935242), TimeZone.getTimeZone("America/New_York")),
         City("Istanbul", "TR", LatLong(41.015137, 28.979530), TimeZone.getTimeZone("Asia/Istanbul")),
         City("Tokyo", "JP", LatLong(35.658581, 139.745438), TimeZone.getTimeZone("Asia/Tokyo")),
+        City("Moscow", "RU", LatLong(55.751244, 37.618423), TimeZone.getTimeZone("Europe/Moscow")),
     )
 
     override suspend fun execute(q: String): Result<Forecast> {

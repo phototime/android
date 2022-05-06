@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,7 @@ import dev.zotov.phototime.shared.usecases.HandleLocationChangeUseCase
 import dev.zotov.phototime.state.Store
 import dev.zotov.phototime.state.actions.CitiesForecastActions
 import dev.zotov.phototime.state.state.CitiesForecastState
+import dev.zotov.phototime.state.state.ForecastState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +30,8 @@ fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
     val store = get<Store>()
     val citiesForecastActions = get<CitiesForecastActions>()
     val handleLocationChangeUseCase = get<HandleLocationChangeUseCase>()
+    val forecast = store.forecastState.collectAsState().value
+    val searchText by store.citiesSearchText
 
     val state = store.citiesForecastState.collectAsState().value
 
@@ -73,8 +77,11 @@ fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
                         .padding(start = 25.dp, end = 25.dp)
                 ) {
 
-                    val firstColumn = state.cities.filterIndexed { index, _ -> index % 2 == 0 }
-                    val secondColumn = state.cities.filterIndexed { index, _ -> index % 2 == 1 }
+                    val isCurrentCityShown = forecast is ForecastState.Idle && searchText.isBlank()
+                    val firstColumn =
+                        state.cities.filterIndexed { index, _ -> index % 2 == if (isCurrentCityShown) 1 else 0 }
+                    val secondColumn =
+                        state.cities.filterIndexed { index, _ -> index % 2 == if (isCurrentCityShown) 0 else 1 }
 
                     fun onTap(cityForecast: CityForecast) = CoroutineScope(Dispatchers.IO).launch {
                         handleLocationChangeUseCase(cityForecast.city, cityForecast.toForecast())

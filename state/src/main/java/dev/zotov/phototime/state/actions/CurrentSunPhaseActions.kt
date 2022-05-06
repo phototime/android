@@ -33,13 +33,19 @@ class CurrentSunPhaseActions(private val store: Store) {
 
             logger.info { "launch timer" }
 
-            var duration = Duration.between(ZonedDateTime.now(timeZone.toZoneId()).toLocalDateTime(), getTimeEnd(current))
+            var duration = Duration.between(
+                ZonedDateTime.now(timeZone.toZoneId()).toLocalDateTime(),
+                getTimeEnd(current)
+            )
             val state = CurrentSunPhaseState.Idle(current, duration)
             store.emitCurrentSunPhase(state)
 
             while (duration.seconds > 0) {
                 delay(1000)
-                duration = Duration.between(ZonedDateTime.now(timeZone.toZoneId()).toLocalDateTime(), getTimeEnd(current))
+                duration = Duration.between(
+                    ZonedDateTime.now(timeZone.toZoneId()).toLocalDateTime(),
+                    getTimeEnd(current)
+                )
                 store.emitCurrentSunPhase(state.copy(duration = duration))
             }
 
