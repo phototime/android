@@ -1,6 +1,7 @@
 package dev.zotov.phototime.state.usecases
 
 import dev.zotov.phototime.domain.City
+import dev.zotov.phototime.shared.logger
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.usecases.*
 import dev.zotov.phototime.state.actions.CurrentSunPhaseActions
@@ -43,7 +44,7 @@ class HandleLocationChangeUseCaseImpl : HandleLocationChangeUseCase, KoinCompone
                 useLastKnownLocationUseCase.save(location)
             }
 
-            val sunPhase = loadSunPhaseUseCase.loadToday(location.latLong)
+            val sunPhase = loadSunPhaseUseCase.loadToday(location.latLong, location.timeZone)
             sunPhaseActions.handleGenerated(sunPhase)
             currentSunPhaseActions.start(sunPhase)
 

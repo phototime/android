@@ -10,6 +10,6 @@ interface TimeApi {
     @GET("Time/current/coordinate")
     suspend fun fetchTimeZone(
         @Query("latitude") latitude: Double,
-        @Query("latitude") longitude: Double
+        @Query("longitude") longitude: Double
     ): Response<TimezoneResponse>
 }

@@ -11,7 +11,7 @@ val coreModule = module {
     single { provideWeatherApi(get()) }
     single { provideAlgoliaApi(get()) }
     single { provideTimeApi(get()) }
-    single<FetchForecastUseCase> { FetchForecastUseCaseImpl(get(), get()) }
+    single<FetchForecastUseCase> { FetchForecastUseCaseImpl(get(), get(), get()) }
     single<UseLastKnownLocationUseCase> { UseLastKnownLocationUseCaseImpl(androidContext()) }
     single<GetCityByLatLon> { GetCityByLatLonImpl(androidContext()) }
     single<UseCachedForecastUseCase> { UseCachedForecastUseCaseImpl(androidContext()) }

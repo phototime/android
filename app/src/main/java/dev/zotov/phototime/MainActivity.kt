@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
 
     private val getCityByLatLong: GetCityByLatLon by inject()
     private val useCachedForecastUseCase: UseCachedForecastUseCase by inject()
-    private val useCachedSunPhasesUseCase: UseCachedSunPhasesUseCase by inject()
+    private val loadSunPhaseUseCase: LoadSunPhaseUseCase by inject()
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
     private val fetchForecastUseCase: FetchForecastUseCase by inject()
     private val handleLocationChangeUseCase: HandleLocationChangeUseCase by inject()
@@ -71,16 +71,14 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             val deferreds = awaitAll(
                 async { useCachedForecastUseCase.get().firstOrNull() },
                 async { useLastKnownLocationUseCase.getLocation() },
-                async { useCachedSunPhasesUseCase.get().firstOrNull() },
                 async { fetchForecastUseCase.ofPopularCities() }
             )
 
             val forecast = deferreds[0] as Forecast?
             val location = deferreds[1] as City?
-            val sunPhasesList = deferreds[2] as SunPhaseList?
 
             @Suppress("UNCHECKED_CAST")
-            val popularCitiesForecast = deferreds[3] as Result<List<CityForecast>>?
+            val popularCitiesForecast = deferreds[2] as Result<List<CityForecast>>?
 
             if (forecast != null && location != null) forecastActions.handleCached(
                 forecast = forecast,
@@ -92,10 +90,9 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             if (location == null) {
                 if (hasLocationPermission()) getAllPermissions()
                 else requestLocationPermission()
-
-                if (sunPhasesList != null) sunPhaseActions.handleCached(sunPhasesList)
             } else {
                 handleLocationChangeUseCase(location)
+//                loadSunPhaseUseCase.loadToday(location.latLong, location.timeZone)
             }
 
 

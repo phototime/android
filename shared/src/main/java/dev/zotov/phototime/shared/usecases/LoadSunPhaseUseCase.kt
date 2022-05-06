@@ -4,6 +4,7 @@ import dev.zotov.phototime.shared.failures.GenerateSunPhaseFailure
 import dev.zotov.phototime.domain.LatLong
 import dev.zotov.phototime.solarized.SunPhaseList
 import dev.zotov.phototime.solarized.Solarized
+import java.util.*
 
 interface LoadSunPhaseUseCase {
     /**
@@ -12,5 +13,5 @@ interface LoadSunPhaseUseCase {
      * @throws GenerateSunPhaseFailure if [Solarized.list] return null
      * @return sun phases list
      */
-    suspend fun loadToday(latLong: LatLong): SunPhaseList
+    suspend fun loadToday(latLong: LatLong, timeZone: TimeZone = TimeZone.getDefault()): SunPhaseList
 }

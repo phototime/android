@@ -1,11 +1,10 @@
 package dev.zotov.phototime.domain
 
 import androidx.annotation.Size
+import java.util.*
 
 data class City(
-    /**
-     * the city full name
-     */
+    /** the city full name */
     val name: String,
 
     /**
@@ -17,12 +16,13 @@ data class City(
     val countryCode: String,
 
 
-    /**
-     *  Geographical coordinates of the [City]
-     */
-    val latLong: LatLong
+    /** Geographical coordinates of the [City] */
+    val latLong: LatLong,
+
+    /** Timezone in which this city is located */
+    val timeZone: TimeZone = TimeZone.getDefault()
 ) {
     companion object {
-        val Unknown = City("Unknown", "--", LatLong(0.0, 0.0))
+        val Unknown = City("Unknown", "--", LatLong(0.0, 0.0), TimeZone.getDefault())
     }
 }

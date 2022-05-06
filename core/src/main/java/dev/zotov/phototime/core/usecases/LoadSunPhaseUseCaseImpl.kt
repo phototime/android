@@ -10,6 +10,7 @@ import dev.zotov.phototime.solarized.SunPhaseList
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
+import java.util.*
 import kotlin.math.absoluteValue
 
 class LoadSunPhaseUseCaseImpl : LoadSunPhaseUseCase, KoinComponent {
@@ -17,12 +18,14 @@ class LoadSunPhaseUseCaseImpl : LoadSunPhaseUseCase, KoinComponent {
 
     private val useCachedSunPhasesUseCase: UseCachedSunPhasesUseCase by inject()
 
-    override suspend fun loadToday(latLong: LatLong): SunPhaseList {
+    override suspend fun loadToday(latLong: LatLong, timeZone: TimeZone): SunPhaseList {
         // get today date
         val today = LocalDateTime.now()
 
+        logger.info { "timezone is $timeZone" }
+
         // generate sun phases list
-        val list = Solarized(latLong.latitude, latLong.longitude, today).list
+        val list = Solarized(latLong.latitude, latLong.longitude, today, timeZone).list
 
         // handle error
         if (list == null) {

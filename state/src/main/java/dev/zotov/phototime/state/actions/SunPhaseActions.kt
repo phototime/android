@@ -8,7 +8,7 @@ import dev.zotov.phototime.state.state.SunPhaseState
 import org.koin.core.component.KoinComponent
 
 class SunPhaseActions(private val store: Store): KoinComponent {
-    private val logger: ProjectLogger = createLogger("SubPhaseActions")
+    private val logger: ProjectLogger = createLogger("SunPhaseActions")
 
     fun handleGenerated(sunPhaseList: SunPhaseList) {
         val newState = SunPhaseState.Idle(sunPhaseList)
