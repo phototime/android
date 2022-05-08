@@ -4,19 +4,15 @@ import dev.zotov.phototime.shared.createLogger
 import dev.zotov.phototime.shared.failures.GenerateSunPhaseFailure
 import dev.zotov.phototime.domain.LatLong
 import dev.zotov.phototime.shared.usecases.LoadSunPhaseUseCase
-import dev.zotov.phototime.shared.usecases.UseCachedSunPhasesUseCase
 import dev.zotov.phototime.solarized.Solarized
 import dev.zotov.phototime.solarized.SunPhaseList
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.math.absoluteValue
 
 class LoadSunPhaseUseCaseImpl : LoadSunPhaseUseCase, KoinComponent {
     private val logger = createLogger("LoadSunPhaseUseCaseImpl")
-
-    private val useCachedSunPhasesUseCase: UseCachedSunPhasesUseCase by inject()
 
     override suspend fun loadToday(latLong: LatLong, timeZone: TimeZone): SunPhaseList {
         // get today date
@@ -34,8 +30,6 @@ class LoadSunPhaseUseCaseImpl : LoadSunPhaseUseCase, KoinComponent {
             }
             throw GenerateSunPhaseFailure()
         }
-
-        useCachedSunPhasesUseCase.save(list)
 
         logger.info { "Load today sun phases(${latLong.latitude}, ${latLong.longitude}) :\n$list" }
 

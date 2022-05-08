@@ -33,26 +33,3 @@ message ForecastProto {
     SnowWithThunder = 13;
   }
 }
-
-message SunPhaseListProto {
-  repeated SunPhaseProto list = 1;
-
-  message SunPhaseProto {
-    SunPhaseType type = 1;
-    string from = 2;
-    string to = 3;
-  }
-
-  enum SunPhaseType {
-      FirstLight = 0;
-      MorningBlueHour = 1;
-      Sunrise = 2;
-      MorningGoldenHour = 3;
-      Day = 4;
-      EveningGoldenHour = 5;
-      Sunset = 6;
-      EveningBlueHour = 7;
-      LastLight = 8;
-  }
-}
-

@@ -16,5 +16,4 @@ val coreModule = module {
     single<GetCityByLatLon> { GetCityByLatLonImpl(androidContext()) }
     single<UseCachedForecastUseCase> { UseCachedForecastUseCaseImpl(androidContext()) }
     single<LoadSunPhaseUseCase> { LoadSunPhaseUseCaseImpl() }
-    single<UseCachedSunPhasesUseCase> { UseCachedSunPhasesUseCaseImpl(androidContext()) }
 }
