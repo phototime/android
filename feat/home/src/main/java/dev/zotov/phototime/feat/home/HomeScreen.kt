@@ -11,25 +11,20 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import dev.zotov.phototime.feat.home.components.*
 import dev.zotov.phototime.shared.components.*
-import dev.zotov.phototime.state.Store
 import dev.zotov.phototime.state.blocs.CurrentForecastBloc
 import dev.zotov.phototime.state.blocs.CurrentSunPhaseBloc
+import dev.zotov.phototime.state.blocs.SunPhasesBloc
 import dev.zotov.phototime.state.state.CurrentSunPhaseState
 import dev.zotov.phototime.state.state.ForecastState
 import dev.zotov.phototime.state.state.SunPhaseState
 import org.koin.androidx.compose.get
-import java.time.LocalTime
 
 @Composable
 fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
-    val store = get<Store>()
-    val currentForecastBloc = get<CurrentForecastBloc>()
-    val currentSunPhaseBloc = get<CurrentSunPhaseBloc>()
-
     // state
-    val forecastState = currentForecastBloc.state.collectAsState().value
-    val sunPhaseState = store.sunPhaseState.collectAsState().value
-    val currentSunPhaseState = currentSunPhaseBloc.state.collectAsState().value
+    val forecastState = get<CurrentForecastBloc>().state.collectAsState().value
+    val sunPhaseState = get<SunPhasesBloc>().state.collectAsState().value
+    val currentSunPhaseState = get<CurrentSunPhaseBloc>().state.collectAsState().value
 
     val loading = forecastState is ForecastState.Loading || sunPhaseState is SunPhaseState.Loading
 

@@ -23,10 +23,6 @@ import dev.zotov.phototime.shared.theme.BackgroundPreviewColor
 import dev.zotov.phototime.shared.theme.Grey16spNormal
 import dev.zotov.phototime.shared.theme.PhototimeTheme
 import dev.zotov.phototime.shared.theme.White16spNormal
-import dev.zotov.phototime.state.Store
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.koin.androidx.compose.get
 import org.koin.androidx.compose.get
 
 @Composable

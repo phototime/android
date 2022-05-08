@@ -5,7 +5,6 @@ import android.text.format.DateUtils
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,30 +13,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.zotov.phototime.shared.components.ActionTime
-import dev.zotov.phototime.shared.logger
 import dev.zotov.phototime.shared.theme.*
-import dev.zotov.phototime.shared.utils.coloredShadow
 import dev.zotov.phototime.shared.utils.glassLight
 import dev.zotov.phototime.shared.utils.glassShadow
 import dev.zotov.phototime.solarized.SunPhase
-import dev.zotov.phototime.state.Store
 import dev.zotov.phototime.state.blocs.CurrentSunPhaseBloc
 import dev.zotov.phototime.state.state.CurrentSunPhaseState
 import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.channels.ticker
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
 import org.koin.androidx.compose.get
 import java.time.Duration
 import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 
 @OptIn(ObsoleteCoroutinesApi::class)
 @Composable
