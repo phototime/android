@@ -6,18 +6,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.zotov.phototime.feat.search.SearchViewModel
 import dev.zotov.phototime.shared.models.CityForecast
 import dev.zotov.phototime.state.Store
 import dev.zotov.phototime.state.blocs.CurrentForecastBloc
 import dev.zotov.phototime.state.state.ForecastState
 import org.koin.androidx.compose.get
+import org.koin.androidx.compose.get
 
 @Composable
 fun CurrentCityForecast() {
-    val store = get<Store>()
+    // State holders
     val currentForecastBloc = get<CurrentForecastBloc>()
+    val searchViewModel = get<SearchViewModel>()
+
+    // State
     val forecast = currentForecastBloc.state.collectAsState().value
-    val searchText by store.citiesSearchText
+    val searchText = searchViewModel.searchText.value
 
     AnimatedWeatherCityCard(
         active = true,

@@ -14,10 +14,9 @@ import dev.zotov.phototime.feat.search.components.*
 import dev.zotov.phototime.shared.components.Headline
 import dev.zotov.phototime.shared.components.Subtitle
 import dev.zotov.phototime.shared.models.CityForecast
-import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.usecases.HandleLocationChangeUseCase
 import dev.zotov.phototime.state.Store
-import dev.zotov.phototime.state.actions.CitiesForecastActions
+import dev.zotov.phototime.state.blocs.CitiesForecastBloc
 import dev.zotov.phototime.state.blocs.CurrentForecastBloc
 import dev.zotov.phototime.state.state.CitiesForecastState
 import dev.zotov.phototime.state.state.ForecastState
@@ -25,21 +24,25 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
+import org.koin.androidx.compose.get
 
 @Composable
 fun SearchScreen(
     @Suppress("unused") navController: NavHostController,
     scrollState: ScrollState
 ) {
-    val store = get<Store>()
+    // State holders
     val currentForecastBloc = get<CurrentForecastBloc>()
-    val citiesForecastActions = get<CitiesForecastActions>()
+    val searchViewModel = get<SearchViewModel>()
+    val citiesForecastBloc = get<CitiesForecastBloc>()
+
+    // Usecases
     val handleLocationChangeUseCase = get<HandleLocationChangeUseCase>()
 
+    // State
     val forecast = currentForecastBloc.state.collectAsState().value
-    val searchText by store.citiesSearchText
-
-    val state = store.citiesForecastState.collectAsState().value
+    val searchText = searchViewModel.searchText.value
+    val state = citiesForecastBloc.state.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -91,8 +94,8 @@ fun SearchScreen(
 
                     fun onTap(cityForecast: CityForecast) = CoroutineScope(Dispatchers.IO).launch {
                         handleLocationChangeUseCase(cityForecast.city, cityForecast.toForecast())
-                        store.citiesSearchText.value = ""
-                        citiesForecastActions.restorePopularCitiesForecast()
+                        searchViewModel.search("")
+                        citiesForecastBloc.search("")
                     }
 
                     Column(modifier = columnModifier) {

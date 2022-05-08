@@ -27,7 +27,7 @@ import dev.zotov.phototime.shared.models.CityForecast
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.domain.LatLong
 import dev.zotov.phototime.shared.usecases.*
-import dev.zotov.phototime.state.actions.CitiesForecastActions
+import dev.zotov.phototime.state.blocs.CitiesForecastBloc
 import dev.zotov.phototime.state.blocs.CurrentForecastBloc
 import io.sentry.Sentry
 import kotlinx.coroutines.*
@@ -45,10 +45,9 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
     private val useCachedForecastUseCase: UseCachedForecastUseCase by inject()
     private val loadSunPhaseUseCase: LoadSunPhaseUseCase by inject()
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
-    private val fetchForecastUseCase: FetchForecastUseCase by inject()
     private val handleLocationChangeUseCase: HandleLocationChangeUseCase by inject()
     private val currentForecastBloc: CurrentForecastBloc by inject()
-    private val citiesForecastActions: CitiesForecastActions by inject()
+    private val citiesForecastBloc: CitiesForecastBloc by inject()
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,14 +67,11 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             val deferreds = awaitAll(
                 async { useCachedForecastUseCase.get().firstOrNull() },
                 async { useLastKnownLocationUseCase.getLocation() },
-                async { fetchForecastUseCase.ofPopularCities() }
+                async { citiesForecastBloc.search("") }
             )
 
             val forecast = deferreds[0] as Forecast?
             val location = deferreds[1] as City?
-
-            @Suppress("UNCHECKED_CAST")
-            val popularCitiesForecast = deferreds[2] as Result<List<CityForecast>>?
 
             if (forecast != null && location != null) currentForecastBloc.apply(forecast, location)
 
@@ -88,12 +84,6 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
                 handleLocationChangeUseCase(location)
                 loadSunPhaseUseCase.loadToday(location.latLong, location.timeZone)
             }
-
-
-            if (popularCitiesForecast != null) citiesForecastActions.handleFetchResult(
-                popularCitiesForecast,
-                isPopularCities = true,
-            )
         }
 
         setContent {

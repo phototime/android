@@ -2,6 +2,7 @@ package dev.zotov.phototime
 
 import android.app.Application
 import dev.zotov.phototime.core.coreModule
+import dev.zotov.phototime.feat.search.searchModule
 import dev.zotov.phototime.state.stateModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -15,7 +16,7 @@ class MainApplication: Application() {
         startKoin {
             androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
             androidContext(this@MainApplication)
-            modules(listOf(coreModule, stateModule))
+            modules(listOf(coreModule, stateModule, searchModule))
         }
     }
 }

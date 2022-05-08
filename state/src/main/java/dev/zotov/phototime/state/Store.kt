@@ -26,16 +26,5 @@ class Store {
     fun emitCurrentSunPhase(state: CurrentSunPhaseState) {
         _currentSunPhaseState.value = state
     }
-
-    // cities forecast state
-    private val _citiesForecastState = MutableStateFlow<CitiesForecastState>(CitiesForecastState.Loading)
-    val citiesForecastState get() = _citiesForecastState.asStateFlow()
-    var popularCitiesForecast: List<CityForecast> = mutableListOf()
-
-    fun emitCitiesForecast(state: CitiesForecastState) {
-        _citiesForecastState.value = state
-    }
-
-    val citiesSearchText = mutableStateOf("")
 }
 

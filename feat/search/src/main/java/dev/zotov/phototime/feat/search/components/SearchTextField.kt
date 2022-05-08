@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,38 +15,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.zotov.phototime.feat.search.SearchViewModel
 import dev.zotov.phototime.shared.R
 import dev.zotov.phototime.shared.theme.BackgroundPreviewColor
 import dev.zotov.phototime.shared.theme.Grey16spNormal
 import dev.zotov.phototime.shared.theme.PhototimeTheme
 import dev.zotov.phototime.shared.theme.White16spNormal
 import dev.zotov.phototime.state.Store
-import dev.zotov.phototime.state.actions.CitiesForecastActions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.get
 
 @Composable
 fun SearchTextField() {
-    val store = get<Store>()
-    val citiesForecastActions = get<CitiesForecastActions>()
-    val scope = rememberCoroutineScope()
-    var searchText by store.citiesSearchText
+    val viewModel = get<SearchViewModel>()
 
     TextField(
-        value = searchText,
-        onValueChange = {
-            searchText = it
-            scope.launch {
-                delay(1000)
-                if (searchText == it) {
-                    citiesForecastActions.search(it)
-                }
-            }
-        },
+        value = viewModel.searchText.value,
+        onValueChange = { viewModel.search(it) },
         modifier = Modifier
             .padding(horizontal = 25.dp)
             .fillMaxWidth(),
