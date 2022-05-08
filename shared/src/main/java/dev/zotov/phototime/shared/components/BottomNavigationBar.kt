@@ -1,16 +1,21 @@
 package dev.zotov.phototime.shared.components
 
+import android.util.TypedValue
+import android.util.TypedValue.complexToDimensionPixelSize
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.BottomAppBar
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,25 +26,23 @@ import dev.zotov.phototime.shared.R
 import dev.zotov.phototime.shared.Routes
 
 @Composable
-fun BottomNavigationBar(modifier: Modifier = Modifier, navController: NavHostController) {
+fun BottomNavigationBar(navController: NavHostController) {
     val backStateEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStateEntry?.destination?.route
 
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 15.dp)
-            .height(64.dp)
-            .composed { modifier }
+            .background(Color(0xFF090620))
+            .height(56.dp)
+            .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            HomeIcon(active = currentRoute == Routes.Main.Home, navController = navController)
-            SearchIcon(active = currentRoute == Routes.Main.Search, navController = navController)
+        HomeIcon(active = currentRoute == Routes.Main.Home, navController = navController)
+        SearchIcon(active = currentRoute == Routes.Main.Search, navController = navController)
 //            SettingsIcon(
 //                active = currentRoute == Routes.Main.Settings,
 //                navController = navController
 //            )
-        }
     }
 }
 
@@ -74,7 +77,6 @@ private fun RowScope.SettingsIcon(active: Boolean, navController: NavHostControl
 private fun RowScope.Icon(iconId: Int, onTap: () -> Unit) {
     Box(
         modifier = Modifier
-            .height(65.dp)
             .weight(1f)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

@@ -123,5 +123,7 @@ fun SearchScreen(
             }
             is CitiesForecastState.Error -> TODO()
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }

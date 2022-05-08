@@ -80,6 +80,8 @@ fun HomeScreen(navController: NavHostController, scrollState: ScrollState) {
         // Hourly forecast
         TitleWithMoreButton()
         WeatherCardCarousel()
+
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 

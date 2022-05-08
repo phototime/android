@@ -18,6 +18,7 @@ import com.google.android.gms.common.api.ApiException
 
 import android.content.IntentSender.SendIntentException
 import android.os.Looper
+import androidx.core.view.WindowCompat
 
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -58,10 +59,11 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             Sentry.close()
         }
 
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
+//        window.setFlags(
+//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+//        )
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         CoroutineScope(Dispatchers.IO).launch {
             val deferreds = awaitAll(

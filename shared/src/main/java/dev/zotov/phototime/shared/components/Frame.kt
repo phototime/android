@@ -3,6 +3,7 @@ package dev.zotov.phototime.shared.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,30 +21,23 @@ import dev.zotov.phototime.shared.theme.backgroundGradient
 
 @Composable
 fun Frame(navController: NavHostController, content: @Composable BoxScope.() -> Unit) {
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(
-                navController = navController
-            )
-        }
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFF090620))
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.blur),
-                contentDescription = "blur",
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.FillWidth,
-                alignment = Alignment.TopEnd,
-            )
-            Box(modifier = Modifier.padding(bottom = 79.dp)) {
+        Column(Modifier.navigationBarsPadding()) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .background(Color(0xFF090620))
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.blur),
+                    contentDescription = "blur",
+                    modifier = Modifier.fillMaxWidth(),
+                    contentScale = ContentScale.FillWidth,
+                    alignment = Alignment.TopEnd,
+                )
                 content()
             }
+            BottomNavigationBar(navController)
         }
-    }
 }
 
 @Composable
