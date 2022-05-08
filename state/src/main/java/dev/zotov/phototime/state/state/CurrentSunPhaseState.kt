@@ -4,9 +4,6 @@ import dev.zotov.phototime.solarized.SunPhase
 import java.time.Duration
 
 sealed class CurrentSunPhaseState {
-    /** Used when data is not ready to be presented */
-    object Loading : CurrentSunPhaseState()
-
     /** Used when all data processed */
     data class Idle(
         /** the phase of the sun right now */
@@ -16,7 +13,7 @@ sealed class CurrentSunPhaseState {
         val duration: Duration
     ) : CurrentSunPhaseState()
 
-    /** It's night time */
+    /** It's night time or just not loaded yet */
     object NoPhase: CurrentSunPhaseState()
 
     data class Error(

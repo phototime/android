@@ -18,13 +18,5 @@ class Store {
     fun emitSunPhase(state: SunPhaseState) {
         _sunPhaseState.value = state
     }
-
-    // current sun phase state
-    private val _currentSunPhaseState = MutableStateFlow<CurrentSunPhaseState>(CurrentSunPhaseState.Loading)
-    val currentSunPhaseState get() = _currentSunPhaseState.asStateFlow()
-
-    fun emitCurrentSunPhase(state: CurrentSunPhaseState) {
-        _currentSunPhaseState.value = state
-    }
 }
 

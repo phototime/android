@@ -1,9 +1,11 @@
 package dev.zotov.phototime.feat.home.components
 
+import android.annotation.SuppressLint
 import android.text.format.DateUtils
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -25,6 +27,7 @@ import dev.zotov.phototime.shared.utils.glassLight
 import dev.zotov.phototime.shared.utils.glassShadow
 import dev.zotov.phototime.solarized.SunPhase
 import dev.zotov.phototime.state.Store
+import dev.zotov.phototime.state.blocs.CurrentSunPhaseBloc
 import dev.zotov.phototime.state.state.CurrentSunPhaseState
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.ticker
@@ -39,9 +42,7 @@ import java.time.temporal.ChronoUnit
 @OptIn(ObsoleteCoroutinesApi::class)
 @Composable
 fun CurrentPhotoTime(modifier: Modifier = Modifier) {
-    val store = get<Store>()
-
-    when (val state = store.currentSunPhaseState.collectAsState().value) {
+    when (val state = get<CurrentSunPhaseBloc>().state.collectAsState().value) {
         is CurrentSunPhaseState.Idle -> {
             val (sunPhase, duration) = state
             val presentation = PhotoTime.fromSunPhase(sunPhase)
@@ -63,10 +64,9 @@ private fun formatDuration(duration: Duration): String {
 }
 
 private fun getSunPhaseTimeRange(sunPhase: SunPhase): String {
-   val range = getTimeRange(sunPhase)
+    val range = getTimeRange(sunPhase)
     return formatTimeRange(range.first, range.second)
 }
-
 
 
 private fun getTimeRange(sunPhase: SunPhase): Pair<LocalDateTime, LocalDateTime> {
@@ -107,6 +107,7 @@ private fun ProgressBar(@FloatRange(from = 0.0, to = 1.0) progress: Float) {
     }
 }
 
+@SuppressLint("UnnecessaryComposedModifier")
 @Composable
 private fun ProgressBarPart(
     modifier: Modifier = Modifier,
@@ -144,8 +145,7 @@ private fun RowContainer(content: @Composable RowScope.() -> Unit) {
 @Composable
 private fun Container(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
     Box(
-        modifier = Modifier
-            .composed { modifier }
+        modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
             .background(TileColor)

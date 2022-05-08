@@ -1,33 +1,39 @@
-package dev.zotov.phototime.state.actions
+package dev.zotov.phototime.state.blocs
 
+import dev.zotov.bloc.Bloc
 import dev.zotov.phototime.shared.createLogger
 import dev.zotov.phototime.solarized.SunPhase
 import dev.zotov.phototime.solarized.SunPhaseList
-import dev.zotov.phototime.state.Store
 import dev.zotov.phototime.state.state.CurrentSunPhaseState
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.ZonedDateTime
 import java.util.*
 
-class CurrentSunPhaseActions(private val store: Store) {
+class CurrentSunPhaseBloc: Bloc<CurrentSunPhaseState>(CurrentSunPhaseState.NoPhase) {
+    // Logger
+    private val logger = createLogger("CurrentSunPhaseBloc")
 
-    private val logger = createLogger("CurrentSunPhaseActions")
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
-
+    /** sun phase timer job */
     private var job: Job? = null
 
+    /** Start timer. Emits time left to end of current sun phase every second */
     fun start(list: SunPhaseList, timeZone: TimeZone) {
+        // have to replace currently running timer with new one
         if (job?.isActive == true) job?.cancel()
 
         job = coroutineScope.launch {
 
+            // current sun phase
             val current = list.get(ZonedDateTime.now(timeZone.toZoneId()))
+
             if (current == null) {
                 logger.info { "No sun phase found" }
-                store.emitCurrentSunPhase(CurrentSunPhaseState.NoPhase)
+                stateFlow.update { CurrentSunPhaseState.NoPhase }
                 return@launch
             }
 
@@ -35,18 +41,18 @@ class CurrentSunPhaseActions(private val store: Store) {
 
             var duration = Duration.between(
                 ZonedDateTime.now(timeZone.toZoneId()).toLocalDateTime(),
-                getTimeEnd(current)
+                current.timeEnd
             )
-            val state = CurrentSunPhaseState.Idle(current, duration)
-            store.emitCurrentSunPhase(state)
+
+            stateFlow.update { CurrentSunPhaseState.Idle(current, duration) }
 
             while (duration.seconds > 0) {
                 delay(1000)
                 duration = Duration.between(
                     ZonedDateTime.now(timeZone.toZoneId()).toLocalDateTime(),
-                    getTimeEnd(current)
+                    current.timeEnd
                 )
-                store.emitCurrentSunPhase(state.copy(duration = duration))
+                stateFlow.update { CurrentSunPhaseState.Idle(current, duration) }
             }
 
             delay(1000)
@@ -54,16 +60,17 @@ class CurrentSunPhaseActions(private val store: Store) {
         }
     }
 
-    private fun getTimeEnd(sunPhase: SunPhase): LocalDateTime {
-        if (sunPhase is SunPhase.GoldenHour) return sunPhase.end
-        if (sunPhase is SunPhase.BlueHour) return sunPhase.end
-        if (sunPhase is SunPhase.Day) return sunPhase.end
-        throw IllegalArgumentException()
-    }
 }
 
-fun SunPhaseList.get(date: ZonedDateTime): SunPhase? {
-    val time = date.toOffsetDateTime().toLocalTime()
+private val SunPhase.timeEnd: LocalDateTime get() {
+    if (this is SunPhase.GoldenHour) return this.end
+    if (this is SunPhase.BlueHour) return this.end
+    if (this is SunPhase.Day) return this.end
+    throw IllegalArgumentException()
+}
+
+private fun SunPhaseList.get(date: ZonedDateTime): SunPhase? {
+    val time = date.toLocalTime()
     if (
         this.morningBlueHour.start.toLocalTime().isBefore(time)
         && this.morningBlueHour.end.toLocalTime().isAfter(time)

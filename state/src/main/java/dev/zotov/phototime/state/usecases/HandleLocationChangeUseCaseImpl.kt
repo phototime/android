@@ -3,9 +3,9 @@ package dev.zotov.phototime.state.usecases
 import dev.zotov.phototime.domain.City
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.usecases.*
-import dev.zotov.phototime.state.actions.CurrentSunPhaseActions
 import dev.zotov.phototime.state.actions.SunPhaseActions
 import dev.zotov.phototime.state.blocs.CurrentForecastBloc
+import dev.zotov.phototime.state.blocs.CurrentSunPhaseBloc
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -15,11 +15,11 @@ class HandleLocationChangeUseCaseImpl : HandleLocationChangeUseCase, KoinCompone
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private val fetchForecastUseCase: FetchForecastUseCase by inject()
     private val loadSunPhaseUseCase: LoadSunPhaseUseCase by inject()
-    private val currentForecastBloc: CurrentForecastBloc by inject()
-    private val sunPhaseActions: SunPhaseActions by inject()
-    private val currentSunPhaseActions: CurrentSunPhaseActions by inject()
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
     private val useCachedForecastUseCase: UseCachedForecastUseCase by inject()
+    private val sunPhaseActions: SunPhaseActions by inject()
+    private val currentForecastBloc: CurrentForecastBloc by inject()
+    private val currentSunPhaseBloc: CurrentSunPhaseBloc by inject()
 
     override fun invoke(location: City, cached: Forecast?) =
         coroutineScope.launch {
@@ -42,7 +42,7 @@ class HandleLocationChangeUseCaseImpl : HandleLocationChangeUseCase, KoinCompone
 
             val sunPhase = loadSunPhaseUseCase.loadToday(location.latLong, location.timeZone)
             sunPhaseActions.handleGenerated(sunPhase)
-            currentSunPhaseActions.start(sunPhase, location.timeZone)
+            currentSunPhaseBloc.start(sunPhase, location.timeZone)
 
             awaitAll(
                 fetchForecastCoroutine,
