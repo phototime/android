@@ -18,7 +18,7 @@
 
     <style name="Theme.Phototime.SplashScreenTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/splash_background</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_splash</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo_wrapper</item>
         <item name="postSplashScreenTheme">@style/Theme.Phototime</item>
     </style>
 

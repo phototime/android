@@ -84,9 +84,10 @@
         <entry key="../../../../layout/compose-model-1632914590955.xml" value="0.8350419384902144" />
         <entry key="../../../../layout/compose-model-1632916201663.xml" value="0.8350419384902144" />
         <entry key="../../../../layout/compose-model-1632916427610.xml" value="0.8296296296296296" />
-        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.6036458333333333" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/splash_background.xml" value="0.6036458333333333" />
         <entry key="app/src/main/res/drawable/splash_gradient.xml" value="0.6036458333333333" />
+        <entry key="app/src/main/res/drawable/splash_logo_wrapper.xml" value="0.31" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.6036458333333333" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.4101851851851852" />
         <entry key="shared/src/main/res/drawable/first_light_ball.xml" value="0.22" />
