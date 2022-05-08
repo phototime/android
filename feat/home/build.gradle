@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.koin.compose)
     implementation(libs.arrow)
     implementation(libs.solarized)
+    implementation(libs.bloc)
 
     debugImplementation(libs.compose.tooling)
 

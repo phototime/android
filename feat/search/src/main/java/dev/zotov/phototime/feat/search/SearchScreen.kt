@@ -18,6 +18,7 @@ import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.shared.usecases.HandleLocationChangeUseCase
 import dev.zotov.phototime.state.Store
 import dev.zotov.phototime.state.actions.CitiesForecastActions
+import dev.zotov.phototime.state.blocs.CurrentForecastBloc
 import dev.zotov.phototime.state.state.CitiesForecastState
 import dev.zotov.phototime.state.state.ForecastState
 import kotlinx.coroutines.CoroutineScope
@@ -26,11 +27,16 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 
 @Composable
-fun SearchScreen(navController: NavHostController, scrollState: ScrollState) {
+fun SearchScreen(
+    @Suppress("unused") navController: NavHostController,
+    scrollState: ScrollState
+) {
     val store = get<Store>()
+    val currentForecastBloc = get<CurrentForecastBloc>()
     val citiesForecastActions = get<CitiesForecastActions>()
     val handleLocationChangeUseCase = get<HandleLocationChangeUseCase>()
-    val forecast = store.forecastState.collectAsState().value
+
+    val forecast = currentForecastBloc.state.collectAsState().value
     val searchText by store.citiesSearchText
 
     val state = store.citiesForecastState.collectAsState().value

@@ -2,6 +2,8 @@ package dev.zotov.phototime.shared.models
 
 import dev.zotov.phototime.domain.ForecastType
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
+import java.util.*
 
 /**
  * Represent weather forecast at a specific hour
@@ -24,3 +26,10 @@ data class HourlyForecast(
      */
     val temp: Int,
 )
+
+fun List<HourlyForecast>.indexOfCurrentTime(timeZone: TimeZone = TimeZone.getDefault()): Int {
+    val now = ZonedDateTime.now(timeZone.toZoneId())
+    return this.indexOfFirst {
+        it.time.dayOfMonth == now.dayOfMonth && it.time.hour == now.hour
+    }
+}

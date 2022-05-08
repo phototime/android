@@ -27,10 +27,8 @@ import dev.zotov.phototime.shared.models.CityForecast
 import dev.zotov.phototime.shared.models.Forecast
 import dev.zotov.phototime.domain.LatLong
 import dev.zotov.phototime.shared.usecases.*
-import dev.zotov.phototime.solarized.SunPhaseList
 import dev.zotov.phototime.state.actions.CitiesForecastActions
-import dev.zotov.phototime.state.actions.ForecastActions
-import dev.zotov.phototime.state.actions.SunPhaseActions
+import dev.zotov.phototime.state.blocs.CurrentForecastBloc
 import io.sentry.Sentry
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.firstOrNull
@@ -49,8 +47,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
     private val useLastKnownLocationUseCase: UseLastKnownLocationUseCase by inject()
     private val fetchForecastUseCase: FetchForecastUseCase by inject()
     private val handleLocationChangeUseCase: HandleLocationChangeUseCase by inject()
-    private val forecastActions: ForecastActions by inject()
-    private val sunPhaseActions: SunPhaseActions by inject()
+    private val currentForecastBloc: CurrentForecastBloc by inject()
     private val citiesForecastActions: CitiesForecastActions by inject()
 
     @SuppressLint("MissingPermission")
@@ -80,10 +77,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
             @Suppress("UNCHECKED_CAST")
             val popularCitiesForecast = deferreds[2] as Result<List<CityForecast>>?
 
-            if (forecast != null && location != null) forecastActions.handleCached(
-                forecast = forecast,
-                location = location,
-            )
+            if (forecast != null && location != null) currentForecastBloc.apply(forecast, location)
 
             Log.d("LastKnowLocation", location.toString())
 
@@ -92,7 +86,7 @@ class MainActivity : ComponentActivity(), EasyPermissions.PermissionCallbacks {
                 else requestLocationPermission()
             } else {
                 handleLocationChangeUseCase(location)
-//                loadSunPhaseUseCase.loadToday(location.latLong, location.timeZone)
+                loadSunPhaseUseCase.loadToday(location.latLong, location.timeZone)
             }
 
 

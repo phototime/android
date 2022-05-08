@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.sentry)
     implementation(libs.logger)
     implementation(libs.playServices.location)
+    implementation(libs.bloc)
 
     testImplementation(libs.junit.core)
     debugImplementation(libs.compose.tooling)

@@ -6,18 +6,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import dev.zotov.phototime.state.Store
+import dev.zotov.phototime.state.blocs.CurrentForecastBloc
 import dev.zotov.phototime.state.state.ForecastState
 import org.koin.androidx.compose.get
 
 @Composable
 fun WeatherCardCarousel() {
-    val store = get<Store>()
-    val forecastState = store.forecastState.collectAsState().value
+    val currentForecastBloc = get<CurrentForecastBloc>()
+    val forecastState = currentForecastBloc.state.collectAsState().value
 
     if (forecastState is ForecastState.Idle) {
         val amountOfCards = forecastState.hourly.size
